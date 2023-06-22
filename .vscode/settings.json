@@ -3,7 +3,10 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "libs/flatlaf-3.0.jar"
+        "libs/flatlaf-3.0.jar",
+        "libs/morena.jar",
+        "libs/morena_license.jar",
+        "libs/morena_windows.jar"
     ],
     "java.configuration.runtimes": [
         {
