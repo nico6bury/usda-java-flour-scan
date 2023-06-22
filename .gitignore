@@ -1,6 +1,9 @@
 # Output path
 /bin
 
+# Output jar
+usda-java-flour-scan.jar
+
 ### NetBeans ###
 **/nbproject/private/
 **/nbproject/Makefile-*.mk

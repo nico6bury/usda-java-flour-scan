@@ -18,7 +18,7 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         // try and figure out if we should use dark mode
-        boolean useDarkMode = true;
+        boolean useDarkMode = false;
         // set the application theme / look and feel
         if (useDarkMode) { FlatDarkLaf.setup(); }
         else { FlatLightLaf.setup(); }
