@@ -35,7 +35,26 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        uxRunMenu = new javax.swing.JMenu();
+        uxScanBtn = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("usda-java-flour-scan");
+
+        uxRunMenu.setText("Run");
+
+        uxScanBtn.setText("Scan");
+        uxScanBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxScanBtnActionPerformed(evt);
+            }
+        });
+        uxRunMenu.add(uxScanBtn);
+
+        jMenuBar1.add(uxRunMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -45,11 +64,15 @@ public class MainWindow extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void uxScanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBtnActionPerformed
+        System.out.println("You clicked the \"Scan\" button.");
+    }//GEN-LAST:event_uxScanBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -64,5 +87,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu uxRunMenu;
+    private javax.swing.JMenuItem uxScanBtn;
     // End of variables declaration//GEN-END:variables
 }
