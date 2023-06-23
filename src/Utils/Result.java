@@ -8,7 +8,7 @@ package Utils;
  * The purpose of this class is to mimic the Result type in Rust. Essentially, it's an alternative to throwing an Error. A method can return a Result object, which either contains an error or will tell you otherwise via isOK().
  * @author Nicholas.Sixbury
  */
-public class Result {
+public class Result<T> {
     /**
      * This enum holds whether the result holds an exception or not.
      */
@@ -27,6 +27,11 @@ public class Result {
      * The exception, if one exists. Only valid if isErr() returns true.
      */
     private Exception exception = null;
+
+    /**
+     * The value, if one exists. Only valid if isOk() is true.
+     */
+    private T resultValue;
 
     /**
      * The current enum state of the object, either Ok or Err.
@@ -56,6 +61,16 @@ public class Result {
         else return null;
     }//end getError()
 
+
+    /**
+     * Returns the value stored in this object.
+     * @return Returns null if isOk() equals false.
+     */
+    public T getValue() {
+        if (isOk()) return resultValue;
+        else return null;
+    }//end getValue()
+
     /**
      * Initializes the Result as not an error.
      */
@@ -63,6 +78,16 @@ public class Result {
         state = ResultType.Ok;
         exception = null;
     }//end Ok constructor
+
+    /**
+     * Initializes the Result as Ok along with a typed value.
+     * @param resultValue The value to send along as a result.
+     */
+    public Result(T resultValue) {
+        state = ResultType.Ok;
+        exception = null;
+        this.resultValue = resultValue;
+    }//end value constructor
 
     /**
      * Initializes the Result as an error.
