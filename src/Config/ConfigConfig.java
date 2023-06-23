@@ -11,5 +11,7 @@ public class ConfigConfig {
      * One config class for each area we need to store settings for (like scan settings)
      * Each config class for storing actual settings should probably have either its own file or own folder, depending on if there's more than one file or not. Also, the individual config classes for various settings should just have properties, plus a method or two for regenerating appropriate config settings.
      * we'll use reflection plus a little string parsing in order to hold comments and settings in various files. 
+     * 
+     * Use this for path of the directory containing jar: Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
      */
 }//end class ConfigConfig
