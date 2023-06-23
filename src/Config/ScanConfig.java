@@ -3,7 +3,7 @@ package Config;
 import java.io.File;
 
 /**
- * This class is meant to store various configuration settings related to scanning, meant to be used with the Scan package.
+ * This class is meant to store various configuration settings related to scanning, meant to be used with the Scan package. It should also be used with the ConfigConfig class in order to actually store, read, and write those settings.
  * @author Nicholas.Sixbury
  */
 public class ScanConfig {
