@@ -4,14 +4,21 @@
  */
 package View;
 
+import javax.swing.JOptionPane;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import Scan.Scan;
+import Utils.Result;
+import Utils.Result.ResultType;
 
 /**
  *
  * @author Nicholas.Sixbury
  */
 public class MainWindow extends javax.swing.JFrame {
+
+    protected Scan scan;
 
     /**
      * Creates new form MainWindow
@@ -23,8 +30,32 @@ public class MainWindow extends javax.swing.JFrame {
         if (useDarkMode) { FlatDarkLaf.setup(); }
         else { FlatLightLaf.setup(); }
 
+        scan = new Scan();
+        // try to access the scanner source
+        Result<ResultType> initScannerResult = scan.initScanner();
+        if (initScannerResult.isErr()) {
+            showGenericExceptionMessage(initScannerResult.getError());
+            // close the program, since what else would we do?
+            System.exit(1);
+        }//end if we encountered an error while detecting the connected scanner
+        // try to set scanner settings
+        Result<ResultType> setScanSettingResult = scan.setScanSettings();
+        if (setScanSettingResult.isErr()) {
+            showGenericExceptionMessage(setScanSettingResult.getError());
+            // close the program, since what else would we do?
+            System.exit(1);
+        }//end if we encountered an error while setting scan settings
+
         initComponents();
-    }
+    }//end MainWindow constructor
+
+    /**
+     * Shows a pretty generic message box giving the name and message of supplied error. Uses JOptionPane
+     * @param e The exception that was generated.
+     */
+    protected static void showGenericExceptionMessage(Exception e) {
+        JOptionPane.showMessageDialog(null, "While attempting to find the scanner, the program encountered an exception of type " + e.getClass().getName() + ".\nThe exception message was " + e.getMessage(), "Error while initializing scan source.", JOptionPane.ERROR_MESSAGE);
+    }//end genericExceptionMessage(e)
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,9 +103,15 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void uxScanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBtnActionPerformed
         System.out.println("You clicked the \"Scan\" button.");
+        // try to scan something with the scanner
+        Result<String> scanResult = scan.runScanner();
+        if (scanResult.isErr()) {
+            showGenericExceptionMessage(scanResult.getError());
+        }//end if we have an error to show
     }//GEN-LAST:event_uxScanBtnActionPerformed
 
     /**
+     * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
      */
     public static void main(String args[]) {
