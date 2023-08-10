@@ -56,12 +56,9 @@ public class Scan {
         // make an attempt to set settings of twain source
         try {
             // TODO: Set the settings for the scanner
-            // scanSource.setFeederEnabled(true);
-            // scanSource.setAutoFeed(true);
-            // scanSource.setTransferCount(5);
             scanSource.setVisible(false);
             scanSource.setIndicators(false);
-            // scanSource.setColorMode();
+            scanSource.setColorMode();
             // TODO: Figure out what Bill's config is
             // statement would be if config.getLightSource().equals(Config.lightSource)
             boolean configIndicator = true;
