@@ -25,3 +25,11 @@ This package is meant to keep smaller classes or collections of static functions
 ### View
 
 This package contains the GUI, as one might expect. The main method in MainWindow.java is meant to be the entry point for the application, and in MVC terms, this package serves as both the view and controller, coordinating the other packages based on user selections. The GUI itself is built off Swing. The initial calls are done in the MainWindow constructor, and otherwise things are triggered by button clicks by the user.
+
+## Distribution Info
+
+This application supposedly uses some libraries that must be run under a 32-bit version of java. In order to not interfere with other java versions, this program is designed to be distributed with three things:
+
+- a jar file containing the compiled java code for the application
+- a subdirectory containing a 32-bit jre
+- a batch file which runs the jar file using the 32-bit jre
