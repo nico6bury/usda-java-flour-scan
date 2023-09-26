@@ -4,75 +4,122 @@
  * File: NS-FlourScan-Main.ijm
  * Purpose: To serve as the main coordinator macro for all the
  * processes required for processing of flour scans in imagej.
+ * 
+ * Explanation of Parameter Passing: Each serialized parameter should be
+ * separated by the \r character. For each parameter, it should be the name
+ * followed by the value, separated by the ? character. When giving multiple
+ * files or strings, separate them by the \f character. Parameters not given
+ * will simply use the default.
+ * 
+ * Pre-Execution Contract: This macro assumes that it will be called by a 
+ * specific java program with all arguments fulfilled. It also kinda assumes that
+ * things will work out the way everything is intended. The input file should be
+ * an image file of the right type.
+ * 
+ * Post-Execution Contract: When this macro exits, the results for the L*a*b*
+ * stuff will be in the results window, which has been renamed to the value of
+ * resultsName. Each individual image will correspond to three lines in the
+ * results table, namely for an image called imgName.tif, the lines will be
+ * labelled the following: imgName.tif:L*, imgName.tif:a*, imgName.tif:b*
+ * 
+ * Post-Execution Contract: When this macro exits, the input file(s) specified 
+ * (whether chosen by user or passed as arguments) will be processed, and the 
+ * output will be placed in the specified location (assumedly some sort of 
+ * file handshake between this and the caller).
+ * The output will be in txt format.
+ * 
+ * Parameters that can be set in headless execution mode:
+ * useBatchMode : boolean whether or not to use batch mode
+ * chosenFilePath : the path to the file we should process this run
+ * baseThreshold : the upper threshold to use for processing
+ * szMin : default lower size limit
+ * defSizeLimit : default upper size limit
+ * splitWidth : width that we'd expect for an image that needs to be split
+ * splitHeight : height that we'd expect for an image that needs to be split
  */
 
 // upper threshold for processing
-th01 = 160;
+var th01 = 160;
 
 
 // define temporary variables for storing dialog results
 // whether or not we'll use batch mode, which really speeds things up
-useBatchMode = true;
+var useBatchMode = true;
 // all the valid selection methods we might use
-selectionMethods = newArray("Single File", "Multiple Files", "Directory");
+var selectionMethods = newArray("Single File", "Multiple Files", "Directory");
 // the path of the file we're processing. Might be a directory
-chosenFilePath = "";
+var chosenFilePath = "";
 // the selection method we're actually going with
-selectionMethod = selectionMethods[2];
+var selectionMethod = selectionMethods[2];
 // whether or not we should display a helpful progress bar for the user
-shouldDisplayProgress = true;
+var shouldDisplayProgress = false;
 // valid operating systems
-validOSs = newArray("Windows 10", "Windows 7");
+var validOSs = newArray("Windows 10", "Windows 7");
 // chosen operating system
-chosenOS = validOSs[0];
+var chosenOS = validOSs[0];
 // filenames with these strings will be ignored in directory selection
-forbiddenStrings = newArray("-Skip", "-L", "-R");
+var forbiddenStrings = newArray("-Skip", "-L", "-R");
 // the only file extension we won't ignore in directory selection
-expectedFileExtensions = newArray("bmp","tif","tiff");
+var expectedFileExtensions = newArray("bmp","tif","tiff");
 // save something before it's overwritten
-baseThreshold = th01;
+var baseThreshold = th01;
 // whether we should display particle detection to the user
-showParticles = false;
+var showParticles = false;
 // Warn the user if they want to view the particles of lots of images
-particleShowSoftLim = 10
+var particleShowSoftLim = 10
 // whether or not to append threshold to summary
-appendThreshold = true;
+var appendThreshold = false;
 // default lower size limit
-szMin=2;
+var szMin=2;
 // default upper size limit
-defSizeLimit = 1000;
+var defSizeLimit = 1000;
 // whether or not to append size limit to summary
-appendSize = true;
+var appendSize = false;
 // width that we'd expect for an image that needs to be split
-splitWidth = 2400;
+var splitWidth = 2400;
 // height that we'd expect for an image that needs to be split
-splitHeight = 1200;
+var splitHeight = 1200;
 
-// create dialog from file
-showDialog();
+argumentStr = getArgument();
+if(argumentStr == "") {
+	// create dialog from file
+	showDialog();
+}//end if there were no arguments
+else {
+	// split the arguments and parse them
+	parameters = split("argumentStr", "\r");
+	for(i = 0; i < lengthOf(parameters); i++) {
+		parameterSplit = split(parameters[i], "?");
+		parameterName = parameterSplit[0];
+		parameterValue = parameterSplit[1];
+		// test each parameter we look for
+		if(parameterName == "useBatchMode") {
+			useBatchMode = parseInt(parameterValue);
+		}//end if we have useBatchMode setting
+		else if(parameterName == "chosenFilePath") {
+			chosenFilePath = parameterValue;
+		}//end if we have chosenFilePath setting
+		else if(parameterName == "baseThreshold") {
+			baseThreshold = parseInt(parameterValue);
+		}//end if we have baseThreshold setting
+		else if(parameterName = "szMin") {
+			szMin = parseFloat(parameterValue);
+		}//end if we have szMin setting
+		else if(parameterName == "defSizeLimit") {
+			defSizeLimit = parseFloat(parameterValue);
+		}//end if we have defSizeLimit setting
+		else if(parameterName == "splitWidth") {
+			splitWidth = parseInt(parameterValue);
+		}//end if we have splitWidth setting
+		else if(paramterName == "splitHeight") {
+			splitHeight = parseInt(parameterValue);
+		}//end if we have splitHeight setting
+	}//end reading from each parameter
+}//end else we do have arguments
 
-// get user selections from first line
-selectionMethod = Dialog.getChoice();
-chosenOS = Dialog.getChoice();
-// get user selections from second line
-//resultsFilename = Dialog.getString();
-th01 = Dialog.getNumber();
-appendThreshold = Dialog.getCheckbox();
-// get user selections from third line
-useBatchMode = Dialog.getCheckbox();
-shouldDisplayProgress = Dialog.getCheckbox();
-// get user selection from fourth line
-showParticles = Dialog.getCheckbox();
-// get user selection from fifth line
-szMin = Dialog.getNumber();
-defSizeLimit = Dialog.getNumber();
-// get user selection from sixth line
-appendSize = Dialog.getCheckbox();
-// get resolution information
-splitWidth = Dialog.getNumber();
-splitHeight = Dialog.getNumber();
 // debug feature for doing infinite max size
 infinitySwitch = false;
+
 
 // save selections from user
 saveDialogConfig();
@@ -422,6 +469,27 @@ function showDialog(){
 	Dialog.addNumber("Width", splitWidth); Dialog.addToSameRow(); Dialog.addNumber("Height", splitHeight);
 	// actually make the window show up
 	Dialog.show();
+	
+	// get user selections from first line
+	selectionMethod = Dialog.getChoice();
+	chosenOS = Dialog.getChoice();
+	// get user selections from second line
+	//resultsFilename = Dialog.getString();
+	th01 = Dialog.getNumber();
+	appendThreshold = Dialog.getCheckbox();
+	// get user selections from third line
+	useBatchMode = Dialog.getCheckbox();
+	shouldDisplayProgress = Dialog.getCheckbox();
+	// get user selection from fourth line
+	showParticles = Dialog.getCheckbox();
+	// get user selection from fifth line
+	szMin = Dialog.getNumber();
+	defSizeLimit = Dialog.getNumber();
+	// get user selection from sixth line
+	appendSize = Dialog.getCheckbox();
+	// get resolution information
+	splitWidth = Dialog.getNumber();
+	splitHeight = Dialog.getNumber();
 }//end showDialog()
 
 /*
