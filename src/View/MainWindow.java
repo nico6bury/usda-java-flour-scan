@@ -71,6 +71,7 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         uxInitMenu = new javax.swing.JMenu();
         uxConnectScannerBtn = new javax.swing.JMenuItem();
+        uxResetScanner = new javax.swing.JMenuItem();
         uxRunMenu = new javax.swing.JMenu();
         uxScanBtn = new javax.swing.JMenuItem();
         uxIjBtn = new javax.swing.JMenuItem();
@@ -116,6 +117,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         uxInitMenu.add(uxConnectScannerBtn);
+
+        uxResetScanner.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxResetScanner.setText("Reset Scanner");
+        uxResetScanner.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxResetScannerActionPerformed(evt);
+            }
+        });
+        uxInitMenu.add(uxResetScanner);
 
         jMenuBar1.add(uxInitMenu);
 
@@ -255,6 +265,10 @@ public class MainWindow extends javax.swing.JFrame {
         }//end if we encountered an error while setting scan settings
     }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
+    private void uxResetScannerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxResetScannerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxResetScannerActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -276,6 +290,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField uxIJOutputTxt;
     private javax.swing.JMenuItem uxIjBtn;
     private javax.swing.JMenu uxInitMenu;
+    private javax.swing.JMenuItem uxResetScanner;
     private javax.swing.JMenu uxRunMenu;
     private javax.swing.JMenuItem uxScanBtn;
     private javax.swing.JButton uxScannedFileBtn;
