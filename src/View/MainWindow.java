@@ -66,15 +66,67 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        uxScannedFileBtn = new javax.swing.JButton();
+        uxScannedFileTxt = new javax.swing.JTextField();
+        uxIJOutputBtn = new javax.swing.JButton();
+        uxIJOutputTxt = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        uxStatusTxt = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
+        uxInitMenu = new javax.swing.JMenu();
+        uxConnectScannerBtn = new javax.swing.JMenuItem();
         uxRunMenu = new javax.swing.JMenu();
         uxScanBtn = new javax.swing.JMenuItem();
+        uxIjBtn = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("usda-java-flour-scan");
 
-        uxRunMenu.setText("Run");
+        uxScannedFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScannedFileBtn.setText("Scanned File");
+        uxScannedFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxScannedFileBtnActionPerformed(evt);
+            }
+        });
 
+        uxScannedFileTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxIJOutputBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxIJOutputBtn.setText("IJ Output File");
+        uxIJOutputBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxIJOutputBtnActionPerformed(evt);
+            }
+        });
+
+        uxIJOutputTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxStatusTxt.setEditable(false);
+        uxStatusTxt.setColumns(20);
+        uxStatusTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxStatusTxt.setRows(5);
+        jScrollPane1.setViewportView(uxStatusTxt);
+
+        uxInitMenu.setText("Init");
+        uxInitMenu.setFocusable(false);
+        uxInitMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxConnectScannerBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConnectScannerBtn.setText("Connect Scanner");
+        uxConnectScannerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxConnectScannerBtnActionPerformed(evt);
+            }
+        });
+        uxInitMenu.add(uxConnectScannerBtn);
+
+        jMenuBar1.add(uxInitMenu);
+
+        uxRunMenu.setText("Run");
+        uxRunMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxScanBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxScanBtn.setText("Scan");
         uxScanBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,6 +134,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         uxRunMenu.add(uxScanBtn);
+
+        uxIjBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxIjBtn.setText("ImageJ Process");
+        uxIjBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxIjBtnActionPerformed(evt);
+            }
+        });
+        uxRunMenu.add(uxIjBtn);
 
         jMenuBar1.add(uxRunMenu);
 
@@ -91,11 +152,34 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(uxIJOutputBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(uxScannedFileBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(uxIJOutputTxt)
+                            .addComponent(uxScannedFileTxt))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uxScannedFileBtn)
+                    .addComponent(uxScannedFileTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uxIJOutputBtn)
+                    .addComponent(uxIJOutputTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         pack();
@@ -109,6 +193,22 @@ public class MainWindow extends javax.swing.JFrame {
             showGenericExceptionMessage(scanResult.getError());
         }//end if we have an error to show
     }//GEN-LAST:event_uxScanBtnActionPerformed
+
+    private void uxIjBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIjBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxIjBtnActionPerformed
+
+    private void uxScannedFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScannedFileBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxScannedFileBtnActionPerformed
+
+    private void uxIJOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIJOutputBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxIJOutputBtnActionPerformed
+
+    private void uxConnectScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectScannerBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
     /**
      * THIS is the MAIN METHOD that the program should start from.
@@ -125,7 +225,16 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem uxConnectScannerBtn;
+    private javax.swing.JButton uxIJOutputBtn;
+    private javax.swing.JTextField uxIJOutputTxt;
+    private javax.swing.JMenuItem uxIjBtn;
+    private javax.swing.JMenu uxInitMenu;
     private javax.swing.JMenu uxRunMenu;
     private javax.swing.JMenuItem uxScanBtn;
+    private javax.swing.JButton uxScannedFileBtn;
+    private javax.swing.JTextField uxScannedFileTxt;
+    private javax.swing.JTextArea uxStatusTxt;
     // End of variables declaration//GEN-END:variables
 }
