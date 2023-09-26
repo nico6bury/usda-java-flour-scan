@@ -4,7 +4,12 @@
  */
 package View;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -18,7 +23,11 @@ import Utils.Result.ResultType;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    protected Scan scan;
+    protected Scan scan = null;
+    private JFileChooser scannedFileChooser = new JFileChooser();
+    private JFileChooser ijProcFileChooser = new JFileChooser();
+    private File lastScannedFile = null;
+    private File lastIjProcFile = null;
 
     /**
      * Creates new form MainWindow
@@ -30,21 +39,9 @@ public class MainWindow extends javax.swing.JFrame {
         if (useDarkMode) { FlatDarkLaf.setup(); }
         else { FlatLightLaf.setup(); }
 
-        scan = new Scan();
-        // try to access the scanner source
-        Result<ResultType> initScannerResult = scan.initScanner();
-        if (initScannerResult.isErr()) {
-            showGenericExceptionMessage(initScannerResult.getError());
-            // close the program, since what else would we do?
-            System.exit(1);
-        }//end if we encountered an error while detecting the connected scanner
-        // try to set scanner settings
-        Result<ResultType> setScanSettingResult = scan.setScanSettings();
-        if (setScanSettingResult.isErr()) {
-            showGenericExceptionMessage(setScanSettingResult.getError());
-            // close the program, since what else would we do?
-            System.exit(1);
-        }//end if we encountered an error while setting scan settings
+        // set up file listeners
+        scannedFileChooser.addActionListener(scannedFileListener);
+        ijProcFileChooser.addActionListener(ijProcFileListener);
 
         initComponents();
     }//end MainWindow constructor
@@ -197,16 +194,65 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_uxIjBtnActionPerformed
 
+    private ActionListener scannedFileListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(e.getActionCommand());
+            if (e.getActionCommand() == "ApproveSelection") {
+                lastScannedFile = scannedFileChooser.getSelectedFile();
+                uxScannedFileTxt.setText(lastScannedFile.getPath());
+                uxStatusTxt.append("Selected scanned file \"" + lastScannedFile.getAbsolutePath() + "\"\n");
+            }//end if selection was approved
+            else if (e.getActionCommand() == "CancelSelection") {
+                uxStatusTxt.append("File selection cancelled.\n");
+            }//end else if selection was cancelled
+        }//end actionPerformed
+    };
+
+    private ActionListener ijProcFileListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(e.getActionCommand());
+            if (e.getActionCommand() == "ApproveSelection") {
+                lastIjProcFile = ijProcFileChooser.getSelectedFile();
+                uxIJOutputTxt.setText(lastIjProcFile.getPath());
+                uxStatusTxt.append("Selected ij processed file \"" + lastIjProcFile.getAbsolutePath() + "\"\n");
+            }//end if selection was approved
+            else if (e.getActionCommand() == "CancelSelection") {
+                uxStatusTxt.append("File selection cancelled\n");
+            }//end else if selection was cancelled
+        }//end actionPerformed
+    };
+
     private void uxScannedFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScannedFileBtnActionPerformed
-        // TODO add your handling code here:
+        scannedFileChooser.showOpenDialog(this);
     }//GEN-LAST:event_uxScannedFileBtnActionPerformed
 
     private void uxIJOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIJOutputBtnActionPerformed
-        // TODO add your handling code here:
+        ijProcFileChooser.showOpenDialog(this);
     }//GEN-LAST:event_uxIJOutputBtnActionPerformed
 
     private void uxConnectScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectScannerBtnActionPerformed
-        // TODO add your handling code here:
+        // check for scanner already initialized
+        if (scan != null) {
+            JOptionPane.showMessageDialog(this, "A scanner is already connected. Please disconnect the current scanner before connecting a new one.", "Scanner already connected", JOptionPane.ERROR_MESSAGE);
+        }//end if scan isn't null
+        
+        scan = new Scan();
+        // try to access the scanner source
+        Result<ResultType> initScannerResult = scan.initScanner();
+        if (initScannerResult.isErr()) {
+            showGenericExceptionMessage(initScannerResult.getError());
+            // reset scanner to null
+            scan = null;
+        }//end if we encountered an error while detecting the connected scanner
+        // try to set scanner settings
+        Result<ResultType> setScanSettingResult = scan.setScanSettings();
+        if (setScanSettingResult.isErr()) {
+            showGenericExceptionMessage(setScanSettingResult.getError());
+            // reset scan to null
+            scan = null;
+        }//end if we encountered an error while setting scan settings
     }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
     /**
