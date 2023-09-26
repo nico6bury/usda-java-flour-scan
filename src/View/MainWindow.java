@@ -198,6 +198,11 @@ public class MainWindow extends javax.swing.JFrame {
         if (scanResult.isErr()) {
             showGenericExceptionMessage(scanResult.getError());
         }//end if we have an error to show
+        else if (scanResult.isOk()) {
+            String result = scanResult.getValue();
+            lastScannedFile = new File(result);
+            uxScannedFileTxt.setText(lastScannedFile.getPath());
+        }//end else if scan result is ok
     }//GEN-LAST:event_uxScanBtnActionPerformed
 
     private void uxIjBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIjBtnActionPerformed
