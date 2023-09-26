@@ -6,7 +6,8 @@
         "libs/flatlaf-3.0.jar",
         "libs/morena.jar",
         "libs/morena_license.jar",
-        "libs/morena_windows.jar"
+        "libs/morena_windows.jar",
+        "libs/imagej-2.14.0.jar"
     ],
     "java.configuration.runtimes": [
         {
