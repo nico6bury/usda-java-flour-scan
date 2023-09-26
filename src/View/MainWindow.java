@@ -266,7 +266,16 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
     private void uxResetScannerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxResetScannerActionPerformed
-        // TODO add your handling code here:
+        if (scan == null) {
+            JOptionPane.showMessageDialog(this, "The scanner is already disconnected. It can't be reset further.", "Scanner already disconnected", JOptionPane.ERROR_MESSAGE);
+        }//end if scan is already null
+        else {
+            Result<ResultType> closeResult = scan.closeScanner();
+            if (closeResult.isErr()) {
+                showGenericExceptionMessage(closeResult.getError());
+            }//end if closing scanner resulted in error
+            scan = null;
+        }//end else we need to reset scanner connection
     }//GEN-LAST:event_uxResetScannerActionPerformed
 
     /**
