@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
-import IJ.IJProcess;
+import IJM.IJProcess;
 import Scan.Scan;
 import Utils.Result;
 import Utils.Result.ResultType;
