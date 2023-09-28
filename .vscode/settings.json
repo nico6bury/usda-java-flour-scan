@@ -7,7 +7,7 @@
         "libs/morena.jar",
         "libs/morena_license.jar",
         "libs/morena_windows.jar",
-        "libs/imagej-2.14.0.jar"
+        "libs/ij-1.54f.jar"
     ],
     "java.configuration.runtimes": [
         {
