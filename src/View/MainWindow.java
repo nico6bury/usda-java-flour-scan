@@ -10,9 +10,12 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URISyntaxException;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+
+import IJ.IJProcess;
 import Scan.Scan;
 import Utils.Result;
 import Utils.Result.ResultType;
@@ -213,7 +216,13 @@ public class MainWindow extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please select a scanned image that exists. \nFile " + lastScannedFile.getAbsolutePath() + "\n does not exist.", "Scanned image file does not exist.", JOptionPane.ERROR_MESSAGE);
         }//end if last scanned file doesn't exist
         else {
-            // TODO: add code for processing images in imagej
+            try {
+                // TODO: add code for processing images in imagej
+				IJProcess ijProcess = new IJProcess();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+                showGenericExceptionMessage(e);
+			}//end catching URISyntaxException
         }//end else we should probably be able to process the file
     }//GEN-LAST:event_uxIjBtnActionPerformed
 
