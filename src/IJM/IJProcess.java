@@ -2,6 +2,7 @@ package IJM;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 
 import Utils.Result;
 import ij.IJ;
@@ -33,7 +34,11 @@ public class IJProcess {
 
     public Result<String> runMacro() {
         try {
-            // IJ.runMacro()
+            StringBuilder macro_contents = new StringBuilder();
+            for (String line : Files.readAllLines(base_macro_file.toPath())) {
+                macro_contents.append(line + "\n");
+            }//end adding all lines to string builder
+            IJ.runMacro(macro_contents.toString());
         } catch (Exception e) {
             return new Result<>(e);
         }//end if we catch any exceptions
