@@ -32,13 +32,20 @@ public class IJProcess {
         base_macro_file = new File(macro_file);
     }//end constructor
 
-    public Result<String> runMacro() {
+    public Result<String> runMacro(String file_to_process) {
         try {
             StringBuilder macro_contents = new StringBuilder();
             for (String line : Files.readAllLines(base_macro_file.toPath())) {
                 macro_contents.append(line + "\n");
             }//end adding all lines to string builder
-            IJ.runMacro(macro_contents.toString());
+            String main_macro_args = "useBatchMode?true\r" + 
+            "chosenFilePath?" + file_to_process + "\r" +
+            "baseThreshold?160\r" +
+            "szMin?2\r" +
+            "defSizeLimit?1000\r" +
+            "splitWidth?2400\r" +
+            "splitHeight?1200";
+            IJ.runMacro(macro_contents.toString(), main_macro_args);
         } catch (Exception e) {
             return new Result<>(e);
         }//end if we catch any exceptions
