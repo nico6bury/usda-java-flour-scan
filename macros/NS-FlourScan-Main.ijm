@@ -231,15 +231,6 @@ for(i = 0; i < lengthOf(filesToProcess); i++){
 	run("Close All");
 }//end looping over each file we need to process
 
-if(shouldDisplayProgress){
-	timeElapsed = getTime() - timeBeforeProc;
-	print(prgBarTitle, "\\Update:" + lengthOf(filesToProcess) + "/" +
-	lengthOf(filesToProcess) + " files have been processed.\n" + "Time Elapsed: "
-	+ timeToString(timeElapsed) + " sec.\tETA: 0 sec."); 
-}//end if we should display our progress
-// go ahead and end the progress bar for now
-if(shouldDisplayProgress){print(prgBarTitle,"\\Close");}
-
 // Add Lab Processing into the mix
 // set up parameters to send to LabProcessing
 resultsName = "LabResults";
