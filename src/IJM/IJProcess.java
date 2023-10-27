@@ -11,8 +11,6 @@ import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.measure.ResultsTable;
 
-import IJM.SumResult;
-
 /**
  * This class keeps track of everything related to running files through the imagej flour macros.
  * It also handles all the calls to imagej.
@@ -65,11 +63,11 @@ public class IJProcess {
     }//end runMacro()
 
     public Result<String> MainMacro(List<String> files_to_process) {
-        int baseThreshold = 160;
+        // int baseThreshold = 160;
         List<SumResult> runningSum = new ArrayList<SumResult>();
         int splitWidth = 2400;
         int splitHeight = 1200;
-        String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
+        // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
         List<String> filesProcessed = new ArrayList<String>();
         for (int i = 0; i < files_to_process.size(); i++) {
             String file = files_to_process.get(i);
@@ -84,15 +82,21 @@ public class IJProcess {
                 imagesToSplit.add(this_image);
                 List<ImagePlus> splitImages = PicSplitter(imagesToSplit);
 
-                // process all the split images
-                for (int j = 0; j < splitImages.size(); j++) {
-                    ijmProcessFile(this_image, runningSum);
-                }//end processing each split image
-                
+                // left image
+                SumResult leftResult = ijmProcessFile(splitImages.get(0));
+                String sliceBase = leftResult.slice.substring(0, leftResult.slice.length() - 4);
+                leftResult.slice = sliceBase + "-L.tif";
+                runningSum.add(leftResult);
+
+                // right image
+                SumResult rightResult = ijmProcessFile(splitImages.get(1));
+                rightResult.slice = sliceBase + "-R.tif";
+                runningSum.add(rightResult);
             }//end if we need to split the file first
             else {
                 // process the current image and then close it
-                ijmProcessFile(this_image, runningSum);
+                SumResult this_result = ijmProcessFile(this_image);
+                runningSum.add(this_result);
 
                 this_image.close();
                 // update list of processed images
@@ -111,7 +115,7 @@ public class IJProcess {
         return new Result<>("placeholder value");
     }//end Main Macro converted from ijm
 
-    public void ijmProcessFile(ImagePlus img, List<SumResult> currentSummary) {
+    public SumResult ijmProcessFile(ImagePlus img) {
         // global variables from the ijm
         int szMin = 2;
         int defSizeLimit = 1000;
@@ -145,32 +149,33 @@ public class IJProcess {
         int total_area = (int)sumTable.getValue("Total Area", 0);
         double prcnt_area = sumTable.getValue("%Area", 0);
         SumResult this_result = new SumResult(slice, count, total_area, prcnt_area);
-        currentSummary.add(this_result);
+        
+        return this_result;
     }//end ijmProcessFile()
 
     public List<ImagePlus> PicSplitter(List<ImagePlus> images_to_process) {
         List<ImagePlus> splitImages = new ArrayList<ImagePlus>();
 
         for (int i = 0; i < images_to_process.size(); i++) {
-            ImagePlus this_image = images_to_process.get(i);
+            ImagePlus this_image1 = images_to_process.get(i);
+            ImagePlus this_image2 = this_image1.duplicate();
             // get dimensions so we know where to split
-            int imgWidth = this_image.getWidth();
-            int imgHeight = this_image.getHeight();
+            int imgWidth = this_image1.getWidth();
+            int imgHeight = this_image1.getHeight();
             
-            Roi[] rois = new Roi[2];
+            Roi[] leftRois = new Roi[1];
             // define the left split
-            rois[0] = new Roi(0, 0, imgWidth / 2, imgHeight);
+            leftRois[0] = new Roi(0, 0, imgWidth / 2, imgHeight);
             
+            Roi[] rightRois = new Roi[1];
             // define the right split
-            rois[1] = new Roi(imgWidth / 2, 0, imgWidth / 2, imgHeight);
+            rightRois[0] = new Roi(imgWidth / 2, 0, imgWidth / 2, imgHeight);
 
             // get the left and right splits
-            ImagePlus[] results = this_image.crop(rois);
-            for (int j = 0; j < results.length; j++) {
-                splitImages.add(results[j]);
-                int tempWidth = results[j].getWidth();
-                int tempHeight = results[j].getHeight();
-            }//end adding results to split images list
+            ImagePlus[] results1 = this_image1.crop(leftRois);
+            ImagePlus[] results2 = this_image2.crop(rightRois);
+            splitImages.add(results1[0]);
+            splitImages.add(results2[0]);
         }//end looping over images to process
         
         return splitImages;
