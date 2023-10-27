@@ -38,13 +38,14 @@ public class IJProcess {
             for (String line : Files.readAllLines(base_macro_file.toPath())) {
                 macro_contents.append(line + "\n");
             }//end adding all lines to string builder
-            String main_macro_args = "useBatchMode?true\r" + 
-            "chosenFilePath?" + file_to_process + "\r" +
-            "baseThreshold?160\r" +
-            "szMin?2\r" +
-            "defSizeLimit?1000\r" +
-            "splitWidth?2400\r" +
-            "splitHeight?1200";
+            String main_macro_args = "useBatchMode?0|" + 
+            "chosenFilePath?" + file_to_process + "|" +
+            "baseThreshold?160|" +
+            "szMin?2|" +
+            "defSizeLimit?1000|" +
+            "splitWidth?2400|" +
+            "splitHeight?1200|" +
+            "baseMacroDir?" + base_macro_dir.getAbsolutePath() + File.separator;
             IJ.runMacro(macro_contents.toString(), main_macro_args);
         } catch (Exception e) {
             return new Result<>(e);

@@ -6,7 +6,7 @@
  * processes required for processing of flour scans in imagej.
  * 
  * Explanation of Parameter Passing: Each serialized parameter should be
- * separated by the \r character. For each parameter, it should be the name
+ * separated by the | character. For each parameter, it should be the name
  * followed by the value, separated by the ? character. When giving multiple
  * files or strings, separate them by the \f character. Parameters not given
  * will simply use the default.
@@ -36,6 +36,8 @@
  * defSizeLimit : default upper size limit
  * splitWidth : width that we'd expect for an image that needs to be split
  * splitHeight : height that we'd expect for an image that needs to be split
+ * baseMacroDirectory : the directory that this macro is called from
+ * outputPath : the path we should output the summary file to
  */
 
 // upper threshold for processing
@@ -79,6 +81,10 @@ var appendSize = false;
 var splitWidth = 2400;
 // height that we'd expect for an image that needs to be split
 var splitHeight = 1200;
+// the directory from which this macro is called from
+var baseMacroDir = "initialized value, should not appear";
+// the path to output the summary to
+var outputPath = "initialized value, should not appear";
 
 argumentStr = getArgument();
 if(argumentStr == "") {
@@ -87,9 +93,13 @@ if(argumentStr == "") {
 }//end if there were no arguments
 else {
 	// split the arguments and parse them
-	parameters = split("argumentStr", "\r");
+	parameters = split(argumentStr, '|');
 	for(i = 0; i < lengthOf(parameters); i++) {
-		parameterSplit = split(parameters[i], "?");
+		parameterSplit = split(parameters[i], '?');
+//		if (lengthOf(parameterSplit) < 2) {
+//			waitForUser(parameters[i]);
+//			continue;// TODO: Have some sort of error log printout for this case
+//		}//end if we can't split stuff for some reason
 		parameterName = parameterSplit[0];
 		parameterValue = parameterSplit[1];
 		// test each parameter we look for
@@ -102,7 +112,7 @@ else {
 		else if(parameterName == "baseThreshold") {
 			baseThreshold = parseInt(parameterValue);
 		}//end if we have baseThreshold setting
-		else if(parameterName = "szMin") {
+		else if(parameterName == "szMin") {
 			szMin = parseFloat(parameterValue);
 		}//end if we have szMin setting
 		else if(parameterName == "defSizeLimit") {
@@ -111,9 +121,15 @@ else {
 		else if(parameterName == "splitWidth") {
 			splitWidth = parseInt(parameterValue);
 		}//end if we have splitWidth setting
-		else if(paramterName == "splitHeight") {
+		else if(parameterName == "splitHeight") {
 			splitHeight = parseInt(parameterValue);
 		}//end if we have splitHeight setting
+		else if(parameterName == "baseMacroDir") {
+			baseMacroDir = parameterValue;
+		}//end if we have baseMacroDir setting
+		else if(parameterName == "outputPath") {
+			baseMacroDir = parameterValue;
+		}//end if we have outputPath
 	}//end reading from each parameter
 }//end else we do have arguments
 
@@ -122,7 +138,7 @@ infinitySwitch = false;
 
 
 // save selections from user
-saveDialogConfig();
+//saveDialogConfig();
 
 // act on selected options from dialog window
 if(chosenOS == validOSs[1]){
@@ -135,8 +151,8 @@ if(chosenOS == validOSs[1]){
 
 // go ahead and grab the path to helper macros for later
 
-thisMacroDir = fixDirectory(getDirectory("macros"));
-thisMacroDir = thisMacroDir + "usda-flour-scan" + File.separator;
+thisMacroDir = baseMacroDir;
+//thisMacroDir = thisMacroDir + "usda-flour-scan" + File.separator;
 picSplitterPath = thisMacroDir + "NS-PicSplitter.ijm";
 labProcessorPath = thisMacroDir + "NS-LabProcessor.ijm";
 resultsFormatterPath = thisMacroDir + "NS-ResultsFormatter.ijm";
@@ -144,10 +160,11 @@ resultsFormatterPath = thisMacroDir + "NS-ResultsFormatter.ijm";
 // start actually processing all the files
 // based on the selection method provided by user and 
 // a whole bunch of tests and checks, gets valid file names
-filesToProcess = getFilepaths(selectionMethod);
+filesToProcess = newArray(1);//getFilepaths(selectionMethod);
+filesToProcess[0] = chosenFilePath;
 // batch mode
-if(useBatchMode){
-	if(showParticles){
+if (useBatchMode) {
+	if (showParticles) {
 		showMessageWithCancel("Complication",
 		"You selected both that you wanted batch mode and that you wanted to show\n"+
 		"particles. This isn't really possible, so if you want to see particles,\n"+
@@ -165,26 +182,10 @@ if(showParticles && lengthOf(filesToProcess) > particleShowSoftLim){
 	"can queue up a specific number of images to go through by using the file \n"+
 	"selection method of [Multiple Files].");
 }//end if user wants to show particles for lots of files
-// initialize stuff for progress bar
-prgBarTitle = "[Progress]";
-timeBeforeProc = getTime();
-if(shouldDisplayProgress){
-	run("Text Window...", "name="+ prgBarTitle +"width=70 height=2.5 monospaced");
-}//end if we should display progress
 // array of the files we actually processed
 filesProcessed = newArray(6);
 filesProcessedCount = 0;
 for(i = 0; i < lengthOf(filesToProcess); i++){
-	if(shouldDisplayProgress){
-		// display a progress window thing
-		// TODO: Fix progress bar to actually work with current processing process
-		timeElapsed = getTime() - timeBeforeProc;
-		timePerFile = timeElapsed / (i+1);
-		eta = timePerFile * (lengthOf(filesToProcess) - i);
-		print(prgBarTitle, "\\Update:" + i + "/" + lengthOf(filesToProcess) +
-		" files have been processed.\n" + "Time Elapsed: " + timeToString(timeElapsed) + 
-		" sec.\tETA: " + timeToString(eta) + " sec."); 
-	}//end if we should display progress bar
 
 	// actually actually start processing
 	open(filesToProcess[i]);
@@ -328,364 +329,9 @@ function processFile(){
 	}//end if particles can be visible and they should be
 }//end processFile(filename)
 
-/*
- * Fixes the directory issues present with all the directory
- * functions other than getDirectory("home"), which seems to
- * be inexplicably untouched and therefore used as a basis
- * for other directories.
- */
-function fixDirectory(directory){
-	homeDirectory = getDirectory("home");
-	homeDirectory = substring(homeDirectory, 0, lengthOf(homeDirectory) - 1);
-	username = substring(homeDirectory, lastIndexOf(homeDirectory, File.separator)+1);
-	userStartIndex = indexOf(homeDirectory, username);
-	userEndIndex = lengthOf(homeDirectory);
-	
-	firstDirPart = substring(directory, 0, userStartIndex);
-	//print(firstDirPart);
-	thirdDirPart = substring(directory, indexOf(directory, File.separator, lengthOf(firstDirPart)));
-	//print(thirdDirPart);
-	
-	fullDirectory = firstDirPart + username + thirdDirPart;
-	return fullDirectory;
-}//end fixDirectory(directory)
-
 ////////////// MAIN FUNCTION END ////////////////
 
 ///////////// START OF SUPPORT FUNCTIONS ///////////////
-
-/*
- * Reads prior configuration from file, creates dialog, updates variables
- */
-function showDialog(){
-	// read all the junk from the config file
-	serializationPath = serializationDirectory();
-	// a temporary variable required because of ImageJ's syntactic bitterness
-	temp = "\0";
-	if(File.exists(serializationPath)){
-		// get each line from the file
-		lines = split(File.openAsString(serializationPath), "\n");
-		for(i = 0; i < lengthOf(lines); i++){
-			currentLine = lines[i];
-			if(lengthOf(currentLine) >= 21){
-				if(substring(currentLine, 0, 21) == "shouldDisplayProgress"){
-					temp = split(currentLine, "=");
-					shouldDisplayProgress = parseInt(temp[1]);
-					continue;
-				}//end if this line has whether we should display progress bar
-			}//end if
-			if(lengthOf(currentLine) >= 16){
-				if(substring(currentLine, 0, 16) == "allowedFiletypes"){
-					listing = substring(currentLine, 18, lengthOf(currentLine)-1);
-					allowedFiletypes = split(listing, "|");
-					continue;
-				}//end if this line has the allowed file types information
-				else if(substring(currentLine, 0, 16) == "forbiddenStrings"){
-					listing = substring(currentLine, 18, lengthOf(currentLine) - 1);
-					forbiddenStrings = split(listing, "|");
-					continue;
-				}//end if this line has the forbidden strings information
-			}//end if
-			if(lengthOf(currentLine) >= 15){
-				if(substring(currentLine, 0, 15) == "selectionMethod"){
-					temp = split(currentLine, "=");
-					selectionMethod = temp[1];
-					continue;
-				}//end if this line has the selection method information
-				else if(substring(currentLine, 0, 15) == "appendThreshold"){
-					temp = split(currentLine, "=");
-					appendThreshold = parseInt(temp[1]);
-					continue;
-				}//end if this line has whether we should append threshold
-			}//end if 
-			if(lengthOf(currentLine) >= 12){
-				if(substring(currentLine, 0, 12) == "useBatchMode"){
-					temp = split(currentLine, "=");
-					temp = temp[1];
-					useBatchMode = parseInt(temp);
-					continue;
-				}//end if this line has the useBatchMode information
-				else if(substring(currentLine, 0, 12) == "defSizeLimit"){
-					temp = split(currentLine, "=");
-					defSizeLimit = parseInt(temp[1]);
-					continue;
-				}//end if this line has max size limit
-			}//end if 
-			if(lengthOf(currentLine) >= 10){
-				if(substring(currentLine, 0, 10) == "appendSize"){
-					temp = split(currentLine, "=");
-					appendSize = parseInt(temp[1]);
-					continue;
-				}//end if this line has whether we should append size limits
-			}//end if
-			if(lengthOf(currentLine) >= 8){
-				if(substring(currentLine, 0, 8) == "chosenOS"){
-					temp = split(currentLine, "=");
-					chosenOS = temp[1];
-					continue;
-				}//end if this line has the chosen operating system information
-			}//end if 
-			if(lengthOf(currentLine) >= 5){
-				if(substring(currentLine, 0, 5) == "szMin"){
-					temp = split(currentLine, "=");
-					szMin = parseInt(temp[1]);
-					continue;
-				}//end if this line has min size limit
-			}//end if
-			if(lengthOf(currentLine) >= 4){
-				if(substring(currentLine, 0, 4) == "th01"){
-					temp = split(currentLine, "=");
-					th01 = parseInt(temp[1]);
-					continue;
-				}//end if this line has the threshold info
-			}//end if
-		}//end looping over each line of the file
-	}//end if the config file exists
-	
-	// actually build the dialog now
-	Dialog.create("Macro Options");
-	// first section, first line
-	Dialog.addChoice("File Selection Method:", selectionMethods, selectionMethod);
-	Dialog.addToSameRow();
-	Dialog.addChoice("Current Operating System", validOSs, chosenOS);
-	// second line
-	//Dialog.addString("Results File Name", "Summary");
-	Dialog.addSlider("Threshold", 1, 255, Math.min(Math.max(th01, 1), 255));
-	Dialog.addToSameRow();
-	Dialog.addCheckbox("Append Threshold to Summary Window", appendThreshold);
-	// third line
-	Dialog.addCheckboxGroup(2, 1, newArray("Don't draw images to improve performance",
-	"Show progress bar with predicted times"), newArray(useBatchMode, shouldDisplayProgress));
-	// fourth line
-	Dialog.addCheckbox("Show Particle Detection on Image", false);
-	// fifth line
-	Dialog.addNumber("Lower Size Limit", szMin);
-	Dialog.addToSameRow();
-	Dialog.addNumber("Upper Size Limit", defSizeLimit);
-	// sixth line
-	Dialog.addCheckbox("Append Size limit to Summary Window", appendSize);
-	// display settings for resolution stuff
-	Dialog.addMessage("Resolution of Images that need to be Split");
-	Dialog.addNumber("Width", splitWidth); Dialog.addToSameRow(); Dialog.addNumber("Height", splitHeight);
-	// actually make the window show up
-	Dialog.show();
-	
-	// get user selections from first line
-	selectionMethod = Dialog.getChoice();
-	chosenOS = Dialog.getChoice();
-	// get user selections from second line
-	//resultsFilename = Dialog.getString();
-	th01 = Dialog.getNumber();
-	appendThreshold = Dialog.getCheckbox();
-	// get user selections from third line
-	useBatchMode = Dialog.getCheckbox();
-	shouldDisplayProgress = Dialog.getCheckbox();
-	// get user selection from fourth line
-	showParticles = Dialog.getCheckbox();
-	// get user selection from fifth line
-	szMin = Dialog.getNumber();
-	defSizeLimit = Dialog.getNumber();
-	// get user selection from sixth line
-	appendSize = Dialog.getCheckbox();
-	// get resolution information
-	splitWidth = Dialog.getNumber();
-	splitHeight = Dialog.getNumber();
-}//end showDialog()
-
-/*
- * Saves the settings read from the dialog in a configuration file
- */
-function saveDialogConfig(){
-	serializationPath = serializationDirectory();
-	fileVar = File.open(serializationPath);
-	// write all the important variables to the file
-	print(fileVar, String.join(newArray("th01", th01), "="));
-	print(fileVar, String.join(newArray("szMin", szMin), "="));
-	print(fileVar, String.join(newArray("defSizeLimit", defSizeLimit), "="));
-	print(fileVar, String.join(newArray("shouldDisplayProgress", shouldDisplayProgress), "="));
-	print(fileVar, String.join(newArray("appendThreshold", appendThreshold), "="));
-	print(fileVar, String.join(newArray("appendSize", appendSize), "="));
-	print(fileVar, String.join(newArray("chosenOS", chosenOS), "="));
-	print(fileVar, String.join(newArray("useBatchMode", useBatchMode), "="));
-	print(fileVar, String.join(newArray("selectionMethod", selectionMethod), "="));
-	// now for the annoying ones
-	expectedFileExtensionsStr = String.join(expectedFileExtensions, "|");
-	print(fileVar, String.join(newArray("allowedFiletypes", "[" + expectedFileExtensionsStr + "]"), "="));
-	forbiddenStringsStr = String.join(forbiddenStrings, "|");
-	print(fileVar, String.join(newArray("forbiddenStrings", "[" + forbiddenStringsStr + "]"), "="));
-}//end saveDialogConfig()
-
-function serializationDirectory(){
-	// generates a directory for serialization
-	macrDir = fixDirectory(getDirectory("macros"));
-	macrDir += "Macro-Configuration/";
-	File.makeDirectory(macrDir);
-	macrDir += "FlourScanMacroConfig.txt";
-	return macrDir;
-}//end serializationDirectory()
-
-function timeToString(mSec){
-	floater = d2s(mSec, 0);
-	floater2 = parseFloat(floater);
-	floater3 = floater2 / 1000;
-	return floater3;
-}//end timeToString()
-
-/*
- * Given a method of selecting files, prompts user to select files, 
- * and then returns an array of file paths
- */
-function getFilepaths(fileSelectionMethod){
-	// array to store file paths in
-	filesToPrc = newArray(0);
-	if(selectionMethod == "Single File"){
-		filesToPrc = newArray(1);
-		filesToPrc[0] = File.openDialog("Please choose a file to process");
-	}//end if we're just processing a single file
-	else if(selectionMethod == "Multiple Files"){
-		numOfFiles = getNumber("How many files would you like to process?", 1);
-		filesToPrc = newArray(numOfFiles);
-		for(i = 0; i < numOfFiles; i++){
-			filesToPrc[i] = File.openDialog("Please choose file " + (i+1) + 
-			"/" + (numOfFiles) + ".");
-		}//end looping to get all the files we need
-	}//end if we're processing multiple single files
-	else if(selectionMethod == "Directory"){
-		chosenDirectory = getDirectory("Please choose a directory to process");
-		// gets all the filenames in the directory path
-		filesToPrc = getValidFilePaths(chosenDirectory, forbiddenStrings);
-	}//end if we're processing an entire directory
-	return filesToPrc;
-}//end getFilepaths(fileSelectionMethod)
-
-/*
- * returns an array of valid file paths in the specified
- * directory. Any file whose base name contains a string within
- * the forbiddenStrings array will not be added.
- */
-function getValidFilePaths(directory, forbiddenStrings){
-	// gets array of valid file paths without forbidden strings
-	// just all the filenames
-	baseFileNames = getAllFilesFromDirectories(newArray(0), directory);
-	// just has booleans for each filename
-	q = forbiddenStrings;
-	boolArray = areFilenamesValid(baseFileNames, q, false);
-	// number of valid filenames we found
-	correctFileNamesCount = countTruths(boolArray);
-	// initialize our new array of valid names
-	filenames = newArray(correctFileNamesCount);
-	// populate filenames array
-	j = 0;
-	for(i = 0; i < lengthOf(boolArray) && j < lengthOf(filenames); i++){
-		if(boolArray[i] == true){
-			filenames[j] = baseFileNames[i];
-			j++;
-		}//end if we have a truth
-	}//end looping for each element of boolArray
-	return filenames;
-}//end getValidFilePaths(directory)
-
-/*
- * just returns the number of elements in array which are true
- */
-function countTruths(array){
-	truthCounter = 0;
-	for(i = 0; i < lengthOf(array); i++){
-		if(array[i] == true){
-			truthCounter++;
-		}//end if array[i] is a truth
-	}//end looping over array
-	return truthCounter;
-}//end countTruths(array)
-
-/*
- * 
- */
-function getAllFilesFromDirectories(filenames, directoryPath){
-	// recursively gets all the files from all the subdirectories of specified path
-	// get all the files in the specified directory, including subdirectories
-	subFiles = getFileList(directoryPath);
-	//print("subFiles before:"); Array.print(subFiles);
-	// find number of files in subFiles
-	filesInDir = 0;
-	for(i = 0; i < lengthOf(subFiles); i++){
-		// add full path back to name
-		subFiles[i] = directoryPath + subFiles[i];
-		if(File.isDirectory(subFiles[i]) == false){
-			filesInDir++;
-		}//end if we found a file
-	}//end looping over sub files
-	//print("subFiles after:"); Array.print(subFiles);
-	// get list of new filenames
-	justNewPaths = newArray(filesInDir);
-	indexInNewPaths = 0;
-	for(i = 0; i < lengthOf(subFiles); i++){
-		if(File.isDirectory(subFiles[i]) == false){
-			justNewPaths[indexInNewPaths] = subFiles[i];
-			indexInNewPaths++;
-		}//end if we found a file
-	}//end looping over subFiles to get filenames
-	// add new filenames to old array
-	returnArray = Array.concat(filenames,justNewPaths);
-	//print("returnArray before:"); Array.print(returnArray);
-	// recursively search all subdirectories
-	for(i = 0; i < lengthOf(subFiles); i++){
-		if(File.isDirectory(subFiles[i])){
-			tempArray = Array.copy(returnArray);
-			newFiles = getAllFilesFromDirectories(filenames, subFiles[i]);
-			//print("newFiles:"); Array.print(newFiles);
-			returnArray = Array.concat(tempArray,newFiles);
-			//print("returnArray after:"); Array.print(returnArray);
-		}//end if we found a subDirectory
-	}//end looping to get all the subDirectories
-	return returnArray;
-}//end getAllFilesFromDirectories(filenames, directoryPath)
-
-/*
- * Generates an array with true or false depending on whether each
- * filename is valid. Validity is determined by not having any part
- * of the filename including a string in the forbiddenStrings array.
- * If allowDirectory is set to false, then names ending in the file
- * separator will be determined to be invalid. Otherwise, whether
- * a file is a directory or not will be ignored.
- */
-function areFilenamesValid(filenames, forbiddenStrings, allowDirectory){
-	// returns true false array on whether files are valid
-	booleanArray = newArray(lengthOf(filenames));
-	// loop to find out which are valid
-	for(i = 0; i < lengthOf(filenames); i++){
-		// check if filenames[i] is a directory
-		if(allowDirectory == false && File.isDirectory(filenames[i])){
-			booleanArray[i] = false;
-		}//end if this is a subdirectory
-		else{
-			// loop to look for all the forbidden strings
-			foundString = false;
-			tempVar = filenames[i];
-			fileExtension = substring(tempVar, lastIndexOf(tempVar, ".")+1);
-			if(!contains(expectedFileExtensions, fileExtension)){
-				booleanArray[i] = false;
-			}//end if wrong file extension
-			else{
-				filename = File.getName(filenames[i]);
-				for(j = 0; j < lengthOf(forbiddenStrings); j++){
-					if(indexOf(filename, forbiddenStrings[j]) > -1){
-						foundString = true;
-						j = lengthOf(forbiddenStrings);
-					}//end if we found a forbidden string
-				}//end looping over forbiddenStrings
-				if(foundString){
-					booleanArray[i] = false;
-				}//end if we found a forbidden string
-				else{
-					booleanArray[i] = true;
-				}//end else we have a valid file on our hands
-			}//end else we need to look for forbidden strings
-				
-		}//end else it might be good
-	}//end looping over each element of baseFileNames
-	return booleanArray;
-}//end areFilenamesValid(filenames, forbiddenStrings, allowDirectory)
 
 function contains(array, val){
 	foundVal = false;
