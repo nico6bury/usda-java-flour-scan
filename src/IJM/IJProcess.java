@@ -2,13 +2,16 @@ package IJM;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import Utils.Result;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Roi;
+import ij.measure.ResultsTable;
+
+import IJM.SumResult;
 
 /**
  * This class keeps track of everything related to running files through the imagej flour macros.
@@ -37,19 +40,22 @@ public class IJProcess {
 
     public Result<String> runMacro(String file_to_process) {
         try {
-            StringBuilder macro_contents = new StringBuilder();
-            for (String line : Files.readAllLines(base_macro_file.toPath())) {
-                macro_contents.append(line + "\n");
-            }//end adding all lines to string builder
-            String main_macro_args = "useBatchMode?0|" + 
-            "chosenFilePath?" + file_to_process + "|" +
-            "baseThreshold?160|" +
-            "szMin?2|" +
-            "defSizeLimit?1000|" +
-            "splitWidth?2400|" +
-            "splitHeight?1200|" +
-            "baseMacroDir?" + base_macro_dir.getAbsolutePath() + File.separator;
-            IJ.runMacro(macro_contents.toString(), main_macro_args);
+            // StringBuilder macro_contents = new StringBuilder();
+            // for (String line : Files.readAllLines(base_macro_file.toPath())) {
+            //     macro_contents.append(line + "\n");
+            // }//end adding all lines to string builder
+            // String main_macro_args = "useBatchMode?0|" + 
+            // "chosenFilePath?" + file_to_process + "|" +
+            // "baseThreshold?160|" +
+            // "szMin?2|" +
+            // "defSizeLimit?1000|" +
+            // "splitWidth?2400|" +
+            // "splitHeight?1200|" +
+            // "baseMacroDir?" + base_macro_dir.getAbsolutePath() + File.separator;
+            // IJ.runMacro(macro_contents.toString(), main_macro_args);
+            List<String> files_to_process = new ArrayList<String>();
+            files_to_process.add(file_to_process);
+            MainMacro(files_to_process);
         } catch (Exception e) {
             return new Result<>(e);
         }//end if we catch any exceptions
@@ -58,41 +64,35 @@ public class IJProcess {
         return new Result<>("everything was fine ;-)");
     }//end runMacro()
 
-    public Result<String> MainMacro(List<File> files_to_process) {
+    public Result<String> MainMacro(List<String> files_to_process) {
         int baseThreshold = 160;
-        int szMin = 2;
-        int defSizeLimit = 1000;
+        List<SumResult> runningSum = new ArrayList<SumResult>();
         int splitWidth = 2400;
         int splitHeight = 1200;
         String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
-        List<File> filesProcessed = new ArrayList<File>();
+        List<String> filesProcessed = new ArrayList<String>();
         for (int i = 0; i < files_to_process.size(); i++) {
-            File file = files_to_process.get(i);
+            String file = files_to_process.get(i);
             // actually start processing
-            ImagePlus this_image = IJ.openImage(file.getAbsolutePath());
+            ImagePlus this_image = IJ.openImage(file);
             // fiure out the dimensions of this image
             int imgWidth = this_image.getWidth();
             int imgHeight = this_image.getHeight();
             if (imgWidth == splitWidth && imgHeight == splitHeight) {
-                // close the current image, as we no longer need it in this macro
-                this_image.close();
-                // TODO: do all the stuff for splitting this image
+                // split the current image in two and process both halves
+                List<ImagePlus> imagesToSplit = new ArrayList<>();
+                imagesToSplit.add(this_image);
+                List<ImagePlus> splitImages = PicSplitter(imagesToSplit);
+
+                // process all the split images
+                for (int j = 0; j < splitImages.size(); j++) {
+                    ijmProcessFile(this_image, runningSum);
+                }//end processing each split image
+                
             }//end if we need to split the file first
             else {
                 // process the current image and then close it
-                // contents of processFile() from the macro:
-                IJ.run(this_image, "Sharpen", "");
-                IJ.run(this_image, "Smooth", "");
-                IJ.run(this_image, "8-bit", "");
-                IJ.setThreshold(this_image, 0, 160);
-                IJ.run(this_image, "Convert to Mask", "");
-
-                // set the scale so it doesn't measure in mm or something
-                IJ.run(this_image, "Set Scale...", "distance=0 known=0 unit=pixel global");
-                // specify the measure data to recieve from analyze particles
-                IJ.run(this_image, "Set Measurements...", "area perimeter bounding redirect=None decimal=1");
-
-                IJ.run(this_image, "Analyze Particles", "size=" + szMin + "-" + defSizeLimit + " show=[Overlay Masks] clear summarize");
+                ijmProcessFile(this_image, runningSum);
 
                 this_image.close();
                 // update list of processed images
@@ -110,4 +110,69 @@ public class IJProcess {
 
         return new Result<>("placeholder value");
     }//end Main Macro converted from ijm
+
+    public void ijmProcessFile(ImagePlus img, List<SumResult> currentSummary) {
+        // global variables from the ijm
+        int szMin = 2;
+        int defSizeLimit = 1000;
+        
+        // contents of processFile() from the macro:
+        IJ.run(img, "Sharpen", "");
+        IJ.run(img, "Smooth", "");
+        IJ.run(img, "8-bit", "");
+        IJ.setThreshold(img, 0, 160);
+        IJ.run(img, "Convert to Mask", "");
+
+        // set the scale so it doesn't measure in mm or something
+        IJ.run(img, "Set Scale...", "distance=0 known=0 unit=pixel global");
+
+        // reset results table
+        ResultsTable curTable = ResultsTable.getResultsTable("Summary");
+        if (curTable != null) {curTable.reset();}
+
+        // specify the measure data to recieve from analyze particles
+        IJ.run(img, "Set Measurements...", "area perimeter bounding redirect=None decimal=1");
+
+        // analyze particles to get summary of specks
+        IJ.run(img, "Analyze Particles...", "size=" + szMin + "-" + defSizeLimit + " show=[Overlay Masks] clear summarize");
+
+        // collect recent analyze particles run from summary table
+        ResultsTable sumTable = ResultsTable.getResultsTable("Summary");
+        // this should contain "Slice", "Count", "Total Area", "Average Size", "%Area", "Perim."
+        // String[] headings = sumTable.getColumnHeadings().split("\t");
+        String slice = sumTable.getStringValue("Slice", 0);
+        int count = (int)sumTable.getValue("Count", 0);
+        int total_area = (int)sumTable.getValue("Total Area", 0);
+        double prcnt_area = sumTable.getValue("%Area", 0);
+        SumResult this_result = new SumResult(slice, count, total_area, prcnt_area);
+        currentSummary.add(this_result);
+    }//end ijmProcessFile()
+
+    public List<ImagePlus> PicSplitter(List<ImagePlus> images_to_process) {
+        List<ImagePlus> splitImages = new ArrayList<ImagePlus>();
+
+        for (int i = 0; i < images_to_process.size(); i++) {
+            ImagePlus this_image = images_to_process.get(i);
+            // get dimensions so we know where to split
+            int imgWidth = this_image.getWidth();
+            int imgHeight = this_image.getHeight();
+            
+            Roi[] rois = new Roi[2];
+            // define the left split
+            rois[0] = new Roi(0, 0, imgWidth / 2, imgHeight);
+            
+            // define the right split
+            rois[1] = new Roi(imgWidth / 2, 0, imgWidth / 2, imgHeight);
+
+            // get the left and right splits
+            ImagePlus[] results = this_image.crop(rois);
+            for (int j = 0; j < results.length; j++) {
+                splitImages.add(results[j]);
+                int tempWidth = results[j].getWidth();
+                int tempHeight = results[j].getHeight();
+            }//end adding results to split images list
+        }//end looping over images to process
+        
+        return splitImages;
+    }//end Pic Splitter macro converted from ijm
 }//end class IJProcess
