@@ -1,10 +1,18 @@
 package IJM;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import Utils.Constants;
 import Utils.Result;
 import ij.IJ;
 import ij.ImagePlus;
@@ -22,8 +30,8 @@ public class IJProcess {
     /**
      * Should be the directory where the jar is located
      */
-    File base_macro_dir;
-    File base_macro_file;
+    // File base_macro_dir;
+    // File base_macro_file;
     // default lower size limit for analyze particles
     int szMin = 2;
     // default upper size limit for analyze particles
@@ -37,12 +45,104 @@ public class IJProcess {
      * @throws URISyntaxException This exception can occur while interpretting the path to the jar which the program is running from.
      */
     public IJProcess() throws URISyntaxException {
-        String jar_location = new File(IJProcess.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toString();
-        String macro_folder = jar_location + File.separator + "macros";
-        base_macro_dir = new File(macro_folder);
-        String macro_file = macro_folder + File.separator + "NS-FlourScan-Main.ijm";
-        base_macro_file = new File(macro_file);
+        // String macro_folder = jar_location + File.separator + "macros";
+        // base_macro_dir = new File(macro_folder);
+        // String macro_file = macro_folder + File.separator + "NS-FlourScan-Main.ijm";
+        // base_macro_file = new File(macro_file);
     }//end constructor
+
+    /**
+     * This method does all the necessary fileIO to determine the path for an output file. 
+     * @param ensureDirectoryExists If this is true, then this method will create a new directory if it doesn't already exist.
+     * @return Returns a resulting path as a File if successful. Otherwise, returns the exception that prevented success.
+     */
+    public static Result<File> getOutputFilePath(boolean ensureDirectoryExists) {
+        // get path of the jar as base directory
+        String jar_location;
+        try {
+            jar_location = new File(IJProcess.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toString();
+            String output_folder_storage = jar_location + File.separator + Constants.IMAGEJ_OUTPUT_FOLDER_NAME;
+            File output_folder_storage_file = new File(output_folder_storage);
+            if (!output_folder_storage_file.exists() && ensureDirectoryExists) {
+                output_folder_storage_file.mkdir();
+            }//end if we need to make our output folder
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM-");
+            DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern(";d-H-m-s");
+            File newDirectory = new File(output_folder_storage_file.getAbsolutePath() + File.separator + currentDateTime.format(dir_formatter));
+            // create the directory if it doesn't exist
+            if (ensureDirectoryExists && !newDirectory.exists()) {
+                newDirectory.mkdir();
+            }//end if new directory needs to be created
+            String newExtension = ".OUT";
+            String current_time_stamp = currentDateTime.format(file_formatter);
+            String newFileName = current_time_stamp + newExtension;
+            File outputFile = new File(newDirectory.getAbsolutePath() + File.separator + newFileName);
+
+            return new Result<File>(outputFile);
+        } catch (Exception e) {
+            return new Result<File>(e);
+        }//end catching any exceptions
+    }//end getOutputFilePath(ensureDirectoryExists)
+
+    public static Result<String> makeOutputFile(List<SumResult> inputList) {
+        // save to output file
+        Result<File> outputFileResult = getOutputFilePath(true);
+        if (outputFileResult.isErr()) {
+            return new Result<>(outputFileResult.getError());
+        }//end if we couldn't get output file path
+        // otherwise, continue as normal
+        File outputFile = outputFileResult.getValue();
+
+        if (!outputFile.exists()) {
+            outputFile.getParentFile().mkdirs();
+        }//end if we need to make the resulting directories
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(outputFile);
+        } catch (FileNotFoundException e) {
+            return new Result<>(e);
+        }//end catching FileNotFoundExceptions
+
+        // print first section of header
+        pw.printf("%s  %s\n%s\n", Constants.PROGRAM_NAME, Constants.VERSION, Constants.LOCATION + "\t" + Constants.DATE() + "\t" + Constants.PEOPLE);
+
+        // print second section of header
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        pw.printf("Data Processed: %s\n", 
+                dateFormat.format(cal.getTime()));
+        
+        // print headers for the columns we're about to print
+        pw.print("Slice\tCount\tTotal Area\t%Area\tL*Mean\tL*Stdev\n");
+        
+        StringBuilder data_output = new StringBuilder();
+        // build output for all the images processed
+        for (int i = 0; i < inputList.size(); i++) {
+            SumResult outputData = inputList.get(i);
+            data_output.append(outputData.slice);
+            data_output.append("\t");
+            data_output.append(outputData.count);
+            data_output.append("\t");
+            data_output.append(outputData.total_area);
+            data_output.append("\t");
+            data_output.append(outputData.percent_area);
+            data_output.append("\t");
+            data_output.append(outputData.l_mean);
+            data_output.append("\t");
+            data_output.append(outputData.l_stdv);
+            data_output.append("\n");
+        }//end looping over all the stuff to print out
+        
+        // print output for all images
+        pw.print(data_output.toString());
+
+        // close output file
+        pw.close();
+
+        return new Result<>(data_output.toString());
+    }//end makeOutputFile(inputList, icl)
 
     public Result<String> runMacro(String file_to_process) {
         try {
@@ -132,11 +232,10 @@ public class IJProcess {
         // ImageStatistics L = LabProcesser(imagesProcessed.get(0));
         // close all the images, or at least the stack
         IJ.run("Close All");
-        // TODO: set up config for output file, or something
-
-        // TODO: format and display results
-
-        return new Result<>("placeholder value");
+        // output the output file
+        Result<String> outputFileResult = makeOutputFile(runningSum);
+        // return the rows of data that wil show up in the output file
+        return outputFileResult;
     }//end Main Macro converted from ijm
 
     public SumResult ijmProcessFile(ImagePlus img) {
