@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 import Utils.Constants;
 import Utils.Result;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Roi;
 import ij.measure.ResultsTable;
-import ij.process.ImageConverter;
-import ij.process.ImageStatistics;
 
 /**
  * This class keeps track of everything related to running files through the imagej flour macros.
@@ -184,9 +184,9 @@ public class IJProcess {
                 SumResult leftResult = ijmProcessFile(splitImages.get(0));
                 leftResult.slice = sliceBase + "-L";
                 // Lab info
-                ImageStatistics leftL = LabProcesser(splitImages.get(0));
-                leftResult.l_mean = leftL.mean;
-                leftResult.l_stdv = leftL.stdDev;
+                double[] leftL = LabProcesser(splitImages.get(0));
+                leftResult.l_mean = leftL[0];
+                leftResult.l_stdv = leftL[1];
                 runningSum.add(leftResult);
                 // imagesProcessed.add(splitImages.get(0));
 
@@ -195,9 +195,9 @@ public class IJProcess {
                 SumResult rightResult = ijmProcessFile(splitImages.get(1));
                 rightResult.slice = sliceBase + "-R";
                 // Lab info
-                ImageStatistics rightL = LabProcesser(splitImages.get(1));
-                rightResult.l_mean = rightL.mean;
-                rightResult.l_stdv = rightL.stdDev;
+                double[] rightL = LabProcesser(splitImages.get(1));
+                rightResult.l_mean = rightL[0];
+                rightResult.l_stdv = rightL[1];
                 runningSum.add(rightResult);
                 // imagesProcessed.add(splitImages.get(1));
             }//end if we need to split the file first
@@ -205,9 +205,9 @@ public class IJProcess {
                 // process the current image with analyze particles and Lab
                 SumResult this_result = ijmProcessFile(this_image);
                 this_result.slice = sliceBase;
-                ImageStatistics l_info = LabProcesser(this_image);
-                this_result.l_mean = l_info.mean;
-                this_result.l_stdv = l_info.stdDev;
+                double[] l_info = LabProcesser(this_image);
+                this_result.l_mean = l_info[0];
+                this_result.l_stdv = l_info[1];
                 runningSum.add(this_result);
 
                 // update list of processed images
@@ -230,25 +230,27 @@ public class IJProcess {
     }//end Main Macro converted from ijm
 
     public SumResult ijmProcessFile(ImagePlus img) {
+        // duplicate the image so we don't contaminate it
+        ImagePlus img_dup = img.duplicate();
         // contents of processFile() from the macro:
-        IJ.run(img, "Sharpen", "");
-        IJ.run(img, "Smooth", "");
-        IJ.run(img, "8-bit", "");
-        IJ.setThreshold(img, 0, th01);
-        IJ.run(img, "Convert to Mask", "");
+        IJ.run(img_dup, "Sharpen", "");
+        IJ.run(img_dup, "Smooth", "");
+        IJ.run(img_dup, "8-bit", "");
+        IJ.setThreshold(img_dup, 0, th01);
+        IJ.run(img_dup, "Convert to Mask", "");
 
         // set the scale so it doesn't measure in mm or something
-        IJ.run(img, "Set Scale...", "distance=0 known=0 unit=pixel global");
+        IJ.run(img_dup, "Set Scale...", "distance=0 known=0 unit=pixel global");
 
         // reset results table
         ResultsTable curTable = ResultsTable.getResultsTable("Summary");
         if (curTable != null) {curTable.reset();}
 
         // specify the measure data to recieve from analyze particles
-        IJ.run(img, "Set Measurements...", "area perimeter bounding redirect=None decimal=1");
+        IJ.run(img_dup, "Set Measurements...", "area perimeter bounding redirect=None decimal=1");
 
         // analyze particles to get summary of specks
-        IJ.run(img, "Analyze Particles...", "size=" + szMin + "-" + defSizeLimit + " show=[Overlay Masks] clear summarize");
+        IJ.run(img_dup, "Analyze Particles...", "size=" + szMin + "-" + defSizeLimit + " show=[Overlay Masks] clear summarize");
 
         // collect recent analyze particles run from summary table
         ResultsTable sumTable = ResultsTable.getResultsTable("Summary");
@@ -296,19 +298,62 @@ public class IJProcess {
      * @param img The image to get L info from.
      * @return Returns the image statistics for the L slice of the Lab stack.
      */
-    public ImageStatistics LabProcesser(ImagePlus img) {
+    public double[] LabProcesser(ImagePlus img) {
         // set the right scale
         IJ.run(img, "Set Scale...", "distance=1 known=1 unit=[] global");
-        // split current image into stack, L*a*b* split into channels
-        ImageConverter ic = new ImageConverter(img);
-        ic.convertToRGB();
-        ic = new ImageConverter(img);
-        ic.convertToLab();
+        // for each pixel, get L* value, add to list
+        // ImageConverter ic = new ImageConverter(img);
+        // ic.convertToRGB();
+        double[] L_vals = new double[img.getWidth() * img.getHeight()];
+        for (int x = 0; x < img.getWidth(); x++) {
+            for (int y = 0; y < img.getHeight(); y++) {
+                int[] pixel = img.getPixel(x, y);
+                // get RGB from this pixel
+                int R = pixel[0];
+                int G = pixel[1];
+                int B = pixel[2];
+                /*
+                 * Conversion formulas taken from https://www.easyrgb.com/en/math.php
+                 */
+                // convert to XYZ for this pixel
+                double sR = ((double)R / 255);
+                double sG = ((double)G / 255);
+                double sB = ((double)B / 255);
+                if (sR > 0.04045) {sR = Math.pow((sR + 0.055) / 1.055, 2.4);}
+                else {sR = sR / 12.92;}
+                if (sG > 0.04045) {sG = Math.pow((sG + 0.055) / 1.055, 2.4);}
+                else {sG = sG / 12.92;}
+                if (sB > 0.04045) {sB = Math.pow((sB + 0.055) / 1.055, 2.4);}
+                else {sB = sB / 12.92;}
+                sR = sR * 100;
+                sG = sG * 100;
+                sB = sB * 100;
+                double X = sR * 0.4124 + sG * 0.3576 + sB * 0.1805;
+                double Y = sR * 0.2126 + sG * 0.7152 + sB * 0.0722;
+                double Z = sR * 0.0193 + sG * 0.1192 + sB * 0.9505;
+                // convert from XYZ to Lab based on equal observer
+                double varX = X / 100;
+                double varY = Y / 100;
+                double varZ = Z / 100;
+                if (varX > 0.008856) {varX = Math.pow(varX, 1.0/3.0);}
+                else {varX = (7.787 * varX) + (16.0 / 116.0);}
+                if (varY > 0.008856) {varY = Math.pow(varY, 1.0/3.0);}
+                else {varY = (7.787 * varY) + (16.0 / 116.0);}
+                if (varZ > 0.008856) {varZ = Math.pow(varZ, 1.0/3.0);}
+                else {varZ = (7.787 * varZ) + (16.0 / 116.0);}
+                double CIE_L = (116 * varY) - 16;
+                // double CIE_a = 500 * (varX - varY);
+                // double CIE_b = 200 * (varY - varZ);
+                // add L* value to the array, pretending that it's a 2d array so we don't have to keep track of a separate index
+                L_vals[x * img.getWidth() + y] = CIE_L;
+            }//end going up down
+        }//end going side to side
 
-        img.setSlice(0);
-        ImageStatistics l = img.getStatistics();
-        System.out.println(l.mean);
+        DescriptiveStatistics ds = new DescriptiveStatistics(L_vals);
+        double[] mean_and_stdev = new double[2];
+        mean_and_stdev[0] = ds.getMean();
+        mean_and_stdev[1] = ds.getStandardDeviation();
 
-        return l;
+        return mean_and_stdev;
     }//end Lab Processor macro converted from ijm
 }//end class IJProcess
