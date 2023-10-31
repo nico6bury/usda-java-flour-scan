@@ -28,6 +28,12 @@ public class IJProcess {
      */
     File base_macro_dir;
     File base_macro_file;
+    // default lower size limit for analyze particles
+    int szMin = 2;
+    // default upper size limit for analyze particles
+    int defSizeLimit = 1000;
+    // upper threshold for analyze particles
+    int th01 = 160;
 
     /**
      * Constructs the class by reading the jar location and 
@@ -115,6 +121,8 @@ public class IJProcess {
         // set up parameters to send to LabProcessing
         // run the Lab processing part
         ImageStatistics L = LabProcesser(imagesProcessed.get(0));
+        // close all the images, or at least the stack
+        IJ.run("Close All");
         // TODO: do stuff to figure out eventual file names
 
         // TODO: run results formatter
@@ -123,15 +131,11 @@ public class IJProcess {
     }//end Main Macro converted from ijm
 
     public SumResult ijmProcessFile(ImagePlus img) {
-        // global variables from the ijm
-        int szMin = 2;
-        int defSizeLimit = 1000;
-        
         // contents of processFile() from the macro:
         IJ.run(img, "Sharpen", "");
         IJ.run(img, "Smooth", "");
         IJ.run(img, "8-bit", "");
-        IJ.setThreshold(img, 0, 160);
+        IJ.setThreshold(img, 0, th01);
         IJ.run(img, "Convert to Mask", "");
 
         // set the scale so it doesn't measure in mm or something
@@ -157,6 +161,8 @@ public class IJProcess {
         double prcnt_area = sumTable.getValue("%Area", 0);
         SumResult this_result = new SumResult(slice, count, total_area, prcnt_area);
         
+        // TODO: close the summary via an inline imagej macro
+
         return this_result;
     }//end ijmProcessFile()
 
@@ -200,7 +206,6 @@ public class IJProcess {
         ImageConverter ic = new ImageConverter(img);
         ic.convertToRGB();
         ic = new ImageConverter(img);
-        // TODO: Prevent this thing from opening a new window, or close it
         ic.convertToLab();
 
         img.setSlice(0);
