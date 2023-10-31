@@ -8,8 +8,14 @@ import java.util.List;
 import Utils.Result;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.gui.Roi;
 import ij.measure.ResultsTable;
+import ij.plugin.frame.ColorThresholder;
+import ij.process.ColorProcessor;
+import ij.process.ColorSpaceConverter;
+import ij.process.ImageConverter;
+import ij.process.ImageStatistics;
 
 /**
  * This class keeps track of everything related to running files through the imagej flour macros.
@@ -68,7 +74,7 @@ public class IJProcess {
         int splitWidth = 2400;
         int splitHeight = 1200;
         // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
-        List<String> filesProcessed = new ArrayList<String>();
+        List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
         for (int i = 0; i < files_to_process.size(); i++) {
             String file = files_to_process.get(i);
             // actually start processing
@@ -87,27 +93,28 @@ public class IJProcess {
                 String sliceBase = leftResult.slice.substring(0, leftResult.slice.length() - 4);
                 leftResult.slice = sliceBase + "-L.tif";
                 runningSum.add(leftResult);
+                imagesProcessed.add(splitImages.get(0));
 
                 // right image
                 SumResult rightResult = ijmProcessFile(splitImages.get(1));
                 rightResult.slice = sliceBase + "-R.tif";
                 runningSum.add(rightResult);
+                imagesProcessed.add(splitImages.get(1));
             }//end if we need to split the file first
             else {
                 // process the current image and then close it
                 SumResult this_result = ijmProcessFile(this_image);
                 runningSum.add(this_result);
 
-                this_image.close();
                 // update list of processed images
-                filesProcessed.add(file);
+                imagesProcessed.add(this_image);
             }//end else we can just process the image like normal
         }//end looping over each file we want to process
 
         // add lab processing into the mix
         // set up parameters to send to LabProcessing
-        // TODO: run the Lab processing part
-
+        // run the Lab processing part
+        ImageStatistics L = LabProcesser(imagesProcessed.get(0));
         // TODO: do stuff to figure out eventual file names
 
         // TODO: run results formatter
@@ -180,4 +187,26 @@ public class IJProcess {
         
         return splitImages;
     }//end Pic Splitter macro converted from ijm
+
+    /**
+     * Processes Lab to get the L statistics of the image. Also 
+     * @param img The image to get L info from.
+     * @return Returns the image statistics for the L slice of the Lab stack.
+     */
+    public ImageStatistics LabProcesser(ImagePlus img) {
+        // set the right scale
+        IJ.run(img, "Set Scale...", "distance=1 known=1 unit=[] global");
+        // split current image into stack, L*a*b* split into channels
+        ImageConverter ic = new ImageConverter(img);
+        ic.convertToRGB();
+        ic = new ImageConverter(img);
+        // TODO: Prevent this thing from opening a new window, or close it
+        ic.convertToLab();
+
+        img.setSlice(0);
+        ImageStatistics l = img.getStatistics();
+        System.out.println(l.mean);
+
+        return l;
+    }//end Lab Processor macro converted from ijm
 }//end class IJProcess
