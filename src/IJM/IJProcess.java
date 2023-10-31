@@ -115,14 +115,28 @@ public class IJProcess {
                 dateFormat.format(cal.getTime()));
         
         // print headers for the columns we're about to print
-        pw.print("Slice\tCount\tTotal Area\t%Area\tL*Mean\tL*Stdev\n");
+        pw.print("Rep\tSlice\tRot\tSide\tCount\tPixels\t%Area\tL*Mean\tL*Stdev\n");
         
         StringBuilder data_output = new StringBuilder();
         // build output for all the images processed
         for (int i = 0; i < inputList.size(); i++) {
             SumResult outputData = inputList.get(i);
-            data_output.append(outputData.slice);
-            data_output.append("\t");
+            // parse out slice information
+            String[] slice_parts = outputData.slice.split("-");
+            if (slice_parts.length == 4) {
+                data_output.append(slice_parts[0]);
+                data_output.append("\t");
+                data_output.append(slice_parts[1]);
+                data_output.append("\t");
+                data_output.append(slice_parts[2]);
+                data_output.append("\t");
+                data_output.append(slice_parts[3]);
+                data_output.append("\t     ");
+            }//end if we have a correctly formatter file name
+            else {
+                data_output.append("bad\t" + outputData.slice + "\tfilename\tformatting\t");
+            }//end else the file name was not formatted correctly
+            // do everything else
             data_output.append(outputData.count);
             data_output.append("\t");
             data_output.append(outputData.total_area);
