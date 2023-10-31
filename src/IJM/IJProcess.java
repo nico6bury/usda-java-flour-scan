@@ -8,12 +8,8 @@ import java.util.List;
 import Utils.Result;
 import ij.IJ;
 import ij.ImagePlus;
-import ij.ImageStack;
 import ij.gui.Roi;
 import ij.measure.ResultsTable;
-import ij.plugin.frame.ColorThresholder;
-import ij.process.ColorProcessor;
-import ij.process.ColorSpaceConverter;
 import ij.process.ImageConverter;
 import ij.process.ImageStatistics;
 
