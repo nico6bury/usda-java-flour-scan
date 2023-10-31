@@ -54,7 +54,7 @@ public class MainWindow extends javax.swing.JFrame {
      * @param e The exception that was generated.
      */
     protected static void showGenericExceptionMessage(Exception e) {
-        JOptionPane.showMessageDialog(null, "While attempting to find the scanner, the program encountered an exception of type " + e.getClass().getName() + ".\nThe exception message was " + e.getMessage(), "Error while initializing scan source.", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "While attempting the chosen command, the program encountered an exception of type " + e.getClass().getName() + ".\nThe exception message was " + e.getMessage(), "Unhandled Exception Caught.", JOptionPane.ERROR_MESSAGE);
     }//end genericExceptionMessage(e)
 
     /**
