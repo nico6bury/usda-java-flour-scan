@@ -80,7 +80,7 @@ public class IJProcess {
         int splitWidth = 2400;
         int splitHeight = 1200;
         // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
-        List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
+        // List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
         for (int i = 0; i < files_to_process.size(); i++) {
             String file = files_to_process.get(i);
             // actually start processing
@@ -95,37 +95,50 @@ public class IJProcess {
                 List<ImagePlus> splitImages = PicSplitter(imagesToSplit);
 
                 // left image
+                // analyze particles info
                 SumResult leftResult = ijmProcessFile(splitImages.get(0));
                 String sliceBase = leftResult.slice.substring(0, leftResult.slice.length() - 4);
                 leftResult.slice = sliceBase + "-L.tif";
+                // Lab info
+                ImageStatistics leftL = LabProcesser(splitImages.get(0));
+                leftResult.l_mean = leftL.mean;
+                leftResult.l_stdv = leftL.stdDev;
                 runningSum.add(leftResult);
-                imagesProcessed.add(splitImages.get(0));
+                // imagesProcessed.add(splitImages.get(0));
 
                 // right image
+                // analyze particles info
                 SumResult rightResult = ijmProcessFile(splitImages.get(1));
                 rightResult.slice = sliceBase + "-R.tif";
+                // Lab info
+                ImageStatistics rightL = LabProcesser(splitImages.get(1));
+                rightResult.l_mean = rightL.mean;
+                rightResult.l_stdv = rightL.stdDev;
                 runningSum.add(rightResult);
-                imagesProcessed.add(splitImages.get(1));
+                // imagesProcessed.add(splitImages.get(1));
             }//end if we need to split the file first
             else {
-                // process the current image and then close it
+                // process the current image with analyze particles and Lab
                 SumResult this_result = ijmProcessFile(this_image);
+                ImageStatistics l_info = LabProcesser(this_image);
+                this_result.l_mean = l_info.mean;
+                this_result.l_stdv = l_info.stdDev;
                 runningSum.add(this_result);
 
                 // update list of processed images
-                imagesProcessed.add(this_image);
+                // imagesProcessed.add(this_image);
             }//end else we can just process the image like normal
         }//end looping over each file we want to process
 
         // add lab processing into the mix
         // set up parameters to send to LabProcessing
         // run the Lab processing part
-        ImageStatistics L = LabProcesser(imagesProcessed.get(0));
+        // ImageStatistics L = LabProcesser(imagesProcessed.get(0));
         // close all the images, or at least the stack
         IJ.run("Close All");
-        // TODO: do stuff to figure out eventual file names
+        // TODO: set up config for output file, or something
 
-        // TODO: run results formatter
+        // TODO: format and display results
 
         return new Result<>("placeholder value");
     }//end Main Macro converted from ijm
