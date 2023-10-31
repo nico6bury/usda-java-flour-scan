@@ -219,7 +219,11 @@ public class MainWindow extends javax.swing.JFrame {
             try {
                 // TODO: add code for processing images in imagej
 				IJProcess ijProcess = new IJProcess();
-                ijProcess.runMacro(uxScannedFileTxt.getText());
+                Result<String> macroResult = ijProcess.runMacro(uxScannedFileTxt.getText());
+                if (macroResult.isErr()) {
+                    macroResult.getError().printStackTrace();
+                    showGenericExceptionMessage(macroResult.getError());
+                }
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
                 showGenericExceptionMessage(e);
