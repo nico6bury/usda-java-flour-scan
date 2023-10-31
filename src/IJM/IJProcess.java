@@ -127,11 +127,11 @@ public class IJProcess {
             data_output.append("\t");
             data_output.append(outputData.total_area);
             data_output.append("\t");
-            data_output.append(outputData.percent_area);
+            data_output.append(String.format("%.2f", outputData.percent_area));
             data_output.append("\t");
-            data_output.append(outputData.l_mean);
+            data_output.append(String.format("%.2f", outputData.l_mean));
             data_output.append("\t");
-            data_output.append(outputData.l_stdv);
+            data_output.append(String.format("%.2f", outputData.l_stdv));
             data_output.append("\n");
         }//end looping over all the stuff to print out
         
@@ -146,19 +146,6 @@ public class IJProcess {
 
     public Result<String> runMacro(String file_to_process) {
         try {
-            // StringBuilder macro_contents = new StringBuilder();
-            // for (String line : Files.readAllLines(base_macro_file.toPath())) {
-            //     macro_contents.append(line + "\n");
-            // }//end adding all lines to string builder
-            // String main_macro_args = "useBatchMode?0|" + 
-            // "chosenFilePath?" + file_to_process + "|" +
-            // "baseThreshold?160|" +
-            // "szMin?2|" +
-            // "defSizeLimit?1000|" +
-            // "splitWidth?2400|" +
-            // "splitHeight?1200|" +
-            // "baseMacroDir?" + base_macro_dir.getAbsolutePath() + File.separator;
-            // IJ.runMacro(macro_contents.toString(), main_macro_args);
             List<String> files_to_process = new ArrayList<String>();
             files_to_process.add(file_to_process);
             MainMacro(files_to_process);
