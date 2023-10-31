@@ -65,12 +65,30 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        uxScannedFileBtn = new javax.swing.JButton();
-        uxScannedFileTxt = new javax.swing.JTextField();
-        uxIJOutputBtn = new javax.swing.JButton();
-        uxIJOutputTxt = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         uxStatusTxt = new javax.swing.JTextArea();
+        uxScanBigBtn = new javax.swing.JButton();
+        uxScanQueueBtn = new javax.swing.JButton();
+        uxAddFilesBtn = new javax.swing.JButton();
+        uxProcessAllBtn = new javax.swing.JButton();
+        uxConnectToScannerBtn = new javax.swing.JButton();
+        uxSearchTxt = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        uxQueueList = new javax.swing.JList<>();
+        jPanel4 = new javax.swing.JPanel();
+        uxImageLabel = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        uxImagePropertiesTxt = new javax.swing.JTextArea();
+        uxNextImageBtn = new javax.swing.JButton();
+        uxOpenFileBtn = new javax.swing.JButton();
+        uxPrevImageBtn = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        uxOutputTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         uxInitMenu = new javax.swing.JMenu();
         uxConnectScannerBtn = new javax.swing.JMenuItem();
@@ -79,34 +97,255 @@ public class MainWindow extends javax.swing.JFrame {
         uxScanBtn = new javax.swing.JMenuItem();
         uxIjBtn = new javax.swing.JMenuItem();
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("usda-java-flour-scan");
 
-        uxScannedFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxScannedFileBtn.setText("Scanned File");
-        uxScannedFileBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                uxScannedFileBtnActionPerformed(evt);
-            }
-        });
+        jSplitPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jSplitPane1.setDividerLocation(415);
 
-        uxScannedFileTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        uxIJOutputBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxIJOutputBtn.setText("IJ Output File");
-        uxIJOutputBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                uxIJOutputBtnActionPerformed(evt);
-            }
-        });
-
-        uxIJOutputTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         uxStatusTxt.setEditable(false);
         uxStatusTxt.setColumns(20);
         uxStatusTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxStatusTxt.setRows(5);
         jScrollPane1.setViewportView(uxStatusTxt);
+
+        uxScanBigBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScanBigBtn.setText("Scan");
+        uxScanBigBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxScanBigBtnActionPerformed(evt);
+            }
+        });
+
+        uxScanQueueBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScanQueueBtn.setText("Scan + Add to Queue");
+        uxScanQueueBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxScanQueueBtnActionPerformed(evt);
+            }
+        });
+
+        uxAddFilesBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxAddFilesBtn.setText("Add Files to Queue");
+        uxAddFilesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxAddFilesBtnActionPerformed(evt);
+            }
+        });
+
+        uxProcessAllBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxProcessAllBtn.setText("Process Images in Queue");
+        uxProcessAllBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxProcessAllBtnActionPerformed(evt);
+            }
+        });
+
+        uxConnectToScannerBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConnectToScannerBtn.setText("Connect to Scanner");
+        uxConnectToScannerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxConnectToScannerBtnActionPerformed(evt);
+            }
+        });
+
+        uxSearchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSearchTxt.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                uxSearchTxtPropertyChange(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setText("Search: ");
+
+        uxQueueList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxQueueList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        uxQueueList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        uxQueueList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                uxQueueListValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(uxQueueList);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(uxConnectToScannerBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxScanBigBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxScanQueueBtn))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(uxAddFilesBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxProcessAllBtn))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxSearchTxt)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uxScanQueueBtn)
+                    .addComponent(uxConnectToScannerBtn)
+                    .addComponent(uxScanBigBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uxAddFilesBtn)
+                    .addComponent(uxProcessAllBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(uxSearchTxt)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jSplitPane1.setLeftComponent(jPanel3);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        uxImageLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxImageLabel.setText("please select a processed image");
+        uxImageLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        uxImagePropertiesTxt.setColumns(1);
+        uxImagePropertiesTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxImagePropertiesTxt.setRows(1);
+        uxImagePropertiesTxt.setText("Image: A-5001-1\nProcessed at TIMESTAMP\nConfig Config");
+        uxImagePropertiesTxt.setPreferredSize(new java.awt.Dimension(102, 84));
+        jScrollPane3.setViewportView(uxImagePropertiesTxt);
+
+        uxNextImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uxNextImageBtn.setText("Next Image");
+        uxNextImageBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxNextImageBtnActionPerformed(evt);
+            }
+        });
+
+        uxOpenFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uxOpenFileBtn.setText("Open in File Explorer");
+        uxOpenFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxOpenFileBtnActionPerformed(evt);
+            }
+        });
+
+        uxPrevImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uxPrevImageBtn.setText("Previous Image");
+        uxPrevImageBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxPrevImageBtnActionPerformed(evt);
+            }
+        });
+
+        uxOutputTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOutputTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Rep", "Slice", "Rotation", "Side", "Count", "Pixels", "%Area", "L* Mean", "L* Stdev"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        uxOutputTable.setShowGrid(true);
+        jScrollPane5.setViewportView(uxOutputTable);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(uxNextImageBtn)
+                            .addComponent(uxPrevImageBtn)
+                            .addComponent(uxOpenFileBtn))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxNextImageBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxPrevImageBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxOpenFileBtn))
+                    .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jSplitPane1.setRightComponent(jPanel4);
 
         uxInitMenu.setText("Init");
         uxInitMenu.setFocusable(false);
@@ -163,32 +402,15 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(uxIJOutputBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(uxScannedFileBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uxIJOutputTxt)
-                            .addComponent(uxScannedFileTxt))))
+                .addComponent(jSplitPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxScannedFileBtn)
-                    .addComponent(uxScannedFileTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxIJOutputBtn)
-                    .addComponent(uxIJOutputTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addComponent(jSplitPane1)
+                .addContainerGap())
         );
 
         pack();
@@ -262,14 +484,6 @@ public class MainWindow extends javax.swing.JFrame {
         }//end actionPerformed
     };
 
-    private void uxScannedFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScannedFileBtnActionPerformed
-        scannedFileChooser.showOpenDialog(this);
-    }//GEN-LAST:event_uxScannedFileBtnActionPerformed
-
-    private void uxIJOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIJOutputBtnActionPerformed
-        ijProcFileChooser.showOpenDialog(this);
-    }//GEN-LAST:event_uxIJOutputBtnActionPerformed
-
     private void uxConnectScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectScannerBtnActionPerformed
         // check for scanner already initialized
         if (scan != null) {
@@ -306,6 +520,46 @@ public class MainWindow extends javax.swing.JFrame {
         }//end else we need to reset scanner connection
     }//GEN-LAST:event_uxResetScannerActionPerformed
 
+    private void uxConnectToScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectToScannerBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxConnectToScannerBtnActionPerformed
+
+    private void uxScanBigBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBigBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxScanBigBtnActionPerformed
+
+    private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxScanQueueBtnActionPerformed
+
+    private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxAddFilesBtnActionPerformed
+
+    private void uxProcessAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxProcessAllBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxProcessAllBtnActionPerformed
+
+    private void uxNextImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxNextImageBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxNextImageBtnActionPerformed
+
+    private void uxPrevImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxPrevImageBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxPrevImageBtnActionPerformed
+
+    private void uxOpenFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxOpenFileBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxOpenFileBtnActionPerformed
+
+    private void uxSearchTxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_uxSearchTxtPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxSearchTxtPropertyChange
+
+    private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxQueueListValueChanged
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -320,18 +574,36 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton uxAddFilesBtn;
     private javax.swing.JMenuItem uxConnectScannerBtn;
-    private javax.swing.JButton uxIJOutputBtn;
-    private javax.swing.JTextField uxIJOutputTxt;
+    private javax.swing.JButton uxConnectToScannerBtn;
     private javax.swing.JMenuItem uxIjBtn;
+    private javax.swing.JLabel uxImageLabel;
+    private javax.swing.JTextArea uxImagePropertiesTxt;
     private javax.swing.JMenu uxInitMenu;
+    private javax.swing.JButton uxNextImageBtn;
+    private javax.swing.JButton uxOpenFileBtn;
+    private javax.swing.JTable uxOutputTable;
+    private javax.swing.JButton uxPrevImageBtn;
+    private javax.swing.JButton uxProcessAllBtn;
+    private javax.swing.JList<String> uxQueueList;
     private javax.swing.JMenuItem uxResetScanner;
     private javax.swing.JMenu uxRunMenu;
+    private javax.swing.JButton uxScanBigBtn;
     private javax.swing.JMenuItem uxScanBtn;
-    private javax.swing.JButton uxScannedFileBtn;
-    private javax.swing.JTextField uxScannedFileTxt;
+    private javax.swing.JButton uxScanQueueBtn;
+    private javax.swing.JTextField uxSearchTxt;
     private javax.swing.JTextArea uxStatusTxt;
     // End of variables declaration//GEN-END:variables
 }
