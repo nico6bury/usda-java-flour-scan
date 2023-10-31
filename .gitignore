@@ -1,5 +1,7 @@
 # Output path
 /bin
+/output-folder
+/scanned-images
 
 # Output jar
 usda-java-flour-scan.jar
