@@ -178,9 +178,11 @@ public class IJProcess {
         // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
         // List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
         for (int i = 0; i < files_to_process.size(); i++) {
-            String file = files_to_process.get(i);
+            File file = new File(files_to_process.get(i));
+            String sliceBase = file.getName().substring(0, file.getName().length() - 4);
+
             // actually start processing
-            ImagePlus this_image = IJ.openImage(file);
+            ImagePlus this_image = IJ.openImage(file.getAbsolutePath());
             // fiure out the dimensions of this image
             int imgWidth = this_image.getWidth();
             int imgHeight = this_image.getHeight();
@@ -193,8 +195,7 @@ public class IJProcess {
                 // left image
                 // analyze particles info
                 SumResult leftResult = ijmProcessFile(splitImages.get(0));
-                String sliceBase = leftResult.slice.substring(0, leftResult.slice.length() - 4);
-                leftResult.slice = sliceBase + "-L.tif";
+                leftResult.slice = sliceBase + "-L";
                 // Lab info
                 ImageStatistics leftL = LabProcesser(splitImages.get(0));
                 leftResult.l_mean = leftL.mean;
@@ -205,7 +206,7 @@ public class IJProcess {
                 // right image
                 // analyze particles info
                 SumResult rightResult = ijmProcessFile(splitImages.get(1));
-                rightResult.slice = sliceBase + "-R.tif";
+                rightResult.slice = sliceBase + "-R";
                 // Lab info
                 ImageStatistics rightL = LabProcesser(splitImages.get(1));
                 rightResult.l_mean = rightL.mean;
@@ -216,6 +217,7 @@ public class IJProcess {
             else {
                 // process the current image with analyze particles and Lab
                 SumResult this_result = ijmProcessFile(this_image);
+                this_result.slice = sliceBase;
                 ImageStatistics l_info = LabProcesser(this_image);
                 this_result.l_mean = l_info.mean;
                 this_result.l_stdv = l_info.stdDev;
@@ -232,6 +234,8 @@ public class IJProcess {
         // ImageStatistics L = LabProcesser(imagesProcessed.get(0));
         // close all the images, or at least the stack
         IJ.run("Close All");
+        // close the summary table
+        IJ.runMacro("selectWindow(\"Summary\");run(\"Close\");");
         // output the output file
         Result<String> outputFileResult = makeOutputFile(runningSum);
         // return the rows of data that wil show up in the output file
@@ -269,8 +273,6 @@ public class IJProcess {
         double prcnt_area = sumTable.getValue("%Area", 0);
         SumResult this_result = new SumResult(slice, count, total_area, prcnt_area);
         
-        // TODO: close the summary via an inline imagej macro
-
         return this_result;
     }//end ijmProcessFile()
 
