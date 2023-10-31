@@ -217,13 +217,14 @@ public class MainWindow extends javax.swing.JFrame {
         }//end if last scanned file doesn't exist
         else {
             try {
-                // TODO: add code for processing images in imagej
+                // process the images in imagej
 				IJProcess ijProcess = new IJProcess();
-                Result<String> macroResult = ijProcess.runMacro(uxScannedFileTxt.getText());
-                if (macroResult.isErr()) {
-                    macroResult.getError().printStackTrace();
-                    showGenericExceptionMessage(macroResult.getError());
-                }
+                Result<String> outputData = ijProcess.runMacro(uxScannedFileTxt.getText());
+                if (outputData.isErr()) {
+                    outputData.getError().printStackTrace();
+                    showGenericExceptionMessage(outputData.getError());
+                }//end if we couldn't get output data
+                // display the output data to the user
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
                 showGenericExceptionMessage(e);
