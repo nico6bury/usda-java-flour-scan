@@ -549,13 +549,29 @@ public class MainWindow extends javax.swing.JFrame {
     private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
         Result<File> scanResult = PerformScan();
         if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
-        else if (scanResult.isOk()) {imageQueue.add(scanResult.getValue());}
+        else if (scanResult.isOk()) {
+            imageQueue.add(scanResult.getValue());
+            UpdateQueueList();
+        }//end else if we can add something to the queue
     }//GEN-LAST:event_uxScanQueueBtnActionPerformed
 
     private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
         // adding selected files to queue should be handled by selectFIlesListener
         selectFilesChooser.showOpenDialog(this);
+        UpdateQueueList();
     }//GEN-LAST:event_uxAddFilesBtnActionPerformed
+
+    /**
+     * This method should be called whenever the image queue is updated, in order to show the changes in the list.
+     */
+    private void UpdateQueueList() {
+        uxQueueList.removeAll();
+        String[] imageArray = new String[imageQueue.size()];
+        for(int i = 0; i < imageArray.length; i++) {
+            imageArray[i] = imageQueue.get(i).getName();
+        }//end adding each image file to the array
+        uxQueueList.setListData(imageArray);
+    }//end UpdateQueueList()
 
     private void uxProcessAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxProcessAllBtnActionPerformed
         if (imageQueue == null || imageQueue.size() == 0) {
