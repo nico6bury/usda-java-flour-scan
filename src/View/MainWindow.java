@@ -85,10 +85,10 @@ public class MainWindow extends javax.swing.JFrame {
         uxProcessAllBtn = new javax.swing.JButton();
         uxEmptyQueueBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         uxSearchTxt = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         uxQueueList = new javax.swing.JList<>();
+        uxSearchBtn = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jSplitPane3 = new javax.swing.JSplitPane();
         jPanel5 = new javax.swing.JPanel();
@@ -232,15 +232,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Search: ");
-
         uxSearchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxSearchTxt.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                uxSearchTxtPropertyChange(evt);
-            }
-        });
 
         uxQueueList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxQueueList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -249,6 +241,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(uxQueueList);
+
+        uxSearchBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSearchBtn.setText("Search");
+        uxSearchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxSearchBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -259,9 +259,9 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(uxSearchTxt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxSearchTxt)))
+                        .addComponent(uxSearchBtn)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -269,8 +269,8 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxSearchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(uxSearchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uxSearchBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                 .addContainerGap())
@@ -688,10 +688,6 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_uxOpenFileBtnActionPerformed
 
-    private void uxSearchTxtPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_uxSearchTxtPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_uxSearchTxtPropertyChange
-
     private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_uxQueueListValueChanged
@@ -700,6 +696,23 @@ public class MainWindow extends javax.swing.JFrame {
         imageQueue.clear();
         UpdateQueueList();
     }//GEN-LAST:event_uxEmptyQueueBtnActionPerformed
+
+    private void uxSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSearchBtnActionPerformed
+        // reset the list before we mess with things
+        UpdateQueueList();
+        String searchString = uxSearchTxt.getText();
+        List<String> goodSoFar = new ArrayList<String>();
+        for (int i = 0; i < imageQueue.size(); i++) {
+            String thisImageName = imageQueue.get(i).getName();
+            if (thisImageName.contains(searchString)) {
+                goodSoFar.add(thisImageName);
+            }//end if we found a match
+        }//end finding all matches for search string
+        uxQueueList.removeAll();
+        // add everything into an array
+        String[] a = goodSoFar.toArray(new String[goodSoFar.size()]);
+        uxQueueList.setListData(a);
+    }//GEN-LAST:event_uxSearchBtnActionPerformed
 
     /**
      * THIS is the MAIN METHOD that the program should start from.
@@ -715,7 +728,6 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -751,6 +763,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton uxScanBigBtn;
     private javax.swing.JMenuItem uxScanBtn;
     private javax.swing.JButton uxScanQueueBtn;
+    private javax.swing.JButton uxSearchBtn;
     private javax.swing.JTextField uxSearchTxt;
     private javax.swing.JTextArea uxStatusTxt;
     // End of variables declaration//GEN-END:variables
