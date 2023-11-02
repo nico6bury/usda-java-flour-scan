@@ -26,6 +26,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import IJM.IJProcess;
 import IJM.SumResult;
 import Scan.Scan;
+import Utils.Constants;
 import Utils.Result;
 import Utils.Result.ResultType;
 import ij.IJ;
@@ -58,8 +59,24 @@ public class MainWindow extends javax.swing.JFrame {
         selectFilesChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         selectFilesChooser.setMultiSelectionEnabled(true);
         // ijProcFileChooser.addActionListener(ijProcFileListener);
+        
+                initComponents();
 
-        initComponents();
+        StringBuilder tb = new StringBuilder();
+        tb.append(Constants.LOCATION);
+        tb.append("\t");
+        tb.append(Constants.PROGRAM_NAME);
+        tb.append("\n");
+        tb.append(Constants.DATE());
+        tb.append("\t");
+        tb.append(Constants.VERSION);
+        tb.append("\t");
+        tb.append(Constants.PEOPLE);
+        tb.append("\n");
+        tb.append("To interface with EPSON V600 Scanner\n");
+        tb.append("To collect reflective image of flour sample in a 100mm diameter petri dish\n");
+        tb.append("Process image to estimate %contamination and L* color from CIELAB color space");
+        uxTitleBlockTxt.setText(tb.toString());
     }//end MainWindow constructor
 
     /**
@@ -135,13 +152,13 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("USDA-ARS-FlourScan-Java");
 
-        jSplitPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jSplitPane1.setDividerLocation(405);
+        jSplitPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jSplitPane1.setDividerLocation(525);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane2.setDividerLocation(300);
+        jSplitPane2.setDividerLocation(325);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -200,10 +217,10 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        uxTitleBlockTxt.setEditable(false);
         uxTitleBlockTxt.setColumns(20);
         uxTitleBlockTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxTitleBlockTxt.setRows(5);
-        uxTitleBlockTxt.setEnabled(false);
         jScrollPane6.setViewportView(uxTitleBlockTxt);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -233,7 +250,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxScanQueueBtn)
@@ -277,7 +294,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(uxSearchTxt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -292,7 +309,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(uxSearchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(uxSearchBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -302,7 +319,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,11 +331,12 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane3.setDividerLocation(300);
+        jSplitPane3.setDividerLocation(325);
         jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        uxImagePropertiesTxt.setEditable(false);
         uxImagePropertiesTxt.setColumns(1);
         uxImagePropertiesTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxImagePropertiesTxt.setRows(1);
@@ -326,7 +344,7 @@ public class MainWindow extends javax.swing.JFrame {
         uxImagePropertiesTxt.setPreferredSize(new java.awt.Dimension(102, 84));
         jScrollPane3.setViewportView(uxImagePropertiesTxt);
 
-        uxPrevImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uxPrevImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxPrevImageBtn.setText("Previous Image");
         uxPrevImageBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -334,7 +352,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxNextImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uxNextImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxNextImageBtn.setText("Next Image");
         uxNextImageBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -342,7 +360,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxOpenFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        uxOpenFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxOpenFileBtn.setText("Open in File Explorer");
         uxOpenFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -365,7 +383,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(uxNextImageBtn)
                     .addComponent(uxOpenFileBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -375,7 +393,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxPrevImageBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -423,14 +441,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -504,7 +522,7 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1147, Short.MAX_VALUE)
+                .addComponent(jSplitPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
