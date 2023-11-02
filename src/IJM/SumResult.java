@@ -1,6 +1,9 @@
 package IJM;
 
+import java.io.File;
+
 public class SumResult {
+    public File file;
     public String slice;
     public int count;
     public int total_area;
@@ -11,6 +14,14 @@ public class SumResult {
     public SumResult() {}
 
     public SumResult(String slice, int count, int total_area, double percent_area) {
+        this.slice = slice;
+        this.count = count;
+        this.total_area = total_area;
+        this.percent_area = percent_area;
+    }//end constructor
+
+    public SumResult(File file, String slice, int count, int total_area, double percent_area) {
+        this.file = file;
         this.slice = slice;
         this.count = count;
         this.total_area = total_area;

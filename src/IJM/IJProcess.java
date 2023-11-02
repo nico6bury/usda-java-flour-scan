@@ -190,7 +190,7 @@ public class IJProcess {
 
                 // left image
                 // analyze particles info
-                SumResult leftResult = ijmProcessFile(splitImages.get(0));
+                SumResult leftResult = ijmProcessFile(splitImages.get(0), file);
                 leftResult.slice = sliceBase + "-L";
                 // Lab info
                 double[] leftL = LabProcesser(splitImages.get(0));
@@ -201,7 +201,7 @@ public class IJProcess {
 
                 // right image
                 // analyze particles info
-                SumResult rightResult = ijmProcessFile(splitImages.get(1));
+                SumResult rightResult = ijmProcessFile(splitImages.get(1), file);
                 rightResult.slice = sliceBase + "-R";
                 // Lab info
                 double[] rightL = LabProcesser(splitImages.get(1));
@@ -212,7 +212,7 @@ public class IJProcess {
             }//end if we need to split the file first
             else {
                 // process the current image with analyze particles and Lab
-                SumResult this_result = ijmProcessFile(this_image);
+                SumResult this_result = ijmProcessFile(this_image, file);
                 this_result.slice = sliceBase;
                 double[] l_info = LabProcesser(this_image);
                 this_result.l_mean = l_info[0];
@@ -238,7 +238,7 @@ public class IJProcess {
         return outputFileResult;
     }//end Main Macro converted from ijm
 
-    public SumResult ijmProcessFile(ImagePlus img) {
+    public SumResult ijmProcessFile(ImagePlus img, File file) {
         // duplicate the image so we don't contaminate it
         ImagePlus img_dup = img.duplicate();
         // contents of processFile() from the macro:
@@ -269,7 +269,7 @@ public class IJProcess {
         int count = (int)sumTable.getValue("Count", 0);
         int total_area = (int)sumTable.getValue("Total Area", 0);
         double prcnt_area = sumTable.getValue("%Area", 0);
-        SumResult this_result = new SumResult(slice, count, total_area, prcnt_area);
+        SumResult this_result = new SumResult(file, slice, count, total_area, prcnt_area);
         
         return this_result;
     }//end ijmProcessFile()
