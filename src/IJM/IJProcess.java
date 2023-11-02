@@ -38,13 +38,12 @@ public class IJProcess {
     int defSizeLimit = 1000;
     // upper threshold for analyze particles
     int th01 = 160;
+    public List<SumResult> lastProcResult;
 
     /**
-     * Constructs the class by reading the jar location and 
-     * finding the location of the ijm files.
-     * @throws URISyntaxException This exception can occur while interpretting the path to the jar which the program is running from.
+     * Constructs the class
      */
-    public IJProcess() throws URISyntaxException {
+    public IJProcess() {
         // String macro_folder = jar_location + File.separator + "macros";
         // base_macro_dir = new File(macro_folder);
         // String macro_file = macro_folder + File.separator + "NS-FlourScan-Main.ijm";
@@ -234,6 +233,7 @@ public class IJProcess {
         IJ.runMacro("selectWindow(\"Summary\");run(\"Close\");");
         // output the output file
         Result<String> outputFileResult = makeOutputFile(runningSum);
+        lastProcResult = runningSum;
         // return the rows of data that wil show up in the output file
         return outputFileResult;
     }//end Main Macro converted from ijm
