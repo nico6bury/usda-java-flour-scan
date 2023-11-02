@@ -85,6 +85,7 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         uxQueueList = new javax.swing.JList<>();
+        uxEmptyQueueBtn = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         uxImageLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -154,7 +155,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         uxProcessAllBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxProcessAllBtn.setText("Process Images in Queue");
+        uxProcessAllBtn.setText("Process Queue");
         uxProcessAllBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxProcessAllBtnActionPerformed(evt);
@@ -180,18 +181,20 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1.setText("Search: ");
 
         uxQueueList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxQueueList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        uxQueueList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         uxQueueList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 uxQueueListValueChanged(evt);
             }
         });
         jScrollPane2.setViewportView(uxQueueList);
+
+        uxEmptyQueueBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxEmptyQueueBtn.setText("Empty Queue");
+        uxEmptyQueueBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxEmptyQueueBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -213,7 +216,9 @@ public class MainWindow extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(uxAddFilesBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxProcessAllBtn))
+                                .addComponent(uxProcessAllBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxEmptyQueueBtn))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -234,7 +239,8 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxAddFilesBtn)
-                    .addComponent(uxProcessAllBtn))
+                    .addComponent(uxProcessAllBtn)
+                    .addComponent(uxEmptyQueueBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(uxSearchTxt)
@@ -255,7 +261,6 @@ public class MainWindow extends javax.swing.JFrame {
         uxImagePropertiesTxt.setColumns(1);
         uxImagePropertiesTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxImagePropertiesTxt.setRows(1);
-        uxImagePropertiesTxt.setText("Image: A-5001-1\nProcessed at TIMESTAMP\nConfig Config");
         uxImagePropertiesTxt.setPreferredSize(new java.awt.Dimension(102, 84));
         jScrollPane3.setViewportView(uxImagePropertiesTxt);
 
@@ -617,6 +622,11 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_uxQueueListValueChanged
 
+    private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
+        imageQueue.clear();
+        UpdateQueueList();
+    }//GEN-LAST:event_uxEmptyQueueBtnActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -645,6 +655,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton uxAddFilesBtn;
     private javax.swing.JMenuItem uxConnectScannerBtn;
     private javax.swing.JButton uxConnectToScannerBtn;
+    private javax.swing.JButton uxEmptyQueueBtn;
     private javax.swing.JMenuItem uxIjBtn;
     private javax.swing.JLabel uxImageLabel;
     private javax.swing.JTextArea uxImagePropertiesTxt;
