@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -31,6 +33,7 @@ public class MainWindow extends javax.swing.JFrame {
     private JFileChooser ijProcFileChooser = new JFileChooser();
     private File lastScannedFile = null;
     private File lastIjProcFile = null;
+    private List<File> imageQueue = new ArrayList<File>();
 
     /**
      * Creates new form MainWindow
@@ -417,17 +420,7 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uxScanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBtnActionPerformed
-        System.out.println("You clicked the \"Scan\" button.");
-        // try to scan something with the scanner
-        Result<String> scanResult = scan.runScanner();
-        if (scanResult.isErr()) {
-            showGenericExceptionMessage(scanResult.getError());
-        }//end if we have an error to show
-        else if (scanResult.isOk()) {
-            String result = scanResult.getValue();
-            lastScannedFile = new File(result);
-            uxScannedFileTxt.setText(lastScannedFile.getPath());
-        }//end else if scan result is ok
+        PerformScan();
     }//GEN-LAST:event_uxScanBtnActionPerformed
 
     private void uxIjBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIjBtnActionPerformed
@@ -520,16 +513,38 @@ public class MainWindow extends javax.swing.JFrame {
         }//end else we need to reset scanner connection
     }//GEN-LAST:event_uxResetScannerActionPerformed
 
+    /**
+     * This method performs the operation of scanning an image. It then returns the resulting file if successful, or the exception wrapped in a result if not.
+     * @return Returns a Result wrapped File.
+     */
+    private Result<File> PerformScan() {
+        System.out.println("You clicked the \"Scan\" button.");
+        // try to scan something with the scanner
+        Result<String> scanResult = scan.runScanner();
+        if (scanResult.isOk()) {
+            String result = scanResult.getValue();
+            lastScannedFile = new File(result);
+            return new Result<File>(lastScannedFile);
+        }//end else if scan result is ok
+        else {
+            return new Result<File>(scanResult.getError());
+        }//end if we have an error to show
+    }//end method PerformScan()
+
     private void uxConnectToScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectToScannerBtnActionPerformed
-        // TODO add your handling code here:
+        // just trigger the top menu code
+        uxConnectScannerBtnActionPerformed(evt);
     }//GEN-LAST:event_uxConnectToScannerBtnActionPerformed
 
     private void uxScanBigBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBigBtnActionPerformed
-        // TODO add your handling code here:
+        Result<File> scanResult = PerformScan();
+        if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
     }//GEN-LAST:event_uxScanBigBtnActionPerformed
 
     private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
-        // TODO add your handling code here:
+        Result<File> scanResult = PerformScan();
+        if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
+        else if (scanResult.isOk()) {imageQueue.add(scanResult.getValue());}
     }//GEN-LAST:event_uxScanQueueBtnActionPerformed
 
     private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
