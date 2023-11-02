@@ -29,7 +29,7 @@ import Utils.Result.ResultType;
 public class MainWindow extends javax.swing.JFrame {
 
     protected Scan scan = null;
-    private JFileChooser scannedFileChooser = new JFileChooser();
+    private JFileChooser selectFilesChooser = new JFileChooser();
     private JFileChooser ijProcFileChooser = new JFileChooser();
     private File lastScannedFile = null;
     private File lastIjProcFile = null;
@@ -46,8 +46,10 @@ public class MainWindow extends javax.swing.JFrame {
         else { FlatLightLaf.setup(); }
 
         // set up file listeners
-        scannedFileChooser.addActionListener(scannedFileListener);
-        ijProcFileChooser.addActionListener(ijProcFileListener);
+        selectFilesChooser.addActionListener(selectFilesListener);
+        selectFilesChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        selectFilesChooser.setMultiSelectionEnabled(true);
+        // ijProcFileChooser.addActionListener(ijProcFileListener);
 
         initComponents();
     }//end MainWindow constructor
@@ -447,14 +449,17 @@ public class MainWindow extends javax.swing.JFrame {
         }//end else we should probably be able to process the file
     }//GEN-LAST:event_uxIjBtnActionPerformed
 
-    private ActionListener scannedFileListener = new ActionListener() {
+    private ActionListener selectFilesListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
             if (e.getActionCommand() == "ApproveSelection") {
-                lastScannedFile = scannedFileChooser.getSelectedFile();
-                uxScannedFileTxt.setText(lastScannedFile.getPath());
-                uxStatusTxt.append("Selected scanned file \"" + lastScannedFile.getAbsolutePath() + "\"\n");
+                File[] selectedFiles = selectFilesChooser.getSelectedFiles();
+                // uxScannedFileTxt.setText(lastScannedFile.getPath());
+                for (int i = 0; i < selectedFiles.length; i++) {
+                    uxStatusTxt.append("selected scanned file \"" + selectedFiles[i].getAbsolutePath() + "\"\n");
+                    imageQueue.add(selectedFiles[i]);
+                }//end adding each selected file to the queue
             }//end if selection was approved
             else if (e.getActionCommand() == "CancelSelection") {
                 uxStatusTxt.append("File selection cancelled.\n");
@@ -462,20 +467,20 @@ public class MainWindow extends javax.swing.JFrame {
         }//end actionPerformed
     };
 
-    private ActionListener ijProcFileListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
-            if (e.getActionCommand() == "ApproveSelection") {
-                lastIjProcFile = ijProcFileChooser.getSelectedFile();
-                uxIJOutputTxt.setText(lastIjProcFile.getPath());
-                uxStatusTxt.append("Selected ij processed file \"" + lastIjProcFile.getAbsolutePath() + "\"\n");
-            }//end if selection was approved
-            else if (e.getActionCommand() == "CancelSelection") {
-                uxStatusTxt.append("File selection cancelled\n");
-            }//end else if selection was cancelled
-        }//end actionPerformed
-    };
+    // private ActionListener ijProcFileListener = new ActionListener() {
+    //     @Override
+    //     public void actionPerformed(ActionEvent e) {
+    //         System.out.println(e.getActionCommand());
+    //         if (e.getActionCommand() == "ApproveSelection") {
+    //             lastIjProcFile = ijProcFileChooser.getSelectedFile();
+    //             uxIJOutputTxt.setText(lastIjProcFile.getPath());
+    //             uxStatusTxt.append("Selected ij processed file \"" + lastIjProcFile.getAbsolutePath() + "\"\n");
+    //         }//end if selection was approved
+    //         else if (e.getActionCommand() == "CancelSelection") {
+    //             uxStatusTxt.append("File selection cancelled\n");
+    //         }//end else if selection was cancelled
+    //     }//end actionPerformed
+    // };
 
     private void uxConnectScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectScannerBtnActionPerformed
         // check for scanner already initialized
@@ -548,7 +553,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxScanQueueBtnActionPerformed
 
     private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
-        // TODO add your handling code here:
+        // adding selected files to queue should be handled by selectFIlesListener
+        selectFilesChooser.showOpenDialog(this);
     }//GEN-LAST:event_uxAddFilesBtnActionPerformed
 
     private void uxProcessAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxProcessAllBtnActionPerformed
