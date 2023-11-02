@@ -4,12 +4,18 @@
  */
 package View;
 
+import javax.imageio.ImageIO;
+import javax.imageio.spi.ImageReaderSpi;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +24,12 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import IJM.IJProcess;
+import IJM.SumResult;
 import Scan.Scan;
 import Utils.Result;
 import Utils.Result.ResultType;
+import ij.IJ;
+import ij.io.ImageReader;
 
 /**
  *
@@ -30,10 +39,9 @@ public class MainWindow extends javax.swing.JFrame {
 
     protected Scan scan = null;
     private JFileChooser selectFilesChooser = new JFileChooser();
-    private JFileChooser ijProcFileChooser = new JFileChooser();
     private File lastScannedFile = null;
-    private File lastIjProcFile = null;
     private List<File> imageQueue = new ArrayList<File>();
+    private IJProcess ijProcess = new IJProcess();
 
     /**
      * Creates new form MainWindow
@@ -84,6 +92,8 @@ public class MainWindow extends javax.swing.JFrame {
         uxAddFilesBtn = new javax.swing.JButton();
         uxProcessAllBtn = new javax.swing.JButton();
         uxEmptyQueueBtn = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        uxTitleBlockTxt = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         uxSearchTxt = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -123,15 +133,15 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("usda-java-flour-scan");
+        setTitle("USDA-ARS-FlourScan-Java");
 
         jSplitPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jSplitPane1.setDividerLocation(415);
+        jSplitPane1.setDividerLocation(405);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane2.setDividerLocation(230);
+        jSplitPane2.setDividerLocation(300);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -190,11 +200,17 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        uxTitleBlockTxt.setColumns(20);
+        uxTitleBlockTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxTitleBlockTxt.setRows(5);
+        uxTitleBlockTxt.setEnabled(false);
+        jScrollPane6.setViewportView(uxTitleBlockTxt);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -210,11 +226,14 @@ public class MainWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxEmptyQueueBtn)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane6)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxScanQueueBtn)
@@ -235,6 +254,7 @@ public class MainWindow extends javax.swing.JFrame {
         uxSearchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         uxQueueList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxQueueList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         uxQueueList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 uxQueueListValueChanged(evt);
@@ -257,7 +277,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(uxSearchTxt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -272,7 +292,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(uxSearchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(uxSearchBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -294,7 +314,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane3.setDividerLocation(240);
+        jSplitPane3.setDividerLocation(300);
         jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -302,6 +322,7 @@ public class MainWindow extends javax.swing.JFrame {
         uxImagePropertiesTxt.setColumns(1);
         uxImagePropertiesTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxImagePropertiesTxt.setRows(1);
+        uxImagePropertiesTxt.setEnabled(false);
         uxImagePropertiesTxt.setPreferredSize(new java.awt.Dimension(102, 84));
         jScrollPane3.setViewportView(uxImagePropertiesTxt);
 
@@ -330,8 +351,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         uxImageLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxImageLabel.setText("please select a processed image");
-        uxImageLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        uxImageLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -345,7 +365,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(uxNextImageBtn)
                     .addComponent(uxOpenFileBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -355,7 +375,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxPrevImageBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -372,17 +392,14 @@ public class MainWindow extends javax.swing.JFrame {
         uxOutputTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxOutputTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Rep", "Slice", "Rotation", "Side", "Count", "Pixels", "%Area", "L* Mean", "L* Stdev"
+                "FileID", "TH", "L Count", "L %Area", "L L* Mean", "R Count", "R %Area", "R L* Mean", "Avg %Area"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -396,6 +413,7 @@ public class MainWindow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        uxOutputTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         uxOutputTable.setShowGrid(true);
         jScrollPane5.setViewportView(uxOutputTable);
 
@@ -405,14 +423,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -486,12 +504,12 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1147, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSplitPane1)
                 .addContainerGap())
@@ -545,21 +563,6 @@ public class MainWindow extends javax.swing.JFrame {
             }//end else if selection was cancelled
         }//end actionPerformed
     };
-
-    // private ActionListener ijProcFileListener = new ActionListener() {
-    //     @Override
-    //     public void actionPerformed(ActionEvent e) {
-    //         System.out.println(e.getActionCommand());
-    //         if (e.getActionCommand() == "ApproveSelection") {
-    //             lastIjProcFile = ijProcFileChooser.getSelectedFile();
-    //             uxIJOutputTxt.setText(lastIjProcFile.getPath());
-    //             uxStatusTxt.append("Selected ij processed file \"" + lastIjProcFile.getAbsolutePath() + "\"\n");
-    //         }//end if selection was approved
-    //         else if (e.getActionCommand() == "CancelSelection") {
-    //             uxStatusTxt.append("File selection cancelled\n");
-    //         }//end else if selection was cancelled
-    //     }//end actionPerformed
-    // };
 
     private void uxConnectScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectScannerBtnActionPerformed
         // check for scanner already initialized
@@ -662,14 +665,13 @@ public class MainWindow extends javax.swing.JFrame {
         else {
             try {
                 // process the images in imagej
-				IJProcess ijProcess = new IJProcess();
                 Result<String> outputData = ijProcess.runMacro(imageQueue);
                 if (outputData.isErr()) {
                     outputData.getError().printStackTrace();
                     showGenericExceptionMessage(outputData.getError());
                 }//end if we couldn't get output data
                 // display the output data to the user
-			} catch (URISyntaxException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
                 showGenericExceptionMessage(e);
 			}//end catching URISyntaxException
@@ -689,7 +691,53 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxOpenFileBtnActionPerformed
 
     private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
-        // TODO add your handling code here:
+        // get filename from list
+        String selectedFileName = uxQueueList.getSelectedValue();
+        // search through imageQueue for File which matches
+        File imageMatch = null;
+        for (int i = 0; i < imageQueue.size(); i++) {
+            File this_image = imageQueue.get(i);
+            if (this_image.getName().equals(selectedFileName)) {
+                imageMatch = this_image;
+                break;
+            }//end if we found a match
+        }//end looping over each file in image queue
+        // input validation
+        if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find matching file for selection."); return;}
+        // display the image in the label
+        BufferedImage buf_img = IJ.openImage(imageMatch.getAbsolutePath()).getBufferedImage();
+        if (buf_img == null) {JOptionPane.showMessageDialog(this, "Could not read selected image to buffer."); return;}
+        // TODO: Improve image scaling
+        int imgWidth = buf_img.getWidth();
+        int imgHeight = buf_img.getHeight();
+        if (imgWidth > uxImageLabel.getWidth()) {
+            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.95);
+            int newImgHeight = newImgWidth * imgHeight / imgWidth;
+            imgWidth = newImgWidth;
+            imgHeight = newImgHeight;
+        }//end if we need to scale down because of width
+        if (imgHeight > uxImageLabel.getHeight()) {
+            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.95);
+            int newImgWidth = imgWidth * newImgHeight / imgHeight;
+            imgHeight = newImgHeight;
+            imgWidth = newImgWidth;
+        }//end if we need to scale down because of height
+        ImageIcon icon = new ImageIcon(new ImageIcon(buf_img).getImage().getScaledInstance(imgWidth, imgHeight, Image.SCALE_DEFAULT));
+        uxImageLabel.setIcon(icon);
+        // ensure that some files have been processed, at least
+        if (ijProcess.lastProcResult == null) {System.out.println("Please process files before displaying results."); return;}
+        // try and build a list of SumResults that match the file path
+        List<SumResult> matchingResults = new ArrayList<SumResult>();
+        for (int i = 0; i < ijProcess.lastProcResult.size(); i++) {
+            if (ijProcess.lastProcResult.get(i).file.getAbsolutePath().equals(imageMatch.getAbsolutePath())) {
+                matchingResults.add(ijProcess.lastProcResult.get(i));
+            }//end if we found a matching result
+        }//end looking for SumResults matching imageMatch
+        // check that we found some results
+        if (matchingResults.size() == 0) {JOptionPane.showMessageDialog(this, "Could not locate results for selected file."); return;}
+        // display the results that we found in the img info and the table
+        uxImagePropertiesTxt.setText("Image: " + imageMatch.getName());
+        
     }//GEN-LAST:event_uxQueueListValueChanged
 
     private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
@@ -740,6 +788,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
@@ -766,5 +815,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton uxSearchBtn;
     private javax.swing.JTextField uxSearchTxt;
     private javax.swing.JTextArea uxStatusTxt;
+    private javax.swing.JTextArea uxTitleBlockTxt;
     // End of variables declaration//GEN-END:variables
 }
