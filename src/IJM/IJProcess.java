@@ -158,20 +158,15 @@ public class IJProcess {
         return new Result<>(data_output.toString());
     }//end makeOutputFile(inputList, icl)
 
-    public Result<String> runMacro(String file_to_process) {
+    public Result<String> runMacro(List<File> files_to_process) {
         try {
-            List<String> files_to_process = new ArrayList<String>();
-            files_to_process.add(file_to_process);
-            MainMacro(files_to_process);
+            return MainMacro(files_to_process);
         } catch (Exception e) {
             return new Result<>(e);
         }//end if we catch any exceptions
-
-        // if we've readed this point, we must be fine
-        return new Result<>("everything was fine ;-)");
     }//end runMacro()
 
-    public Result<String> MainMacro(List<String> files_to_process) {
+    public Result<String> MainMacro(List<File> files_to_process) {
         // int baseThreshold = 160;
         List<SumResult> runningSum = new ArrayList<SumResult>();
         int splitWidth = 2400;
@@ -179,7 +174,7 @@ public class IJProcess {
         // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
         // List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
         for (int i = 0; i < files_to_process.size(); i++) {
-            File file = new File(files_to_process.get(i));
+            File file = files_to_process.get(i);
             String sliceBase = file.getName().substring(0, file.getName().length() - 4);
 
             // actually start processing
