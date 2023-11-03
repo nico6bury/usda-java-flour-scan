@@ -121,8 +121,8 @@ public class MainWindow extends javax.swing.JFrame {
         uxOpenFileBtn = new javax.swing.JButton();
         uxImageLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        uxOutputTable = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        uxOutputTxt = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         uxInitMenu = new javax.swing.JMenu();
         uxConnectScannerBtn = new javax.swing.JMenuItem();
@@ -314,7 +314,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+            .addComponent(jSplitPane2)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -402,33 +402,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        uxOutputTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxOutputTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "FileID", "TH", "L Count", "L %Area", "L L* Mean", "R Count", "R %Area", "R L* Mean", "Avg %Area"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        uxOutputTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        uxOutputTable.setShowGrid(true);
-        jScrollPane5.setViewportView(uxOutputTable);
+        uxOutputTxt.setEditable(false);
+        uxOutputTxt.setColumns(20);
+        uxOutputTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOutputTxt.setRows(5);
+        jScrollPane7.setViewportView(uxOutputTxt);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -436,14 +414,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -817,8 +795,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
@@ -833,7 +811,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu uxInitMenu;
     private javax.swing.JButton uxNextImageBtn;
     private javax.swing.JButton uxOpenFileBtn;
-    private javax.swing.JTable uxOutputTable;
+    private javax.swing.JTextArea uxOutputTxt;
     private javax.swing.JButton uxPrevImageBtn;
     private javax.swing.JButton uxProcessAllBtn;
     private javax.swing.JList<String> uxQueueList;
