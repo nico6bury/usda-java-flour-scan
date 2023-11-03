@@ -4,8 +4,6 @@
  */
 package View;
 
-import javax.imageio.ImageIO;
-import javax.imageio.spi.ImageReaderSpi;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -15,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +26,6 @@ import Utils.Constants;
 import Utils.Result;
 import Utils.Result.ResultType;
 import ij.IJ;
-import ij.io.ImageReader;
 
 /**
  *
@@ -697,29 +692,31 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxProcessAllBtnActionPerformed
 
     private void uxNextImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxNextImageBtnActionPerformed
-        // TODO add your handling code here:
+        int curIdx = uxQueueList.getSelectedIndex();
+        if (curIdx + 1 < uxQueueList.getModel().getSize()) {
+            uxQueueList.setSelectedIndex(curIdx + 1);
+        }//end if there's another index to go to
     }//GEN-LAST:event_uxNextImageBtnActionPerformed
 
     private void uxPrevImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxPrevImageBtnActionPerformed
-        // TODO add your handling code here:
+        int curIdx = uxQueueList.getSelectedIndex();
+        if (curIdx - 1 >= 0) {
+            uxQueueList.setSelectedIndex(curIdx - 1);
+        }//end if there's a previous index to go to
     }//GEN-LAST:event_uxPrevImageBtnActionPerformed
 
     private void uxOpenFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxOpenFileBtnActionPerformed
-        // TODO add your handling code here:
+        // open the file in file explorer
+        try {
+            File imageMatch = getSelectedFileFromQueue();
+            if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find file that matches selected image, or no image selected.");}
+            Runtime.getRuntime().exec("explorer.exe /select," + imageMatch.getAbsolutePath());
+        }//end trying to open file explorer
+        catch(Exception e) {System.out.println("Couldn't open file explorer");}
     }//GEN-LAST:event_uxOpenFileBtnActionPerformed
 
     private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
-        // get filename from list
-        String selectedFileName = uxQueueList.getSelectedValue();
-        // search through imageQueue for File which matches
-        File imageMatch = null;
-        for (int i = 0; i < imageQueue.size(); i++) {
-            File this_image = imageQueue.get(i);
-            if (this_image.getName().equals(selectedFileName)) {
-                imageMatch = this_image;
-                break;
-            }//end if we found a match
-        }//end looping over each file in image queue
+        File imageMatch = getSelectedFileFromQueue();
         // input validation
         if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find matching file for selection."); return;}
         // display the image in the label
@@ -757,6 +754,21 @@ public class MainWindow extends javax.swing.JFrame {
         uxImagePropertiesTxt.setText("Image: " + imageMatch.getName());
         
     }//GEN-LAST:event_uxQueueListValueChanged
+
+    private File getSelectedFileFromQueue() {
+        // get filename from list
+        String selectedFileName = uxQueueList.getSelectedValue();
+        // search through imageQueue for File which matches
+        File imageMatch = null;
+        for (int i = 0; i < imageQueue.size(); i++) {
+            File this_image = imageQueue.get(i);
+            if (this_image.getName().equals(selectedFileName)) {
+                imageMatch = this_image;
+                break;
+            }//end if we found a match
+        }//end looping over each file in image queue
+        return imageMatch;
+    }//end getSelectedFileFromQueue()
 
     private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
         imageQueue.clear();
