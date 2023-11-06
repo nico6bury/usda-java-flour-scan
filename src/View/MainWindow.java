@@ -694,8 +694,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxOpenFileBtnActionPerformed
 
     private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
+        // pick throug the list of files that have been loaded into queue to find the one that matches the selected file name
         File imageMatch = getSelectedFileFromQueue();
-        // input validation
+        // edge case validation
         if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find matching file for selection."); return;}
         // display the image in the label
         ImageIcon icon = scaleImageToIcon(imageMatch);
@@ -717,6 +718,11 @@ public class MainWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_uxQueueListValueChanged
 
+    /**
+     * A helper method written for uxQueueListValueChange(). This method loops through all 
+     * the files in the queue until it finds one whose name matches the file name selected in uxQueueList.
+     * @return This method returns the File that matches if found, or null if it couldn't find a match.
+     */
     private File getSelectedFileFromQueue() {
         // get filename from list
         String selectedFileName = uxQueueList.getSelectedValue();
@@ -732,10 +738,25 @@ public class MainWindow extends javax.swing.JFrame {
         return imageMatch;
     }//end getSelectedFileFromQueue()
 
+    /**
+     * This method was written as a helper method for uxQueueListValueChanged(). This method reads an image File into memory as
+     * a BufferedImage, and then converts that image into an Icon which has been scaled down to fit in the window. 
+     * @param imageFile The File representing an image file to be opened and displayed.
+     * @return Returns an ImageIcon if the file is found. Otherwise, returns null if we can't open the image.
+     */
     private ImageIcon scaleImageToIcon(File imageFile) {
         BufferedImage buf_img = IJ.openImage(imageFile.getAbsolutePath()).getBufferedImage();
         if (buf_img == null) {return null;}
-        // TODO: Improve image scaling
+        // It would maybe be good to improve image scaling at some point
+        /*
+         * It would maybe be good to improve image scaling at some point, as currently, 
+         * in order to resize the image, you have to select a different file, which is pretty jank.
+         * 
+         * The reason we scale the image to less than the size of the label container is that if you set the iamge to the same
+         * width and height as that of the container, then the image will be slightly larger than the label, so every time a new
+         * image is selected, the size of the label will just continually grow in size. But, if you set the size to 95% or 99%
+         * the size of the label, then that doesn't happen for some reason.
+         */
         int imgWidth = buf_img.getWidth();
         int imgHeight = buf_img.getHeight();
         if (imgWidth > uxImageLabel.getWidth()) {
