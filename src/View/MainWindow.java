@@ -698,24 +698,8 @@ public class MainWindow extends javax.swing.JFrame {
         // input validation
         if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find matching file for selection."); return;}
         // display the image in the label
-        BufferedImage buf_img = IJ.openImage(imageMatch.getAbsolutePath()).getBufferedImage();
-        if (buf_img == null) {JOptionPane.showMessageDialog(this, "Could not read selected image to buffer."); return;}
-        // TODO: Improve image scaling
-        int imgWidth = buf_img.getWidth();
-        int imgHeight = buf_img.getHeight();
-        if (imgWidth > uxImageLabel.getWidth()) {
-            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.95);
-            int newImgHeight = newImgWidth * imgHeight / imgWidth;
-            imgWidth = newImgWidth;
-            imgHeight = newImgHeight;
-        }//end if we need to scale down because of width
-        if (imgHeight > uxImageLabel.getHeight()) {
-            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.95);
-            int newImgWidth = imgWidth * newImgHeight / imgHeight;
-            imgHeight = newImgHeight;
-            imgWidth = newImgWidth;
-        }//end if we need to scale down because of height
-        ImageIcon icon = new ImageIcon(new ImageIcon(buf_img).getImage().getScaledInstance(imgWidth, imgHeight, Image.SCALE_DEFAULT));
+        ImageIcon icon = scaleImageToIcon(imageMatch);
+        if (icon == null) {JOptionPane.showMessageDialog(this, "Could not read selected image to buffer."); return;}
         uxImageLabel.setIcon(icon);
         // ensure that some files have been processed, at least
         if (ijProcess.lastProcResult == null) {System.out.println("Please process files before displaying results."); return;}
@@ -747,6 +731,27 @@ public class MainWindow extends javax.swing.JFrame {
         }//end looping over each file in image queue
         return imageMatch;
     }//end getSelectedFileFromQueue()
+
+    private ImageIcon scaleImageToIcon(File imageFile) {
+        BufferedImage buf_img = IJ.openImage(imageFile.getAbsolutePath()).getBufferedImage();
+        if (buf_img == null) {return null;}
+        // TODO: Improve image scaling
+        int imgWidth = buf_img.getWidth();
+        int imgHeight = buf_img.getHeight();
+        if (imgWidth > uxImageLabel.getWidth()) {
+            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.95);
+            int newImgHeight = newImgWidth * imgHeight / imgWidth;
+            imgWidth = newImgWidth;
+            imgHeight = newImgHeight;
+        }//end if we need to scale down because of width
+        if (imgHeight > uxImageLabel.getHeight()) {
+            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.95);
+            int newImgWidth = imgWidth * newImgHeight / imgHeight;
+            imgHeight = newImgHeight;
+            imgWidth = newImgWidth;
+        }//end if we need to scale down because of height
+        return new ImageIcon(new ImageIcon(buf_img).getImage().getScaledInstance(imgWidth, imgHeight, Image.SCALE_DEFAULT));
+    }//end scaleImageToIcon(imageFile)
 
     private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
         imageQueue.clear();
