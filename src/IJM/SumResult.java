@@ -10,6 +10,7 @@ public class SumResult {
     public double percent_area;
     public double l_mean;
     public double l_stdv;
+    public LeftOrRight leftOrRight = LeftOrRight.Unknown;
 
     public SumResult() {}
 
@@ -36,4 +37,11 @@ public class SumResult {
         this.l_mean = l_mean;
         this.l_stdv = l_stdv;
     }//end constructor
-}
+    
+    public enum LeftOrRight {
+        Left,
+        Right,
+        Unknown,
+    }//end enum LeftOrRight
+}//end struct SumResult
+
