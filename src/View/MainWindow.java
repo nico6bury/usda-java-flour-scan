@@ -7,6 +7,9 @@ package View;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -14,7 +17,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -38,7 +43,18 @@ public class MainWindow extends javax.swing.JFrame {
     private JFileChooser selectFilesChooser = new JFileChooser();
     private File lastScannedFile = null;
     private List<File> imageQueue = new ArrayList<File>();
+    private List<File> allImages = new ArrayList<File>();
     private IJProcess ijProcess = new IJProcess();
+    // where displayed image was last selected from
+    private LastSelectedFrom lastSelectedFrom = LastSelectedFrom.NoSelection;
+    /**
+     * enum added for use in keeping track of whether displayed image was selected from QueueList or OutputTable
+     */
+    private enum LastSelectedFrom {
+        QueueList,
+        OutputTable,
+        NoSelection
+    }
 
     /**
      * Creates new form MainWindow
@@ -76,7 +92,31 @@ public class MainWindow extends javax.swing.JFrame {
         uxTitleBlockTxt.setText(tb.toString());
 
         // set columns in output text
-        uxOutputTxt.setText(String.format("%-16s  %-3s  %-7s  %-7s  %-4s  %-7s  %-7s  %-4s  %-6s\n","FileID","TH","L_Count", "L_%Area","L_L*","R_Count","R_%Area","R_L*","Avg_%Area"));
+        // uxOutputTxt.setText(String.format("%-16s  %-3s  %-7s  %-7s  %-4s  %-7s  %-7s  %-4s  %-6s\n","FileID","TH","L_Count", "L_%Area","L_L*","R_Count","R_%Area","R_L*","Avg_%Area"));
+
+        // configure the table model
+        ListSelectionListener lsl = new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int idx = uxOutputTable.getSelectedRow();
+                    String selected_filename = uxOutputTable.getModel().getValueAt(idx, 0).toString();
+                    // call method to update image label
+                    updateImageDisplay(selected_filename);
+                    // update properties display
+                    uxImagePropertiesTxt.setText("Image: " + selected_filename + "\nSelected From: OutputTable[" + idx + "]");
+                    // update flags and such
+                    lastSelectedFrom = LastSelectedFrom.OutputTable;
+                }//end if the value is done adjusting
+            }//end valueChanged(e)
+        };
+        uxOutputTable.getSelectionModel().addListSelectionListener(lsl);
+        // Object[] columnNames = {""};
+        // Object[][] rowData = new Object[][] {
+        //     {"","","","","","","","",""}
+        // };
+        // dtm = new DefaultTableModel(rowData, columnNames);
+        // uxOutputTable.setModel(dtm);
     }//end MainWindow constructor
 
     /**
@@ -126,8 +166,8 @@ public class MainWindow extends javax.swing.JFrame {
         uxOpenFileBtn = new javax.swing.JButton();
         uxImageLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        uxOutputTxt = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        uxOutputTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         uxInitMenu = new javax.swing.JMenu();
         uxConnectScannerBtn = new javax.swing.JMenuItem();
@@ -407,12 +447,40 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        uxOutputTxt.setEditable(false);
-        uxOutputTxt.setColumns(20);
-        uxOutputTxt.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
-        uxOutputTxt.setRows(5);
-        uxOutputTxt.setText("FileID              Th  L Count  L %Area  L_L*  R Count  R %Area  R_L*  Avg %Area\n");
-        jScrollPane7.setViewportView(uxOutputTxt);
+        uxOutputTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "FileID", "TH", "L Count", "L %Area", "L L*", "R Count", "R %Area", "R L*", "Avg %Area"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        uxOutputTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        uxOutputTable.setColumnSelectionAllowed(true);
+        uxOutputTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        uxOutputTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        uxOutputTable.setShowGrid(true);
+        jScrollPane5.setViewportView(uxOutputTable);
+        uxOutputTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        if (uxOutputTable.getColumnModel().getColumnCount() > 0) {
+            uxOutputTable.getColumnModel().getColumn(0).setPreferredWidth(200);
+            uxOutputTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+        }
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -420,14 +488,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -553,6 +621,7 @@ public class MainWindow extends javax.swing.JFrame {
                 for (int i = 0; i < selectedFiles.length; i++) {
                     uxStatusTxt.append("selected scanned file \"" + selectedFiles[i].getAbsolutePath() + "\"\n");
                     imageQueue.add(selectedFiles[i]);
+                    allImages.add(selectedFiles[i]);
                 }//end adding each selected file to the queue
             }//end if selection was approved
             else if (e.getActionCommand() == "CancelSelection") {
@@ -630,6 +699,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
         else if (scanResult.isOk()) {
             imageQueue.add(scanResult.getValue());
+            allImages.add(scanResult.getValue());
             UpdateQueueList();
         }//end else if we can add something to the queue
     }//GEN-LAST:event_uxScanQueueBtnActionPerformed
@@ -667,7 +737,13 @@ public class MainWindow extends javax.swing.JFrame {
                     outputData.getError().printStackTrace();
                     showGenericExceptionMessage(outputData.getError());
                 }//end if we couldn't get output data
-                // display the output data to the user
+                // group together SumResults which came from the same file path
+                List<List<SumResult>> groupedResults = groupResultsByFile(ijProcess.lastProcResult);
+                // process sumResults into string columns
+                updateOutputTable(groupedResults);
+                // clear queue now that it's been processed
+                imageQueue.clear();
+                UpdateQueueList();
 			} catch (Exception e) {
 				e.printStackTrace();
                 showGenericExceptionMessage(e);
@@ -676,23 +752,42 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxProcessAllBtnActionPerformed
 
     private void uxNextImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxNextImageBtnActionPerformed
-        int curIdx = uxQueueList.getSelectedIndex();
-        if (curIdx + 1 < uxQueueList.getModel().getSize()) {
-            uxQueueList.setSelectedIndex(curIdx + 1);
-        }//end if there's another index to go to
+        if (lastSelectedFrom == LastSelectedFrom.QueueList) {
+            int curIdx = uxQueueList.getSelectedIndex();
+            if (curIdx + 1 < uxQueueList.getModel().getSize() && curIdx + 1 >= 0) {
+                uxQueueList.setSelectedIndex(curIdx + 1);
+            }//end if there's another index to go to
+        }//end if last selection was from queue list
+        else if (lastSelectedFrom == LastSelectedFrom.OutputTable) {
+            int curIdx = uxOutputTable.getSelectedRow();
+            if (curIdx + 1 < uxOutputTable.getRowCount() && curIdx + 1 >= 0) {
+                uxOutputTable.changeSelection(curIdx + 1, 0, false, false);
+            }//end if there's another index to go to
+        }//end else if last selection was from output table
     }//GEN-LAST:event_uxNextImageBtnActionPerformed
 
     private void uxPrevImageBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxPrevImageBtnActionPerformed
-        int curIdx = uxQueueList.getSelectedIndex();
-        if (curIdx - 1 >= 0) {
-            uxQueueList.setSelectedIndex(curIdx - 1);
-        }//end if there's a previous index to go to
+        if (lastSelectedFrom == LastSelectedFrom.QueueList) {
+            int curIdx = uxQueueList.getSelectedIndex();
+            if (curIdx - 1 >= 0) {
+                uxQueueList.setSelectedIndex(curIdx - 1);
+            }//end if there's another index to go to
+        }//end if last selection was from queue list
+        else if (lastSelectedFrom == LastSelectedFrom.OutputTable) {
+            int curIdx = uxOutputTable.getSelectedRow();
+            if (curIdx - 1 >= 0) {
+                uxOutputTable.changeSelection(curIdx - 1, 0, false, false);
+            }//end if there's another index to go to
+        }//end else if last selection was from output table
     }//GEN-LAST:event_uxPrevImageBtnActionPerformed
 
     private void uxOpenFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxOpenFileBtnActionPerformed
         // open the file in file explorer
         try {
-            File imageMatch = getSelectedFileFromQueue();
+            String selectedValue = "";
+            if (lastSelectedFrom == LastSelectedFrom.QueueList) {selectedValue = uxQueueList.getSelectedValue();}
+            else if (lastSelectedFrom == LastSelectedFrom.OutputTable) {selectedValue = uxOutputTable.getModel().getValueAt(uxOutputTable.getSelectedRow(), 0).toString();}
+            File imageMatch = getSelectedFileFromAll(selectedValue);
             if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find file that matches selected image, or no image selected.");}
             Runtime.getRuntime().exec("explorer.exe /select," + imageMatch.getAbsolutePath());
         }//end trying to open file explorer
@@ -705,62 +800,58 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt The list selection events
      */
     private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
+        if (!evt.getValueIsAdjusting() && uxQueueList.getSelectedIndex() != -1) {
+            // update the displayed image
+            updateImageDisplay(uxQueueList.getSelectedValue());
+            // update image properties text
+            uxImagePropertiesTxt.setText("Image: " + uxQueueList.getSelectedValue() + "\nSelected From: QueueList[" + uxQueueList.getSelectedIndex() + "]");
+            // update some flags and such
+            lastSelectedFrom = LastSelectedFrom.QueueList;
+        }//end if we're not in a series of adjustments?
+    }//GEN-LAST:event_uxQueueListValueChanged
+
+    /**
+     * This method updates the image label with the image which has the specified filename (as from File.getName())
+     * @param filename
+     */
+    private void updateImageDisplay(String filename) {
         // pick throug the list of files that have been loaded into queue to find the one that matches the selected file name
-        File imageMatch = getSelectedFileFromQueue();
+        File imageMatch = getSelectedFileFromAll(filename);
         // edge case validation
         if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find matching file for selection."); return;}
         // display the image in the label
         ImageIcon icon = scaleImageToIcon(imageMatch);
         if (icon == null) {JOptionPane.showMessageDialog(this, "Could not read selected image to buffer."); return;}
         uxImageLabel.setIcon(icon);
-        // ensure that some files have been processed, at least
-        if (ijProcess.lastProcResult == null) {System.out.println("Please process files before displaying results."); return;}
-        // try and build a list of SumResults that match the file path
-        List<SumResult> matchingResults = new ArrayList<SumResult>();
-        for (int i = 0; i < ijProcess.lastProcResult.size(); i++) {
-            if (ijProcess.lastProcResult.get(i).file.getAbsolutePath().equals(imageMatch.getAbsolutePath())) {
-                matchingResults.add(ijProcess.lastProcResult.get(i));
-            }//end if we found a matching result
-        }//end looking for SumResults matching imageMatch
-        // check that we found some results
-        if (matchingResults.size() == 0) {JOptionPane.showMessageDialog(this, "Could not locate results for selected file."); return;}
-        // display the results that we found in the img info and the table
-        uxImagePropertiesTxt.setText("Image: " + imageMatch.getName());
-        
-        /*
-         * Okay, so now we'll want to do something pretty awkward. I'll want to have a loop that groups together the
-         * left and right halves of each file. Thankfully, SumResult contains the corresponding File, so I won't have
-         * to worry about incorrect matches, but I'll still need to determine which is right or left based on the name.
-         * Maybe I should add a left/right enum and assign it in IJProcess? That might be worthwhile, honestly.
-         * 
-         * After getting that list of grouped files, I'll need to take the info from the two SumResults and plunk that
-         * into the new column formatting Dan wants.
-         */
-        // group together SumResults which came from the same file path
-        List<List<SumResult>> groupedResults = groupResultsByFile(matchingResults);
-
-        // process sumResults into string columns
-        String resultsColumns = buildLeftRightResultColumns(groupedResults);
-        uxOutputTxt.setText(uxOutputTxt.getText() + resultsColumns);
-    }//GEN-LAST:event_uxQueueListValueChanged
+        // // ensure that some files have been processed, at least
+        // if (ijProcess.lastProcResult == null) {System.out.println("Please process files before displaying results."); return;}
+        // // try and build a list of SumResults that match the file path
+        // List<SumResult> matchingResults = new ArrayList<SumResult>();
+        // for (int i = 0; i < ijProcess.lastProcResult.size(); i++) {
+        //     if (ijProcess.lastProcResult.get(i).file.getAbsolutePath().equals(imageMatch.getAbsolutePath())) {
+        //         matchingResults.add(ijProcess.lastProcResult.get(i));
+        //     }//end if we found a matching result
+        // }//end looking for SumResults matching imageMatch
+        // // check that we found some results
+        // if (matchingResults.size() == 0) {JOptionPane.showMessageDialog(this, "Could not locate results for selected file."); return;}
+        // // display the results that we found in the img info and the table
+        // uxImagePropertiesTxt.setText("Image: " + imageMatch.getName());
+    }//end updateImageDisplay(filename)
 
     /**
      * A helper method written for uxQueueListValueChange(). This method loops through all 
      * the files in the queue until it finds one whose name matches the file name selected in uxQueueList.
      * @return This method returns the File that matches if found, or null if it couldn't find a match.
      */
-    private File getSelectedFileFromQueue() {
-        // get filename from list
-        String selectedFileName = uxQueueList.getSelectedValue();
+    private File getSelectedFileFromAll(String filename) {
         // search through imageQueue for File which matches
         File imageMatch = null;
-        for (int i = 0; i < imageQueue.size(); i++) {
-            File this_image = imageQueue.get(i);
-            if (this_image.getName().equals(selectedFileName)) {
+        for (File this_image : allImages) {
+            if (this_image.getName().equals(filename)) {
                 imageMatch = this_image;
                 break;
             }//end if we found a match
-        }//end looping over each file in image queue
+        }//end looping over all images
         return imageMatch;
     }//end getSelectedFileFromQueue()
 
@@ -838,58 +929,34 @@ public class MainWindow extends javax.swing.JFrame {
         return groupedResults;
     }//end GroupResultsByFile
 
-    /**
-     * This method was written as a helper method for uxQueueListValueChanged(), specifically to parse grouped SumResults
-     * into a bunch of string columns to be displayed to the user. 
-     * @param groupedResults The list of grouped SumResults. The groups are represented by the inner lists.
-     * @return Returns a string formatted to show as columns.
-     */
-    private String buildLeftRightResultColumns(List<List<SumResult>> groupedResults) {
-        StringBuilder cb = new StringBuilder();
-        String padding = "  ";
-
-        for (List<SumResult> resultsGroup : groupedResults) {
-            if (resultsGroup.size() == 2) {
-                SumResult left = null;
-                SumResult right = null;
-                for (SumResult rightOrLeftResult : resultsGroup) {
-                    if (rightOrLeftResult.leftOrRight == LeftOrRight.Left) {left = rightOrLeftResult;}
-                    else if (rightOrLeftResult.leftOrRight == LeftOrRight.Right) {right = rightOrLeftResult;}
-                }//end checking each result
-                // validation
-                if (left != null && right != null){
-                    String filename = left.file.getName();
-                    cb.append(String.format("%-16s",filename));
-                    cb.append(padding);
-                    cb.append(String.format("%-3d",160));
-                    cb.append(padding);
-                    cb.append(String.format("%-7d",left.count));
-                    cb.append(padding);
-                    cb.append(String.format("%-7.1f",left.percent_area));
-                    cb.append(padding);
-                    cb.append(String.format("%-4.1f",left.l_mean));
-                    cb.append(padding);
-                    cb.append(String.format("%-7d",right.count));
-                    cb.append(padding);
-                    cb.append(String.format("%-7.1f",right.percent_area));
-                    cb.append(padding);
-                    cb.append(String.format("%-4.1f",right.l_mean));
-                    cb.append(padding);
-                    double avg_p_area = (left.percent_area + right.percent_area) / 2.0;
-                    cb.append(String.format("%-6.1f",avg_p_area));
-                    cb.append("\n");
-                }//end if we have both left and right
-                else {
-                    // TODO: Handle excpetion case
-                }//end else we have to figure out what to do
-            }//end if resultsGroup is expected size
+    private void updateOutputTable(List<List<SumResult>> groupedResults) {
+        DefaultTableModel this_table_model = (DefaultTableModel)uxOutputTable.getModel();
+        for (List<SumResult> resultGroup : groupedResults) {
+            // check that we have valid left and right results
+            SumResult left = null;
+            SumResult right = null;
+            for (SumResult tempResult : resultGroup) {
+                if (tempResult.leftOrRight == LeftOrRight.Left) {left = tempResult;}
+                else if (tempResult.leftOrRight == LeftOrRight.Right) {right = tempResult;}
+            }//end categorizing all of result group
+            if (left != null && right != null) {
+                Object[] this_row = new Object[9];
+                this_row[0] = left.file.getName();
+                this_row[1] = 160;
+                this_row[2] = left.count;
+                this_row[3] = left.percent_area;
+                this_row[4] = left.l_mean;
+                this_row[5] = right.count;
+                this_row[6] = right.percent_area;
+                this_row[7] = right.l_mean;
+                this_row[8] = (left.percent_area + right.percent_area) / 2.0;
+                this_table_model.addRow(this_row);
+            }//end if we have proper left and right result
             else {
                 // TODO: Handle exception case
-            }//end else we'll have to find some way to handle this
-        }//end looping over each results group
-
-        return cb.toString();
-    }//end buildLeftRightResultColumns(groupedResults)
+            }//end else we need to figure out what to do
+        }//end looping over each result group
+    }//end updateOutputTable(groupedResults)
 
     private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
         imageQueue.clear();
@@ -938,8 +1005,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JSplitPane jSplitPane3;
@@ -954,7 +1021,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu uxInitMenu;
     private javax.swing.JButton uxNextImageBtn;
     private javax.swing.JButton uxOpenFileBtn;
-    private javax.swing.JTextArea uxOutputTxt;
+    private javax.swing.JTable uxOutputTable;
     private javax.swing.JButton uxPrevImageBtn;
     private javax.swing.JButton uxProcessAllBtn;
     private javax.swing.JList<String> uxQueueList;
