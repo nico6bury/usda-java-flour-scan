@@ -21,6 +21,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import IJM.IJProcess;
 import IJM.SumResult;
+import IJM.SumResult.LeftOrRight;
 import Scan.Scan;
 import Utils.Constants;
 import Utils.Result;
@@ -57,6 +58,7 @@ public class MainWindow extends javax.swing.JFrame {
         
                 initComponents();
 
+        // build title block
         StringBuilder tb = new StringBuilder();
         tb.append(Constants.LOCATION);
         tb.append("\t");
@@ -72,6 +74,9 @@ public class MainWindow extends javax.swing.JFrame {
         tb.append("To collect reflective image of flour sample in a 100mm diameter petri dish\n");
         tb.append("Process image to estimate %contamination and L* color from CIELAB color space");
         uxTitleBlockTxt.setText(tb.toString());
+
+        // set columns in output text
+        uxOutputTxt.setText(String.format("%-16s  %-3s  %-7s  %-7s  %-4s  %-7s  %-7s  %-4s  %-6s\n","FileID","TH","L_Count", "L_%Area","L_L*","R_Count","R_%Area","R_L*","Avg_%Area"));
     }//end MainWindow constructor
 
     /**
@@ -736,7 +741,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         // process sumResults into string columns
         String resultsColumns = buildLeftRightResultColumns(groupedResults);
-        uxOutputTxt.setText(resultsColumns);
+        uxOutputTxt.setText(uxOutputTxt.getText() + resultsColumns);
     }//GEN-LAST:event_uxQueueListValueChanged
 
     /**
@@ -841,8 +846,47 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private String buildLeftRightResultColumns(List<List<SumResult>> groupedResults) {
         StringBuilder cb = new StringBuilder();
+        String padding = "  ";
 
-        
+        for (List<SumResult> resultsGroup : groupedResults) {
+            if (resultsGroup.size() == 2) {
+                SumResult left = null;
+                SumResult right = null;
+                for (SumResult rightOrLeftResult : resultsGroup) {
+                    if (rightOrLeftResult.leftOrRight == LeftOrRight.Left) {left = rightOrLeftResult;}
+                    else if (rightOrLeftResult.leftOrRight == LeftOrRight.Right) {right = rightOrLeftResult;}
+                }//end checking each result
+                // validation
+                if (left != null && right != null){
+                    String filename = left.file.getName();
+                    cb.append(String.format("%-16s",filename));
+                    cb.append(padding);
+                    cb.append(String.format("%-3d",160));
+                    cb.append(padding);
+                    cb.append(String.format("%-7d",left.count));
+                    cb.append(padding);
+                    cb.append(String.format("%-7.1f",left.percent_area));
+                    cb.append(padding);
+                    cb.append(String.format("%-4.1f",left.l_mean));
+                    cb.append(padding);
+                    cb.append(String.format("%-7d",right.count));
+                    cb.append(padding);
+                    cb.append(String.format("%-7.1f",right.percent_area));
+                    cb.append(padding);
+                    cb.append(String.format("%-4.1f",right.l_mean));
+                    cb.append(padding);
+                    double avg_p_area = (left.percent_area + right.percent_area) / 2.0;
+                    cb.append(String.format("%-6.1f",avg_p_area));
+                    cb.append("\n");
+                }//end if we have both left and right
+                else {
+                    // TODO: Handle excpetion case
+                }//end else we have to figure out what to do
+            }//end if resultsGroup is expected size
+            else {
+                // TODO: Handle exception case
+            }//end else we'll have to find some way to handle this
+        }//end looping over each results group
 
         return cb.toString();
     }//end buildLeftRightResultColumns(groupedResults)
