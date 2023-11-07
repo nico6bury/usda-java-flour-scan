@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
+import IJM.SumResult.LeftOrRight;
 import Utils.Constants;
 import Utils.Result;
 import ij.IJ;
@@ -189,6 +190,7 @@ public class IJProcess {
                 // left image
                 // analyze particles info
                 SumResult leftResult = ijmProcessFile(splitImages.get(0), file);
+                leftResult.leftOrRight = LeftOrRight.Left;
                 leftResult.slice = sliceBase + "-L";
                 // Lab info
                 double[] leftL = LabProcesser(splitImages.get(0));
@@ -200,6 +202,7 @@ public class IJProcess {
                 // right image
                 // analyze particles info
                 SumResult rightResult = ijmProcessFile(splitImages.get(1), file);
+                rightResult.leftOrRight = LeftOrRight.Right;
                 rightResult.slice = sliceBase + "-R";
                 // Lab info
                 double[] rightL = LabProcesser(splitImages.get(1));
