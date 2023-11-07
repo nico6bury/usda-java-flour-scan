@@ -404,8 +404,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxOutputTxt.setEditable(false);
         uxOutputTxt.setColumns(20);
-        uxOutputTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOutputTxt.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
         uxOutputTxt.setRows(5);
+        uxOutputTxt.setText("FileID              Th  L Count  L %Area  L_L*  R Count  R %Area  R_L*  Avg %Area\n");
         jScrollPane7.setViewportView(uxOutputTxt);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -733,7 +734,9 @@ public class MainWindow extends javax.swing.JFrame {
         // group together SumResults which came from the same file path
         List<List<SumResult>> groupedResults = groupResultsByFile(matchingResults);
 
-        // TODO: process sumResults into string columns
+        // process sumResults into string columns
+        String resultsColumns = buildLeftRightResultColumns(groupedResults);
+        uxOutputTxt.setText(resultsColumns);
     }//GEN-LAST:event_uxQueueListValueChanged
 
     /**
@@ -829,6 +832,20 @@ public class MainWindow extends javax.swing.JFrame {
         }//end looping through each sum result
         return groupedResults;
     }//end GroupResultsByFile
+
+    /**
+     * This method was written as a helper method for uxQueueListValueChanged(), specifically to parse grouped SumResults
+     * into a bunch of string columns to be displayed to the user. 
+     * @param groupedResults The list of grouped SumResults. The groups are represented by the inner lists.
+     * @return Returns a string formatted to show as columns.
+     */
+    private String buildLeftRightResultColumns(List<List<SumResult>> groupedResults) {
+        StringBuilder cb = new StringBuilder();
+
+        
+
+        return cb.toString();
+    }//end buildLeftRightResultColumns(groupedResults)
 
     private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
         imageQueue.clear();

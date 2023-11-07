@@ -661,9 +661,10 @@
                             <Property name="editable" type="boolean" value="false"/>
                             <Property name="columns" type="int" value="20"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Segoe UI" size="14" style="0"/>
+                              <Font name="Courier New" size="14" style="0"/>
                             </Property>
                             <Property name="rows" type="int" value="5"/>
+                            <Property name="text" type="java.lang.String" value="FileID              Th  L Count  L %Area  L_L*  R Count  R %Area  R_L*  Avg %Area&#xa;"/>
                           </Properties>
                         </Component>
                       </SubComponents>
