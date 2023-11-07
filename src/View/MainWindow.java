@@ -693,6 +693,11 @@ public class MainWindow extends javax.swing.JFrame {
         catch(Exception e) {System.out.println("Couldn't open file explorer");}
     }//GEN-LAST:event_uxOpenFileBtnActionPerformed
 
+    /**
+     * Displays the newly selected file image and results to the right. 
+     * Due to how all the architecture is currently set up, this is incredibly awkward.
+     * @param evt The list selection events
+     */
     private void uxQueueListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_uxQueueListValueChanged
         // pick throug the list of files that have been loaded into queue to find the one that matches the selected file name
         File imageMatch = getSelectedFileFromQueue();
@@ -716,6 +721,19 @@ public class MainWindow extends javax.swing.JFrame {
         // display the results that we found in the img info and the table
         uxImagePropertiesTxt.setText("Image: " + imageMatch.getName());
         
+        /*
+         * Okay, so now we'll want to do something pretty awkward. I'll want to have a loop that groups together the
+         * left and right halves of each file. Thankfully, SumResult contains the corresponding File, so I won't have
+         * to worry about incorrect matches, but I'll still need to determine which is right or left based on the name.
+         * Maybe I should add a left/right enum and assign it in IJProcess? That might be worthwhile, honestly.
+         * 
+         * After getting that list of grouped files, I'll need to take the info from the two SumResults and plunk that
+         * into the new column formatting Dan wants.
+         */
+        // group together SumResults which came from the same file path
+        List<List<SumResult>> groupedResults = groupResultsByFile(matchingResults);
+
+        // TODO: process sumResults into string columns
     }//GEN-LAST:event_uxQueueListValueChanged
 
     /**
@@ -773,6 +791,44 @@ public class MainWindow extends javax.swing.JFrame {
         }//end if we need to scale down because of height
         return new ImageIcon(new ImageIcon(buf_img).getImage().getScaledInstance(imgWidth, imgHeight, Image.SCALE_DEFAULT));
     }//end scaleImageToIcon(imageFile)
+
+    /**
+     * This method was written as a helper method for uxQueueListValueChanged(), but it could also be helpful for other processes.
+     * When given a list of SumResults, it will group together SumResults which have the same absolute file path.
+     * @param sumResults The list of SumResults to group.
+     * @return Returns a list of lists of SumResults. The inner lists are the groupings.
+     */
+    private List<List<SumResult>> groupResultsByFile(List<SumResult> sumResults) {
+        List<List<SumResult>> groupedResults = new ArrayList<List<SumResult>>();
+        List<String> filenames_indexed = new ArrayList<String>();
+        for (int i = 0; i < sumResults.size(); i++) {
+            SumResult this_result = sumResults.get(i);
+            // check if we need to create new list in groupedResults or just add to existing
+            if (filenames_indexed.contains(this_result.file.getAbsolutePath())) {
+                // find out which index of grouped results contains the right filename
+                // theoretically, this should be the last index in groupedResults,
+                // so loop backwards through groupedResults to search
+                for (int j = groupedResults.size() - 1; j >= 0; j--) {
+                    List<SumResult> thisGroupResults = groupedResults.get(j);
+                    SumResult this_grouped_result = thisGroupResults.get(0);
+                    if (this_grouped_result.file.getAbsolutePath().equals(this_result.file.getAbsolutePath())) {
+                        // add this_result to proper place in groupedResults,
+                        groupedResults.get(j).add(this_result);
+                        // then break out of inner loop
+                        break;
+                    }//end if we found matching filename
+                }//end looping backwards through groupedResults
+                // at this point, we should have added this_result already
+            }//end if we can add this file to an existing list in groupedResults
+            else {
+                List<SumResult> temp_result_list = new ArrayList<SumResult>();
+                temp_result_list.add(this_result);
+                groupedResults.add(temp_result_list);
+                filenames_indexed.add(this_result.file.getAbsolutePath());
+            }//end else we must add a new entry
+        }//end looping through each sum result
+        return groupedResults;
+    }//end GroupResultsByFile
 
     private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
         imageQueue.clear();
