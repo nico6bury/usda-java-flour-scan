@@ -459,14 +459,14 @@ public class MainWindow extends javax.swing.JFrame {
 
             },
             new String [] {
-                "FileID", "TH", "L Count", "L %Area", "L L*", "R Count", "R %Area", "R L*", "Avg %Area"
+                "FileID", "TH", "left CT", "left %A", "left L*", "rght CT", "rght %A", "rght L*", "Avg %A", "Flag"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -483,7 +483,7 @@ public class MainWindow extends javax.swing.JFrame {
         uxOutputTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         uxOutputTable.setShowGrid(true);
         jScrollPane5.setViewportView(uxOutputTable);
-        uxOutputTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        uxOutputTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (uxOutputTable.getColumnModel().getColumnCount() > 0) {
             uxOutputTable.getColumnModel().getColumn(0).setPreferredWidth(200);
             uxOutputTable.getColumnModel().getColumn(1).setPreferredWidth(50);
@@ -975,16 +975,17 @@ public class MainWindow extends javax.swing.JFrame {
                 else if (tempResult.leftOrRight == LeftOrRight.Right) {right = tempResult;}
             }//end categorizing all of result group
             if (left != null && right != null) {
-                Object[] this_row = new Object[9];
+                Object[] this_row = new Object[10];
                 this_row[0] = left.file.getName();
                 this_row[1] = 160;
                 this_row[2] = left.count;
-                this_row[3] = left.percent_area;
-                this_row[4] = left.l_mean;
+                this_row[3] = String.format("%3.2f", left.percent_area);
+                this_row[4] = String.format("%3.1f", left.l_mean);
                 this_row[5] = right.count;
-                this_row[6] = right.percent_area;
-                this_row[7] = right.l_mean;
-                this_row[8] = (left.percent_area + right.percent_area) / 2.0;
+                this_row[6] = String.format("%3.2f", right.percent_area);
+                this_row[7] = String.format("%3.1f", right.l_mean);
+                this_row[8] = String.format("%3.2f", (left.percent_area + right.percent_area) / 2.0);
+                this_row[9] = "";
                 this_table_model.addRow(this_row);
             }//end if we have proper left and right result
             else {
