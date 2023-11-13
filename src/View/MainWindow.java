@@ -137,6 +137,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel3 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
@@ -175,6 +176,10 @@ public class MainWindow extends javax.swing.JFrame {
         uxRunMenu = new javax.swing.JMenu();
         uxScanBtn = new javax.swing.JMenuItem();
         uxIjBtn = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        uxSetThresholdMenuBtn = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        uxSetAreaFlagMenuBtn = new javax.swing.JMenuItem();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,6 +193,8 @@ public class MainWindow extends javax.swing.JFrame {
             }
         ));
         jScrollPane4.setViewportView(jTable1);
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("USDA-ARS-FlourScan-Java");
@@ -560,6 +567,34 @@ public class MainWindow extends javax.swing.JFrame {
         uxRunMenu.add(uxIjBtn);
 
         jMenuBar1.add(uxRunMenu);
+
+        jMenu1.setText("Threshold");
+        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxSetThresholdMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSetThresholdMenuBtn.setText("Set Threshold");
+        uxSetThresholdMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxSetThresholdMenuBtnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(uxSetThresholdMenuBtn);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Area Flag");
+        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxSetAreaFlagMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSetAreaFlagMenuBtn.setText("Set %Area Flags");
+        uxSetAreaFlagMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxSetAreaFlagMenuBtnActionPerformed(evt);
+            }
+        });
+        jMenu2.add(uxSetAreaFlagMenuBtn);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -980,6 +1015,14 @@ public class MainWindow extends javax.swing.JFrame {
         uxQueueList.setListData(a);
     }//GEN-LAST:event_uxSearchBtnActionPerformed
 
+    private void uxSetAreaFlagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetAreaFlagMenuBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxSetAreaFlagMenuBtnActionPerformed
+
+    private void uxSetThresholdMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetThresholdMenuBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxSetThresholdMenuBtnActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -994,7 +1037,10 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1032,6 +1078,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton uxScanQueueBtn;
     private javax.swing.JButton uxSearchBtn;
     private javax.swing.JTextField uxSearchTxt;
+    private javax.swing.JMenuItem uxSetAreaFlagMenuBtn;
+    private javax.swing.JMenuItem uxSetThresholdMenuBtn;
     private javax.swing.JTextArea uxStatusTxt;
     private javax.swing.JTextArea uxTitleBlockTxt;
     // End of variables declaration//GEN-END:variables
