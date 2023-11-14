@@ -11,6 +11,10 @@ public class SumResult {
     public double l_mean;
     public double l_stdv;
     public LeftOrRight leftOrRight = LeftOrRight.Unknown;
+    /**
+     * The upper threshold used in image processing
+     */
+    public int threshold;
 
     public SumResult() {}
 

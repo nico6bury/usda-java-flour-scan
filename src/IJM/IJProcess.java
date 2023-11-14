@@ -37,7 +37,7 @@ public class IJProcess {
     // default upper size limit for analyze particles
     int defSizeLimit = 1000;
     // upper threshold for analyze particles
-    int th01 = 160;
+    public int th01 = 160;
     public List<SumResult> lastProcResult;
 
     /**
@@ -272,7 +272,8 @@ public class IJProcess {
         int total_area = (int)sumTable.getValue("Total Area", 0);
         double prcnt_area = sumTable.getValue("%Area", 0);
         SumResult this_result = new SumResult(file, slice, count, total_area, prcnt_area);
-        
+        this_result.threshold = th01;
+
         return this_result;
     }//end ijmProcessFile()
 

@@ -771,6 +771,7 @@ public class MainWindow extends javax.swing.JFrame {
         else {
             try {
                 // process the images in imagej
+                ijProcess.th01 = thresholdDialog.thresholdToReturn;
                 Result<String> outputData = ijProcess.runMacro(imageQueue);
                 if (outputData.isErr()) {
                     outputData.getError().printStackTrace();
@@ -981,7 +982,7 @@ public class MainWindow extends javax.swing.JFrame {
             if (left != null && right != null) {
                 Object[] this_row = new Object[10];
                 this_row[0] = left.file.getName();
-                this_row[1] = 160;
+                this_row[1] = left.threshold;
                 this_row[2] = left.count;
                 this_row[3] = String.format("%3.2f", left.percent_area);
                 this_row[4] = String.format("%3.1f", left.l_mean);
