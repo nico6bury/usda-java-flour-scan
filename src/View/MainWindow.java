@@ -47,6 +47,10 @@ public class MainWindow extends javax.swing.JFrame {
     private IJProcess ijProcess = new IJProcess();
     // where displayed image was last selected from
     private LastSelectedFrom lastSelectedFrom = LastSelectedFrom.NoSelection;
+    // dialog boxes we can re-use
+    private AreaFlagDialog areaFlagDialog = new AreaFlagDialog(this, true);
+    private ThresholdDialog thresholdDialog = new ThresholdDialog(this, true);
+
     /**
      * enum added for use in keeping track of whether displayed image was selected from QueueList or OutputTable
      */
@@ -984,8 +988,10 @@ public class MainWindow extends javax.swing.JFrame {
                 this_row[5] = right.count;
                 this_row[6] = String.format("%3.2f", right.percent_area);
                 this_row[7] = String.format("%3.1f", right.l_mean);
-                this_row[8] = String.format("%3.2f", (left.percent_area + right.percent_area) / 2.0);
-                this_row[9] = "";
+                double this_avg_area = (left.percent_area + right.percent_area) / 2.0;
+                this_row[8] = String.format("%3.2f", this_avg_area);
+                if (this_avg_area > areaFlagDialog.firstFlag) {this_row[9] = "*";}
+                else if (this_avg_area > areaFlagDialog.secondFlag) {this_row[9] = "**";}
                 this_table_model.addRow(this_row);
             }//end if we have proper left and right result
             else {
@@ -1017,11 +1023,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxSearchBtnActionPerformed
 
     private void uxSetAreaFlagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetAreaFlagMenuBtnActionPerformed
-        // TODO add your handling code here:
+        areaFlagDialog.setVisible(true);
     }//GEN-LAST:event_uxSetAreaFlagMenuBtnActionPerformed
 
     private void uxSetThresholdMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetThresholdMenuBtnActionPerformed
-        // TODO add your handling code here:
+        thresholdDialog.setVisible(true);
     }//GEN-LAST:event_uxSetThresholdMenuBtnActionPerformed
 
     /**
