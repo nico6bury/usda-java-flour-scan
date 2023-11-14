@@ -232,7 +232,7 @@ public class IJProcess {
         // close all the images, or at least the stack
         IJ.run("Close All");
         // close the summary table
-        IJ.runMacro("selectWindow(\"Summary\");run(\"Close\");");
+        // IJ.runMacro("selectWindow(\"Summary\");run(\"Close\");");
         // output the output file
         Result<String> outputFileResult = makeOutputFile(runningSum);
         lastProcResult = runningSum;
@@ -271,6 +271,7 @@ public class IJProcess {
         int count = (int)sumTable.getValue("Count", 0);
         int total_area = (int)sumTable.getValue("Total Area", 0);
         double prcnt_area = sumTable.getValue("%Area", 0);
+        IJ.runMacro("selectWindow(\"Summary\");run(\"Close\");");
         SumResult this_result = new SumResult(file, slice, count, total_area, prcnt_area);
         this_result.threshold = th01;
 

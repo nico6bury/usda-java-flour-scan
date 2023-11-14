@@ -7,6 +7,7 @@ package View;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -771,8 +772,12 @@ public class MainWindow extends javax.swing.JFrame {
         else {
             try {
                 // process the images in imagej
+                JOptionPane.showMessageDialog(this, "Please wait. Your images will now be processed.");
                 ijProcess.th01 = thresholdDialog.thresholdToReturn;
                 Result<String> outputData = ijProcess.runMacro(imageQueue);
+                SwingUtilities.invokeLater(
+                    () -> JOptionPane.showMessageDialog(this, "Your images have finsihed processing.")
+                );
                 if (outputData.isErr()) {
                     outputData.getError().printStackTrace();
                     showGenericExceptionMessage(outputData.getError());
