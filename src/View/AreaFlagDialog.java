@@ -55,9 +55,19 @@ public class AreaFlagDialog extends javax.swing.JDialog {
 
         uxCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxCancelBtn.setText("Cancel");
+        uxCancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxCancelBtnActionPerformed(evt);
+            }
+        });
 
         uxConfirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxConfirmBtn.setText("Confirm");
+        uxConfirmBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxConfirmBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,6 +113,14 @@ public class AreaFlagDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void uxCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxCancelBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxCancelBtnActionPerformed
+
+    private void uxConfirmBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConfirmBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxConfirmBtnActionPerformed
 
     /**
      * @param args the command line arguments
