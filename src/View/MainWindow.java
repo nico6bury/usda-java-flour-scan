@@ -7,11 +7,14 @@ package View;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +54,10 @@ public class MainWindow extends javax.swing.JFrame {
     // dialog boxes we can re-use
     private AreaFlagDialog areaFlagDialog = new AreaFlagDialog(this, true);
     private ThresholdDialog thresholdDialog = new ThresholdDialog(this, true);
+    // progress bar for imagej processing
+    ProgressMonitor progressMonitor;
+    // task for background work
+    IJTask ijTask = new IJTask(imageQueue, ijProcess);
 
     /**
      * enum added for use in keeping track of whether displayed image was selected from QueueList or OutputTable
@@ -771,13 +778,25 @@ public class MainWindow extends javax.swing.JFrame {
         // }//end if last scanned file doesn't exist
         else {
             try {
-                // process the images in imagej
-                JOptionPane.showMessageDialog(this, "Please wait. Your images will now be processed.");
+                // tell user we're about to do processing
+                // JOptionPane.showMessageDialog(this, "Please wait. Your images will now be processed.");
+                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 ijProcess.th01 = thresholdDialog.thresholdToReturn;
-                Result<String> outputData = ijProcess.runMacro(imageQueue);
-                SwingUtilities.invokeLater(
-                    () -> JOptionPane.showMessageDialog(this, "Your images have finsihed processing.")
-                );
+                // set up progress bar
+                progressMonitor = new ProgressMonitor(this, "Progress!", "", 0, 5);
+                progressMonitor.setProgress(3);
+                progressMonitor.setMillisToDecideToPopup(0);
+                progressMonitor.setMillisToPopup(0);
+                // actually run the imagej stuff
+
+                Result<String> outputData = ijTask.doInBackground();
+                if (ijTask.isDone()) {
+                    setCursor(Cursor.getDefaultCursor());
+                }//end if the task is done
+                // SwingUtilities.invokeLater(
+                //     () -> JOptionPane.showMessageDialog(this, "Your images have finsihed processing.")
+                // );
+                // progressDialog.setVisible(false);
                 if (outputData.isErr()) {
                     outputData.getError().printStackTrace();
                     showGenericExceptionMessage(outputData.getError());
@@ -789,6 +808,8 @@ public class MainWindow extends javax.swing.JFrame {
                 // clear queue now that it's been processed
                 imageQueue.clear();
                 UpdateQueueList();
+                // make sure cursor is updated
+                setCursor(Cursor.getDefaultCursor());
 			} catch (Exception e) {
 				e.printStackTrace();
                 showGenericExceptionMessage(e);
