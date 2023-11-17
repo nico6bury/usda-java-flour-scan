@@ -114,28 +114,37 @@ public class IJProcess {
                 dateFormat.format(cal.getTime()));
         
         // print headers for the columns we're about to print
-        pw.print("Rep\tSlice\tRot\tSide\tCount\tPixels\t%Area\tL*Mean\tL*Stdev\n");
+        pw.print("FileID\tTH\tDateTime\tleft CT\tleft %A\tleft L*\trght CT\trgt %A\trght L*\tAvg %A\tFlag\n");
         
         StringBuilder data_output = new StringBuilder();
+        // group sumresults into our grouped lists
+        List<List<SumResult>> groupedResults = SumResult.groupResultsByFile(inputList);
         // build output for all the images processed
-        for (int i = 0; i < inputList.size(); i++) {
-            SumResult outputData = inputList.get(i);
-            // parse out slice information
-            String[] slice_parts = outputData.slice.split("-");
-            if (slice_parts.length == 4) {
-                data_output.append(slice_parts[0]);
-                data_output.append("\t");
-                data_output.append(slice_parts[1]);
-                data_output.append("\t");
-                data_output.append(slice_parts[2]);
-                data_output.append("\t");
-                data_output.append(slice_parts[3]);
-                data_output.append("\t     ");
-            }//end if we have a correctly formatter file name
+        for (int i = 0; i < groupedResults.size(); i++) {
+            List<SumResult> group = groupedResults.get(i);
+            if (group.size() == 2) {
+                SumResult left = null;
+                SumResult rght = null;
+                // figure out which is left or right
+                for (SumResult sr : group) {
+                    if (sr.leftOrRight == LeftOrRight.Left) {left = sr;}
+                    else if (sr.leftOrRight == LeftOrRight.Right) {rght = sr;}
+                }//end categorizing each sum result in the group
+                if (left == null || rght == null) {continue;}
+                // print out the columns
+                double avg_percent_area = (left.percent_area + rght.percent_area) / 2;
+                String flag = "";
+                if (avg_percent_area > 0.05) {flag = "*";}
+                if (avg_percent_area > 0.10) {flag = "**";}
+                data_output.append(String.format("%s\t%d\t%s\t%d\t%3.2f\t%3.1f\t%d\t%3.2f\t3.1f\t%3.2f\t%s", left.file.getName(), left.threshold, "datetime", left.count, left.percent_area, left.l_mean, rght.count, rght.percent_area, rght.l_mean, avg_percent_area, flag));
+            }//end if we have the expected group size
             else {
-                data_output.append("bad\t" + outputData.slice + "\tfilename\tformatting\t");
-            }//end else the file name was not formatted correctly
-            // do everything else
+                // else we need to deal with this somehow
+            }//end else we have an unexpected group size
+            
+            SumResult outputData = inputList.get(i);
+            
+            
             data_output.append(outputData.count);
             data_output.append("\t");
             data_output.append(outputData.total_area);
