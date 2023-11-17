@@ -980,7 +980,7 @@ public class MainWindow extends javax.swing.JFrame {
                 double this_avg_area = (left.percent_area + right.percent_area) / 2.0;
                 this_row[8] = String.format("%3.2f", this_avg_area);
                 if (this_avg_area > areaFlagDialog.firstFlag) {this_row[9] = "*";}
-                else if (this_avg_area > areaFlagDialog.secondFlag) {this_row[9] = "**";}
+                if (this_avg_area > areaFlagDialog.secondFlag) {this_row[9] = "**";}
                 this_table_model.addRow(this_row);
             }//end if we have proper left and right result
             else {
