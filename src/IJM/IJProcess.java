@@ -114,9 +114,12 @@ public class IJProcess {
                 dateFormat.format(cal.getTime()));
         
         // print headers for the columns we're about to print
-        pw.print("FileID\tTH\tDateTime\tleft CT\tleft %A\tleft L*\trght CT\trgt %A\trght L*\tAvg %A\tFlag\n");
+        pw.print("FileID\t\t\tTH\tDateTime\t\t\tleft CT\tleft %A\tleft L*\trght CT\t\trgt %A\trght L*\tAvg %A\tFlag\n");
         
         StringBuilder data_output = new StringBuilder();
+        // build timestamp for output file
+        LocalDateTime curDateTime = LocalDateTime.now();
+        DateTimeFormatter timestamp = DateTimeFormatter.ofPattern("yyyy-MM-d H:m:s");
         // group sumresults into our grouped lists
         List<List<SumResult>> groupedResults = SumResult.groupResultsByFile(inputList);
         // build output for all the images processed
@@ -136,7 +139,7 @@ public class IJProcess {
                 String flag = "";
                 if (avg_percent_area > 0.05) {flag = "*";}
                 if (avg_percent_area > 0.10) {flag = "**";}
-                data_output.append(String.format("%s\t%d\t%s\t%d\t%3.2f\t%3.1f\t%d\t%3.2f\t3.1f\t%3.2f\t%s", left.file.getName(), left.threshold, "datetime", left.count, left.percent_area, left.l_mean, rght.count, rght.percent_area, rght.l_mean, avg_percent_area, flag));
+                data_output.append(String.format("%s\t%d\t%s\t%d\t\t%3.2f\t%3.1f\t%d\t\t\t%3.2f\t%3.1f\t%3.2f\t%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, left.percent_area, left.l_mean, rght.count, rght.percent_area, rght.l_mean, avg_percent_area, flag));
             }//end if we have the expected group size
             else {
                 // else we need to deal with this somehow
