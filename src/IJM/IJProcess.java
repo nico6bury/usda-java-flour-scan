@@ -141,20 +141,6 @@ public class IJProcess {
             else {
                 // else we need to deal with this somehow
             }//end else we have an unexpected group size
-            
-            SumResult outputData = inputList.get(i);
-            
-            
-            data_output.append(outputData.count);
-            data_output.append("\t");
-            data_output.append(outputData.total_area);
-            data_output.append("\t");
-            data_output.append(String.format("%.2f", outputData.percent_area));
-            data_output.append("\t");
-            data_output.append(String.format("%.2f", outputData.l_mean));
-            data_output.append("\t");
-            data_output.append(String.format("%.2f", outputData.l_stdv));
-            data_output.append("\n");
         }//end looping over all the stuff to print out
         
         // print output for all images
