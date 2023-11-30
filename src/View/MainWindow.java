@@ -178,6 +178,7 @@ public class MainWindow extends javax.swing.JFrame {
         uxNextImageBtn = new javax.swing.JButton();
         uxOpenFileBtn = new javax.swing.JButton();
         uxImageLabel = new javax.swing.JLabel();
+        uxClearOutputBtn = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         uxOutputTable = new javax.swing.JTable();
@@ -430,6 +431,14 @@ public class MainWindow extends javax.swing.JFrame {
         uxImageLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxImageLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        uxClearOutputBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxClearOutputBtn.setText("Clear Output Table");
+        uxClearOutputBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxClearOutputBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -437,12 +446,16 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxPrevImageBtn)
-                    .addComponent(uxNextImageBtn)
-                    .addComponent(uxOpenFileBtn))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(uxPrevImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(uxNextImageBtn))
+                        .addComponent(uxOpenFileBtn)
+                        .addComponent(jScrollPane3))
+                    .addComponent(uxClearOutputBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -452,13 +465,16 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxPrevImageBtn)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(uxPrevImageBtn)
+                            .addComponent(uxNextImageBtn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxNextImageBtn)
+                        .addComponent(uxOpenFileBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxOpenFileBtn)))
+                        .addComponent(uxClearOutputBtn)
+                        .addGap(4, 4, 4)))
                 .addContainerGap())
         );
 
@@ -1019,6 +1035,10 @@ public class MainWindow extends javax.swing.JFrame {
         thresholdDialog.setVisible(true);
     }//GEN-LAST:event_uxSetThresholdMenuBtnActionPerformed
 
+    private void uxClearOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxClearOutputBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxClearOutputBtnActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -1054,6 +1074,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton uxAddFilesBtn;
+    private javax.swing.JButton uxClearOutputBtn;
     private javax.swing.JMenuItem uxConnectScannerBtn;
     private javax.swing.JButton uxConnectToScannerBtn;
     private javax.swing.JButton uxEmptyQueueBtn;
