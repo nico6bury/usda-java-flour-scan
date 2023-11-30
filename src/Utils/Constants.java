@@ -11,7 +11,7 @@ public class Constants {
         LocalDateTime currentDateTime = LocalDateTime.now();
         return currentDateTime.format(month_year);
     }//end DATE()
-    public static String PEOPLE = "Nicholas Sixbury/WJR/DBrabec";
+    public static String PEOPLE = "N_Sixbury/W_Rust/D_Brabec";
     public static String PROGRAM_NAME = "Flour Scan & Analysis";
     public static String VERSION = "unfinished version";
     public static String SCANNED_IMAGES_FOLDER_NAME = "scanned-images";
