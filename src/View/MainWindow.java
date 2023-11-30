@@ -1036,7 +1036,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxSetThresholdMenuBtnActionPerformed
 
     private void uxClearOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxClearOutputBtnActionPerformed
-        // TODO add your handling code here:
+        DefaultTableModel this_table_model = (DefaultTableModel)uxOutputTable.getModel();
+        this_table_model.setRowCount(0);
     }//GEN-LAST:event_uxClearOutputBtnActionPerformed
 
     /**
