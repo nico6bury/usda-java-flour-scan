@@ -39,6 +39,8 @@ public class IJProcess {
     // upper threshold for analyze particles
     public int th01 = 160;
     public List<SumResult> lastProcResult;
+    public static double lower_flag_thresh = 0.05;
+    public static double upper_flag_thresh = 0.10;
 
     /**
      * Constructs the class
@@ -74,7 +76,7 @@ public class IJProcess {
             if (ensureDirectoryExists && !newDirectory.exists()) {
                 newDirectory.mkdir();
             }//end if new directory needs to be created
-            String newExtension = ".OUT";
+            String newExtension = ".OUT.csv";
             String current_time_stamp = currentDateTime.format(file_formatter);
             String newFileName = current_time_stamp + newExtension;
             File outputFile = new File(newDirectory.getAbsolutePath() + File.separator + newFileName);
@@ -105,16 +107,19 @@ public class IJProcess {
         }//end catching FileNotFoundExceptions
 
         // print first section of header
-        pw.printf("%s  %s\n%s\n", Constants.PROGRAM_NAME, Constants.VERSION, Constants.LOCATION + "\t" + Constants.DATE() + "\t" + Constants.PEOPLE);
+        pw.printf("%s  %s\n%s\n", Constants.PROGRAM_NAME, Constants.VERSION, Constants.LOCATION + "    " + Constants.DATE() + "    " + Constants.PEOPLE);
 
         // print second section of header
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
         pw.printf("Data Processed: %s\n", 
                 dateFormat.format(cal.getTime()));
-        
+
+        // print third line of header
+        pw.printf("flag lower threshold: %f     flag upper threshold: %f\n", lower_flag_thresh, upper_flag_thresh);
+
         // print headers for the columns we're about to print
-        pw.print("FileID\t\t\tTH\tDateTime\t\t\tleft CT\tleft %A\tleft L*\trght CT\t\trgt %A\trght L*\tAvg %A\tFlag\n");
+        pw.print("FileID,TH,DateTime,left CT,left %A,left L*,rght CT,rgt %A,rght L*,Avg %A,Flag\n");
         
         StringBuilder data_output = new StringBuilder();
         // build timestamp for output file
@@ -137,9 +142,9 @@ public class IJProcess {
                 // print out the columns
                 double avg_percent_area = (left.percent_area + rght.percent_area) / 2;
                 String flag = "";
-                if (avg_percent_area > 0.05) {flag = "*";}
-                if (avg_percent_area > 0.10) {flag = "**";}
-                data_output.append(String.format("%s\t%d\t%s\t%d\t\t%3.2f\t%3.1f\t%d\t\t\t%3.2f\t%3.1f\t%3.2f\t%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, left.percent_area, left.l_mean, rght.count, rght.percent_area, rght.l_mean, avg_percent_area, flag));
+                if (avg_percent_area > lower_flag_thresh) {flag = "*";}
+                if (avg_percent_area > upper_flag_thresh) {flag = "**";}
+                data_output.append(String.format("%s,%d,%s,%d,%3.2f,%3.1f,%d,%3.2f,%3.1f,%3.2f,%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, left.percent_area, left.l_mean, rght.count, rght.percent_area, rght.l_mean, avg_percent_area, flag));
             }//end if we have the expected group size
             else {
                 // else we need to deal with this somehow
