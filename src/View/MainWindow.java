@@ -800,6 +800,10 @@ public class MainWindow extends javax.swing.JFrame {
                 progressMonitor.setMillisToPopup(0);
                 // actually run the imagej stuff
 
+                // roll over area flag stuff to the processing
+                IJProcess.lower_flag_thresh = areaFlagDialog.firstFlag;
+                IJProcess.upper_flag_thresh = areaFlagDialog.secondFlag;
+
                 Result<String> outputData = ijTask.doInBackground();
                 if (ijTask.isDone()) {
                     setCursor(Cursor.getDefaultCursor());
