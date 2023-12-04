@@ -677,7 +677,7 @@ public class MainWindow extends javax.swing.JFrame {
                 File[] selectedFiles = selectFilesChooser.getSelectedFiles();
                 // uxScannedFileTxt.setText(lastScannedFile.getPath());
                 for (int i = 0; i < selectedFiles.length; i++) {
-                    uxStatusTxt.append("selected scanned file \"" + selectedFiles[i].getAbsolutePath() + "\"\n");
+                    uxStatusTxt.append("\"" + selectedFiles[i].getAbsolutePath() + "\"\n");
                     imageQueue.add(selectedFiles[i]);
                     allImages.add(selectedFiles[i]);
                 }//end adding each selected file to the queue
