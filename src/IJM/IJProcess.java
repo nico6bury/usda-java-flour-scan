@@ -119,7 +119,7 @@ public class IJProcess {
         pw.printf("flag lower threshold: %f     flag upper threshold: %f\n", lower_flag_thresh, upper_flag_thresh);
 
         // print headers for the columns we're about to print
-        pw.print("FileID,TH,DateTime,left CT,left %A,left L*,rght CT,rgt %A,rght L*,Avg %A,Flag\n");
+        pw.print("FileID,TH,DateTime,left CT,rght CT,left L*,rght L*,Avg L*,left %A,rgt %A,Avg %A,Flag\n");
         
         StringBuilder data_output = new StringBuilder();
         // build timestamp for output file
@@ -140,11 +140,12 @@ public class IJProcess {
                 }//end categorizing each sum result in the group
                 if (left == null || rght == null) {continue;}
                 // print out the columns
-                double avg_percent_area = (left.percent_area + rght.percent_area) / 2;
+                double avg_percent_area = (left.percent_area + rght.percent_area) / 2.0;
+                double avg_l = (left.l_mean + rght.l_mean) / 2.0;
                 String flag = "";
-                if (avg_percent_area > lower_flag_thresh) {flag = "*";}
-                if (avg_percent_area > upper_flag_thresh) {flag = "**";}
-                data_output.append(String.format("%s,%d,%s,%d,%3.2f,%3.1f,%d,%3.2f,%3.1f,%3.2f,%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, left.percent_area, left.l_mean, rght.count, rght.percent_area, rght.l_mean, avg_percent_area, flag));
+                if (avg_percent_area > lower_flag_thresh) {flag = "x";}
+                if (avg_percent_area > upper_flag_thresh) {flag = "xx";}
+                data_output.append(String.format("%s,%d,%s,%d,%d,%3.1f,%3.1f,%3.1f,%3.2f,%3.2f,%3.2f,%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, rght.count, left.l_mean, rght.l_mean, avg_l, left.percent_area, rght.percent_area, avg_percent_area, flag));
             }//end if we have the expected group size
             else {
                 // else we need to deal with this somehow
