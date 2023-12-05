@@ -69,15 +69,20 @@ public class IJProcess {
             }//end if we need to make our output folder
 
             LocalDateTime currentDateTime = LocalDateTime.now();
-            DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM-");
-            DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern(";d-H-m-s");
-            File newDirectory = new File(output_folder_storage_file.getAbsolutePath() + File.separator + currentDateTime.format(dir_formatter));
+            DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
+            DateTimeFormatter month = DateTimeFormatter.ofPattern("MM");
+            DateTimeFormatter day = DateTimeFormatter.ofPattern("d");
+            DateTimeFormatter hour = DateTimeFormatter.ofPattern("H");
+            DateTimeFormatter min = DateTimeFormatter.ofPattern("m");
+            // DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            // DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern("MM-d_H:m");
+            File newDirectory = new File(output_folder_storage_file.getAbsolutePath() + File.separator + "flour-scan-" + currentDateTime.format(year) + "-" + currentDateTime.format(month));
             // create the directory if it doesn't exist
             if (ensureDirectoryExists && !newDirectory.exists()) {
                 newDirectory.mkdir();
             }//end if new directory needs to be created
             String newExtension = ".OUT.csv";
-            String current_time_stamp = currentDateTime.format(file_formatter);
+            String current_time_stamp = currentDateTime.format(month) + "-" + currentDateTime.format(day) + "_" + currentDateTime.format(hour) + ";" + currentDateTime.format(min);
             String newFileName = current_time_stamp + newExtension;
             File outputFile = new File(newDirectory.getAbsolutePath() + File.separator + newFileName);
 
