@@ -6,10 +6,12 @@ package View;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Cursor;
@@ -124,6 +126,10 @@ public class MainWindow extends javax.swing.JFrame {
         // };
         // dtm = new DefaultTableModel(rowData, columnNames);
         // uxOutputTable.setModel(dtm);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        uxOutputTable.setDefaultRenderer(String.class, centerRenderer);
     }//end MainWindow constructor
 
     /**
