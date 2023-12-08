@@ -180,6 +180,7 @@ public class MainWindow extends javax.swing.JFrame {
         uxOpenFileBtn = new javax.swing.JButton();
         uxImageLabel = new javax.swing.JLabel();
         uxClearOutputBtn = new javax.swing.JButton();
+        uxOpenOutputFile = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         uxOutputTable = new javax.swing.JTable();
@@ -232,6 +233,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxConnectToScannerBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxConnectToScannerBtn.setText("Connect to Scanner");
+        uxConnectToScannerBtn.setToolTipText("Attempts to make a connection to the scanner, if one is connected.");
         uxConnectToScannerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxConnectToScannerBtnActionPerformed(evt);
@@ -240,6 +242,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxScanBigBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxScanBigBtn.setText("Scan");
+        uxScanBigBtn.setToolTipText("Scans and saves an image without adding it to the queue.");
         uxScanBigBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxScanBigBtnActionPerformed(evt);
@@ -248,6 +251,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxScanQueueBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxScanQueueBtn.setText("Scan + Add to Queue");
+        uxScanQueueBtn.setToolTipText("Scans and saves an image, then adds it to the processing queue.");
         uxScanQueueBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxScanQueueBtnActionPerformed(evt);
@@ -256,6 +260,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxAddFilesBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxAddFilesBtn.setText("Add Files to Queue");
+        uxAddFilesBtn.setToolTipText("Select image files to add to the queue for processing.");
         uxAddFilesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxAddFilesBtnActionPerformed(evt);
@@ -264,6 +269,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxProcessAllBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxProcessAllBtn.setText("Process Queue");
+        uxProcessAllBtn.setToolTipText("Processes all images in the queue, displaying results in the output table.");
         uxProcessAllBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxProcessAllBtnActionPerformed(evt);
@@ -272,6 +278,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxEmptyQueueBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxEmptyQueueBtn.setText("Empty Queue");
+        uxEmptyQueueBtn.setToolTipText("Clears all files from the processing queue.");
         uxEmptyQueueBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxEmptyQueueBtnActionPerformed(evt);
@@ -342,6 +349,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxSearchBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxSearchBtn.setText("Search");
+        uxSearchBtn.setToolTipText("Filters the display of images in the processing queue.");
         uxSearchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxSearchBtnActionPerformed(evt);
@@ -423,6 +431,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxOpenFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxOpenFileBtn.setText("Open in File Explorer");
+        uxOpenFileBtn.setToolTipText("Opens the Selected Image in File Explorer");
         uxOpenFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxOpenFileBtnActionPerformed(evt);
@@ -433,10 +442,20 @@ public class MainWindow extends javax.swing.JFrame {
         uxImageLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         uxClearOutputBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxClearOutputBtn.setText("Clear Output Table");
+        uxClearOutputBtn.setText("Clear Output");
+        uxClearOutputBtn.setToolTipText("Clears data from the Output Table below");
         uxClearOutputBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxClearOutputBtnActionPerformed(evt);
+            }
+        });
+
+        uxOpenOutputFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOpenOutputFile.setText("Open Output File");
+        uxOpenOutputFile.setToolTipText("Opens the Output File in File Explorer");
+        uxOpenOutputFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxOpenOutputFileActionPerformed(evt);
             }
         });
 
@@ -446,17 +465,19 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(uxPrevImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(uxNextImageBtn))
-                        .addComponent(uxOpenFileBtn)
-                        .addComponent(jScrollPane3))
-                    .addComponent(uxClearOutputBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(uxOpenFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(uxOpenOutputFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxClearOutputBtn))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(uxPrevImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxNextImageBtn))
+                    .addComponent(jScrollPane3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -464,18 +485,19 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(uxPrevImageBtn)
-                            .addComponent(uxNextImageBtn))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(uxNextImageBtn)
+                            .addComponent(uxPrevImageBtn))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(uxOpenFileBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxClearOutputBtn)
-                        .addGap(4, 4, 4)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(uxOpenOutputFile, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(uxClearOutputBtn)))
+                    .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -556,6 +578,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxConnectScannerBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxConnectScannerBtn.setText("Connect Scanner");
+        uxConnectScannerBtn.setToolTipText("Attempt to establish a connection to a scanner.");
         uxConnectScannerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxConnectScannerBtnActionPerformed(evt);
@@ -565,6 +588,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxResetScanner.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxResetScanner.setText("Reset Scanner");
+        uxResetScanner.setToolTipText("Resets the connection to the scanner by attempting to close and reopen a connection.");
         uxResetScanner.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxResetScannerActionPerformed(evt);
@@ -579,6 +603,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxScanBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxScanBtn.setText("Scan");
+        uxScanBtn.setToolTipText("Scans and saves an image without adding it to the queue.");
         uxScanBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxScanBtnActionPerformed(evt);
@@ -588,6 +613,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxIjBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxIjBtn.setText("ImageJ Process");
+        uxIjBtn.setToolTipText("Processes the images in the queue, displaying results in the output table.");
         uxIjBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxIjBtnActionPerformed(evt);
@@ -602,6 +628,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxSetThresholdMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxSetThresholdMenuBtn.setText("Set Threshold");
+        uxSetThresholdMenuBtn.setToolTipText("Allows you to set a threshold for image processing.");
         uxSetThresholdMenuBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxSetThresholdMenuBtnActionPerformed(evt);
@@ -616,6 +643,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxSetAreaFlagMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxSetAreaFlagMenuBtn.setText("Set %Area Flags");
+        uxSetAreaFlagMenuBtn.setToolTipText("Allows you to set thresholds for which average %area will be flagged.");
         uxSetAreaFlagMenuBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxSetAreaFlagMenuBtnActionPerformed(evt);
@@ -1047,6 +1075,10 @@ public class MainWindow extends javax.swing.JFrame {
         this_table_model.setRowCount(0);
     }//GEN-LAST:event_uxClearOutputBtnActionPerformed
 
+    private void uxOpenOutputFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxOpenOutputFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxOpenOutputFileActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -1092,6 +1124,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu uxInitMenu;
     private javax.swing.JButton uxNextImageBtn;
     private javax.swing.JButton uxOpenFileBtn;
+    private javax.swing.JButton uxOpenOutputFile;
     private javax.swing.JTable uxOutputTable;
     private javax.swing.JButton uxPrevImageBtn;
     private javax.swing.JButton uxProcessAllBtn;
