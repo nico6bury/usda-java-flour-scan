@@ -451,8 +451,8 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         uxOpenOutputFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxOpenOutputFile.setText("Open Output File");
-        uxOpenOutputFile.setToolTipText("Opens the Output File in File Explorer");
+        uxOpenOutputFile.setText("Open Output Dir");
+        uxOpenOutputFile.setToolTipText("Opens directory containing output files in File Explorer");
         uxOpenOutputFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxOpenOutputFileActionPerformed(evt);
@@ -468,7 +468,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(uxOpenFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(uxOpenOutputFile)
+                        .addComponent(uxOpenOutputFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxClearOutputBtn))
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -476,8 +476,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxNextImageBtn))
                     .addComponent(jScrollPane3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -1077,6 +1077,15 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void uxOpenOutputFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxOpenOutputFileActionPerformed
         // TODO add your handling code here:
+        String jar_location;
+        try {
+            // Get path of output folder
+            jar_location = new File(IJProcess.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toString();
+            String output_folder_storage = jar_location + File.separator + Constants.IMAGEJ_OUTPUT_FOLDER_NAME;
+            Runtime.getRuntime().exec("explorer.exe " + output_folder_storage);
+        } catch (Exception e) {
+            showGenericExceptionMessage(e);
+        }//end catching any file-related exceptions
     }//GEN-LAST:event_uxOpenOutputFileActionPerformed
 
     /**
