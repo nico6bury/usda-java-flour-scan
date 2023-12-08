@@ -92,6 +92,12 @@ public class IJProcess {
         }//end catching any exceptions
     }//end getOutputFilePath(ensureDirectoryExists)
 
+    /**
+     * Builds all the text for the output file, and then writes that text to a file. 
+     * Uses path from IJProcess.getOutputFilePath().
+     * @param inputList The list of SumResult objects that represent the processed data. This will be formatted and written to the file.
+     * @return Returns a result containing the full string output, or a wrapped error if something prevents the output file from being written.
+     */
     public static Result<String> makeOutputFile(List<SumResult> inputList) {
         // save to output file
         Result<File> outputFileResult = getOutputFilePath(true);
@@ -166,6 +172,11 @@ public class IJProcess {
         return new Result<>(data_output.toString());
     }//end makeOutputFile(inputList, icl)
 
+    /**
+     * Runs the code to process a list of images. Actually just passes everything to IJProcess.MainMacro()
+     * @param files_to_process The list of image Files to process.
+     * @return Returns a result that will contain the full string written to an output file, or an error if something prevented completion.
+     */
     public Result<String> runMacro(List<File> files_to_process) {
         try {
             return MainMacro(files_to_process);
@@ -174,6 +185,11 @@ public class IJProcess {
         }//end if we catch any exceptions
     }//end runMacro()
 
+    /**
+     * The main method for organizing and processing images.
+     * @param files_to_process The list of image Files to process
+     * @return Returns a result that will contain the full string written to an output file, or an error if something prevented completion.
+     */
     public Result<String> MainMacro(List<File> files_to_process) {
         // int baseThreshold = 160;
         List<SumResult> runningSum = new ArrayList<SumResult>();
@@ -228,20 +244,11 @@ public class IJProcess {
                 this_result.l_mean = l_info[0];
                 this_result.l_stdv = l_info[1];
                 runningSum.add(this_result);
-
-                // update list of processed images
-                // imagesProcessed.add(this_image);
             }//end else we can just process the image like normal
         }//end looping over each file we want to process
 
-        // add lab processing into the mix
-        // set up parameters to send to LabProcessing
-        // run the Lab processing part
-        // ImageStatistics L = LabProcesser(imagesProcessed.get(0));
         // close all the images, or at least the stack
         IJ.run("Close All");
-        // close the summary table
-        // IJ.runMacro("selectWindow(\"Summary\");run(\"Close\");");
         // output the output file
         Result<String> outputFileResult = makeOutputFile(runningSum);
         lastProcResult = runningSum;
@@ -249,6 +256,12 @@ public class IJProcess {
         return outputFileResult;
     }//end Main Macro converted from ijm
 
+    /**
+     * Runs the commands that perform the actual imagej processing calls on the image.
+     * @param img The image to process, loaded into imagej as an ImagePlus.
+     * @param file The file from which img was loaded.
+     * @return Returns a single SumResult, holding processed data from img.
+     */
     public SumResult ijmProcessFile(ImagePlus img, File file) {
         // duplicate the image so we don't contaminate it
         ImagePlus img_dup = img.duplicate();
@@ -287,6 +300,13 @@ public class IJProcess {
         return this_result;
     }//end ijmProcessFile()
 
+    /**
+     * This method is named after an imagej macro file.
+     * When given a list of images, it will split each one in half, 
+     * creating a left and right version of each image.
+     * @param images_to_process The list of images to split in half.
+     * @return Returns a list of images split in half. The size should be double that of images_to_process.
+     */
     public List<ImagePlus> PicSplitter(List<ImagePlus> images_to_process) {
         List<ImagePlus> splitImages = new ArrayList<ImagePlus>();
 
@@ -316,9 +336,13 @@ public class IJProcess {
     }//end Pic Splitter macro converted from ijm
 
     /**
-     * Processes Lab to get the L statistics of the image. Also 
+     * Named after Lab Processor macro converted from ijm.
+     * Although the original macro used stack measurements to get Lab values,
+     * there were issues integrating the same approach with java, so instead
+     * this method manually computes Lab statistics by converting each pixel to Lab from RGB
+     * and using a library to do statistical operations on the list of Lab pixel values.
      * @param img The image to get L info from.
-     * @return Returns the image statistics for the L slice of the Lab stack.
+     * @return Returns the image statistics for the L slice of the Lab stack. Index 0 contains mean of L* values, and Index 1 contains stdev of L* values.
      */
     public double[] LabProcesser(ImagePlus img) {
         // set the right scale
