@@ -15,3 +15,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+# program config
+.config
+flour-scan.config
