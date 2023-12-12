@@ -29,10 +29,14 @@ import IJM.IJProcess;
 import IJM.SumResult;
 import IJM.SumResult.LeftOrRight;
 import Scan.Scan;
+import Utils.ConfigScribe;
+import Utils.ConfigStoreC;
+import Utils.ConfigStoreH;
 import Utils.Constants;
 import Utils.Result;
 import Utils.Result.ResultType;
 import ij.IJ;
+import javafx.util.Pair;
 
 /**
  *
@@ -61,6 +65,18 @@ public class MainWindow extends javax.swing.JFrame {
     ProgressMonitor progressMonitor;
     // task for background work
     IJTask ijTask = new IJTask(imageQueue, ijProcess);
+    /**
+     * Class for handling serializing and deserialization of config options.
+     */
+    ConfigScribe config_scribe = new ConfigScribe();
+    /**
+     * Class for storing the settings of certain human-readable config values.
+     */
+    ConfigStoreH config_store_h = new ConfigStoreH();
+    /**
+     * Class for storing the settings of certain non-human-readable config values.
+     */
+    ConfigStoreC config_store_c = new ConfigStoreC();
 
     /**
      * enum added for use in keeping track of whether displayed image was selected from QueueList or OutputTable
@@ -124,9 +140,25 @@ public class MainWindow extends javax.swing.JFrame {
         };
         uxOutputTable.getSelectionModel().addListSelectionListener(lsl);
 
+        // mess with the jtable so that column text is centered
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         uxOutputTable.setDefaultRenderer(String.class, centerRenderer);
+
+        // read config files
+        Result<Pair<ConfigStoreH, ConfigStoreC>> config_result =  config_scribe.read_config();
+        if (config_result.isOk()) {
+            this.config_store_h = config_result.getValue().getKey();
+            this.config_store_c = config_result.getValue().getValue();
+            // update dialog based on config
+            this.thresholdDialog.thresholdToReturn = this.config_store_h.proc_threshold;
+            this.areaFlagDialog.firstFlag = this.config_store_h.area_threshold_lower;
+            this.areaFlagDialog.secondFlag = this.config_store_h.area_threshold_upper;
+        }//end if we can read from config
+        else {
+            showGenericExceptionMessage(config_result.getError());
+            JOptionPane.showMessageDialog(this, "Something went wrong while reading the config file. All settings have reverted to default.");
+        }//end else something went wrong
     }//end MainWindow constructor
 
     /**
@@ -1065,6 +1097,9 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private void uxSetAreaFlagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetAreaFlagMenuBtnActionPerformed
         areaFlagDialog.setVisible(true);
+        this.config_store_h.area_threshold_lower = areaFlagDialog.firstFlag;
+        this.config_store_h.area_threshold_upper = areaFlagDialog.secondFlag;
+        this.config_scribe.write_config(this.config_store_h, this.config_store_c);
     }//GEN-LAST:event_uxSetAreaFlagMenuBtnActionPerformed
 
     /**
@@ -1074,6 +1109,8 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private void uxSetThresholdMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetThresholdMenuBtnActionPerformed
         thresholdDialog.setVisible(true);
+        this.config_store_h.proc_threshold = thresholdDialog.thresholdToReturn;
+        this.config_scribe.write_config(this.config_store_h, this.config_store_c);
     }//GEN-LAST:event_uxSetThresholdMenuBtnActionPerformed
 
     private void uxClearOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxClearOutputBtnActionPerformed
