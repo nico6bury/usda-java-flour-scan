@@ -60,8 +60,18 @@ public class ConfigScribe {
                     config_h_lines.set(index, f_line);
                 }//end if we can rewrite the corresponding line
                 else {
+                    // add customized comments for each potential field
+                    if (fields_h[i].getName() == "proc_threshold") {
+                        config_h_lines.add("# This is the number used as the upper threshold in imagej particle analysis");
+                    } else if (fields_h[i].getName() == "area_threshold_lower") {
+                        config_h_lines.add("# Any file with average % area greater than this will get a flag of x");
+                    } else if (fields_h[i].getName() == "area_threshold_upper") {
+                        config_h_lines.add("# Any file with average % area greater than this will get a flag of xx");
+                    }//end adding customized comments for new lines
                     // add a new line for fields[i]
                     config_h_lines.add(f_line);
+                    // add extra line for spacing
+                    config_h_lines.add("");
                 }//end else we'll have to add a new line for this field
             }//end looping over fields, matching and writing
             for (int i = 0; i < fields_c.length; i++) {
