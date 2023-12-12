@@ -22,6 +22,14 @@ public class ConfigScribe {
     /** Constructs the class */
     public ConfigScribe() {}
 
+    /**
+     * This method writes information to both config files.
+     * This method is written in such a way as to keep any lines in an existing config file
+     * that don't contain serialized information, so comments on separate lines are allowed.
+     * @param store_h A ConfigStoreH value to be written to the file.
+     * @param store_c A ConfigStoreC value to be written to the file.
+     * @return Returns either a meaningless string or an exception if something stopped execution from finishing.
+     */
     public Result<String> write_config(ConfigStoreH store_h, ConfigStoreC store_c) {
         String jar_location;
         try {
@@ -82,6 +90,12 @@ public class ConfigScribe {
         return new Result<String>("No Exceptions Encountered.");
     }//end write_config(store_h, store_c)
 
+    /**
+     * This method reads from both config files and creates ConfigStores based on the data parsed.
+     * This method is written in such a way as to ignore any lines that don't contain serialized information,
+     * so any comment lines will be ignored.
+     * @return Either a pair of ConfigStores, or an exception that prevented the method from finishing.
+     */
     public Result<Pair<ConfigStoreH,ConfigStoreC>> read_config() {
         String jar_location;
         try {
