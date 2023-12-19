@@ -745,13 +745,13 @@ public class MainWindow extends javax.swing.JFrame {
             // reset scanner to null
             scan = null;
         }//end if we encountered an error while detecting the connected scanner
-        // try to set scanner settings
-        Result<ResultType> setScanSettingResult = scan.setScanSettings();
-        if (setScanSettingResult.isErr()) {
-            showGenericExceptionMessage(setScanSettingResult.getError());
-            // reset scan to null
-            scan = null;
-        }//end if we encountered an error while setting scan settings
+        // // try to set scanner settings
+        // Result<ResultType> setScanSettingResult = scan.setScanSettings();
+        // if (setScanSettingResult.isErr()) {
+        //     showGenericExceptionMessage(setScanSettingResult.getError());
+        //     // reset scan to null
+        //     scan = null;
+        // }//end if we encountered an error while setting scan settings
     }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
     private void uxResetScannerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxResetScannerActionPerformed
@@ -773,6 +773,13 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private Result<File> PerformScan() {
         System.out.println("You clicked the \"Scan\" button.");
+        // try to set scanner settings
+        Result<ResultType> setScanSettingResult = scan.setScanSettings();
+        if (setScanSettingResult.isErr()) {
+            showGenericExceptionMessage(setScanSettingResult.getError());
+            // reset scan to null
+            scan = null;
+        }//end if we encountered an error while setting scan settings
         // try to scan something with the scanner
         Result<String> scanResult = scan.runScanner();
         if (scanResult.isOk()) {
