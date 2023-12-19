@@ -1,11 +1,13 @@
 package Scan;
 
-import SK.gnome.morena.MorenaImage;
+import SK.gnome.twain.TwainConstants;
 import SK.gnome.twain.TwainException;
 import SK.gnome.twain.TwainManager;
 import SK.gnome.twain.TwainSource;
 import Utils.Result;
 import Utils.Result.ResultType;
+
+import java.io.File;
 
 /**
  * This class is meant to be used for scanning images with an EPSON scanner for image processing.
@@ -56,16 +58,44 @@ public class Scan {
         // make an attempt to set settings of twain source
         try {
             // TODO: Set the settings for the scanner
+            // it's unknown what this does (found in Bill's config)
             scanSource.setVisible(false);
-            scanSource.setIndicators(false);
+            // controls whether scanning progress bar shows
+            scanSource.setIndicators(true);
+            
+            // does nothing ???
             scanSource.setColorMode();
+            // double[] supported_res = scanSource.getSupportedXResolution();
+            // double max_supported = 0;
+            // for (int i = 0; i < supported_res.length; i++) {
+            //     if (max_supported < supported_res[i]) {max_supported = supported_res[i];}
+            // }
+            // closest supported resolution to 1200
+            scanSource.setResolution(1184);
+            // try and print resolution
+            double x_res = scanSource.getXResolution();
+            double y_res = scanSource.getYResolution();
+            System.out.println("x_res: " + x_res + "    y_res: " + y_res + "\n");
+            // scanSource.setXResolution(2400);
+            // scanSource.setYResolution(1200);
+            // scanSource.setUnits(TwainConstants.TWUN_PIXELS);
+            // correct pixel coordinates, for testing
+            // scanSource.setFrame(1260, 10751, 3667, 11981);
+            // correct inch cooridates, seems to give correct area
+            scanSource.setFrame(1.05, 8.96, 3.05, 9.96);
+            // shows more of circle, for testing
+            // scanSource.setFrame(.5, 8, 3.5, 11);
+
+
             // TODO: Figure out what Bill's config is
             // statement would be if config.getLightSource().equals(Config.lightSource)
-            boolean configIndicator = true;
+            boolean configIndicator = false;
             if (configIndicator) {
+                // seems to set scanner to transmissive mode
                 scanSource.setLightPath(1);
             }//end if statement
             else {
+                // seems to set scanner to reflective mode
                 scanSource.setLightPath(0);
             }//end else statement
         }//end trying to set scan settings
@@ -84,19 +114,17 @@ public class Scan {
     public Result<String> runScanner() {
         // make an attempt to run the scanner
         try {
-            // TODO: run the scanner
-            MorenaImage img = new MorenaImage(scanSource);
-
-            System.out.println("Size of acquired image is " + img.getWidth() + " x " + img.getHeight());
-
-            // TODO: Actually save the img somehow
+            // determine file path where image will be outputted
+            File outF = new File("test.tif");
+            System.out.println(outF.getAbsolutePath());
+            // scan and save image to filepath
+            scanSource.acquireImage(false, outF.getAbsolutePath(), TwainConstants.TWFF_TIFF);
+            // ImageIO.write(bimg, "bmp", outF);
+            return new Result<>(outF.getAbsolutePath());
         }//end trying to run the scanner
         catch (Exception e) {
             return new Result<>(e);
         }//end catching any exceptions
-
-        // if we've reached this point, we must be fine
-        return new Result<>();
     }//end runScanner()
 
     /**
