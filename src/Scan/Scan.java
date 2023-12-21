@@ -65,6 +65,7 @@ public class Scan {
             
             // does nothing ???
             scanSource.setColorMode();
+            int[] supported_filter = scanSource.getSupportedImageFilter();
             // double[] supported_res = scanSource.getSupportedXResolution();
             // double max_supported = 0;
             // for (int i = 0; i < supported_res.length; i++) {
@@ -82,7 +83,7 @@ public class Scan {
             // correct pixel coordinates, for testing
             // scanSource.setFrame(1260, 10751, 3667, 11981);
             // correct inch cooridates, seems to give correct area
-            scanSource.setFrame(1.05, 8.96, 3.05, 9.96);
+            scanSource.setFrame(1.05, 8.98, 3.05, 9.98);
             // shows more of circle, for testing
             // scanSource.setFrame(.5, 8, 3.5, 11);
 
