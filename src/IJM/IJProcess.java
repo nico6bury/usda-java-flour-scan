@@ -193,8 +193,9 @@ public class IJProcess {
     public Result<String> MainMacro(List<File> files_to_process) {
         // int baseThreshold = 160;
         List<SumResult> runningSum = new ArrayList<SumResult>();
-        int splitWidth = 2400;
-        int splitHeight = 1200;
+        // maximum supported resolution of twain, less than max of actual epson capabilities
+        int splitWidth = 2368;
+        int splitHeight = 1184;
         // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
         // List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
         for (int i = 0; i < files_to_process.size(); i++) {
@@ -206,7 +207,7 @@ public class IJProcess {
             // fiure out the dimensions of this image
             int imgWidth = this_image.getWidth();
             int imgHeight = this_image.getHeight();
-            if (imgWidth == splitWidth && imgHeight == splitHeight) {
+            if (imgWidth >= splitWidth && imgHeight >= splitHeight) {
                 // split the current image in two and process both halves
                 List<ImagePlus> imagesToSplit = new ArrayList<>();
                 imagesToSplit.add(this_image);
