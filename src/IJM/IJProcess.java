@@ -283,8 +283,12 @@ public class IJProcess {
         // specify the measure data to recieve from analyze particles
         IJ.run(img_dup, "Set Measurements...", "area perimeter bounding redirect=None decimal=1");
 
+        // convert particle size controls based on dpi of image, assuming it's 2 x 1 inches
+        double pixels_adjusted_min = ((double)szMin * 1200.0) / (double)img_dup.getHeight();
+        double pixels_adjusted_max = ((double)defSizeLimit * 1200) / (double)img_dup.getHeight();
+
         // analyze particles to get summary of specks
-        IJ.run(img_dup, "Analyze Particles...", "size=" + szMin + "-" + defSizeLimit + " show=[Overlay Masks] clear summarize");
+        IJ.run(img_dup, "Analyze Particles...", "size=" + pixels_adjusted_min + "-" + pixels_adjusted_max + " show=[Overlay Masks] clear summarize");
 
         // collect recent analyze particles run from summary table
         ResultsTable sumTable = ResultsTable.getResultsTable("Summary");
