@@ -224,6 +224,8 @@ public class MainWindow extends javax.swing.JFrame {
         uxSetThresholdMenuBtn = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         uxSetAreaFlagMenuBtn = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        uxSetUnsharpMenuBtn = new javax.swing.JMenuItem();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -681,6 +683,20 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2.add(uxSetAreaFlagMenuBtn);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Scanner Correction");
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        uxSetUnsharpMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSetUnsharpMenuBtn.setText("Unsharp Mask Settings");
+        uxSetUnsharpMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxSetUnsharpMenuBtnActionPerformed(evt);
+            }
+        });
+        jMenu3.add(uxSetUnsharpMenuBtn);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -1140,6 +1156,10 @@ public class MainWindow extends javax.swing.JFrame {
         }//end catching any file-related exceptions
     }//GEN-LAST:event_uxOpenOutputFileActionPerformed
 
+    private void uxSetUnsharpMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetUnsharpMenuBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uxSetUnsharpMenuBtnActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -1156,6 +1176,7 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
@@ -1199,6 +1220,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField uxSearchTxt;
     private javax.swing.JMenuItem uxSetAreaFlagMenuBtn;
     private javax.swing.JMenuItem uxSetThresholdMenuBtn;
+    private javax.swing.JMenuItem uxSetUnsharpMenuBtn;
     private javax.swing.JTextArea uxStatusTxt;
     private javax.swing.JTextArea uxTitleBlockTxt;
     // End of variables declaration//GEN-END:variables
