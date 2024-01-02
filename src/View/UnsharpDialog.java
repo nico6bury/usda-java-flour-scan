@@ -4,11 +4,16 @@
  */
 package View;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Nicholas.Sixbury
  */
 public class UnsharpDialog extends javax.swing.JDialog {
+
+    public double unsharp_sigma = 1.5;
+    public double unsharp_weight = 0.5;
 
     /**
      * Creates new form UnsharpDialog
@@ -17,6 +22,20 @@ public class UnsharpDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+
+    /**
+     * Updates interface based on public vars
+     */
+    public void updateInterface() {
+        this.uxUnsharpSigmaSpnr.setValue(unsharp_sigma);
+        this.uxUnsharpWeightSpnr.setValue(unsharp_weight);
+    }
+
+    @Override
+    public void setVisible(boolean visibility) {
+        updateInterface();
+        super.setVisible(visibility);
+    }//end setVisible
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,19 +162,24 @@ public class UnsharpDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uxConfirmBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConfirmBtnActionPerformed
-        // TODO add your handling code here:
+        this.unsharp_sigma = (double)this.uxUnsharpSigmaSpnr.getValue();
+        this.unsharp_weight = (double)this.uxUnsharpWeightSpnr.getValue();
+        this.setVisible(false);
     }//GEN-LAST:event_uxConfirmBtnActionPerformed
 
     private void uxCancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxCancelBtnActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_uxCancelBtnActionPerformed
 
     private void uxParametersWhatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxParametersWhatBtnActionPerformed
-        // TODO add your handling code here:
+        String message = "Taken from https://imagej.net/ij/docs/menus/process.html#filters :\n\"Unsharp masking subtracts a blurred copy \nof the image and rescales the image to obtain the same contrast \nof large (low-frequency) structures as in the input image. This \nis equivalent to adding a high-pass filtered image and thus \nsharpens the image. (Sigma) Radius is the standard deviation \n(blur radius) of the Gaussian blur that is subtracted. Mask Weight \ndetermines the strength of filtering, whereby Mask Weight=1 would \nbe an infinite weight of the high-pass filtered image that is added.\"";
+        JOptionPane.showMessageDialog(this, message);
     }//GEN-LAST:event_uxParametersWhatBtnActionPerformed
 
     private void uxParametersWhyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxParametersWhyBtnActionPerformed
-        // TODO add your handling code here:
+        String message = "" + 
+        "This program seeks to recreate certain scan settings from the \nEPSON Scan utility. The settings we seek to recreate used EPSON's \nunsharp mask, but because that's a post-processing effect, it's \nnot accessible through TWAIN or Morena, and we therefore have to \nrecreate that effect separately. EPSON does not provide the exact \nparameters used for their unsharp mask, so instead it is \npartially left to the user to find parameters that fit their needs.";
+        JOptionPane.showMessageDialog(this, message);
     }//GEN-LAST:event_uxParametersWhyBtnActionPerformed
 
     /**

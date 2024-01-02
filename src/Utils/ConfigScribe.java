@@ -13,6 +13,13 @@ import javafx.util.Pair;
 
 /**
  * This class is used for serializing and deserializing config settings.
+ * 
+ * How to add new entries to the config file?
+ * In order to add new entries to the config file, all you have to do is add fields to ConfigStoreH.java or ConfigStoreC.java.
+ * This class uses reflection to read the name, type, and value from those classes, so that's really all that's necessary. 
+ * If desired, code could be added to write_config() in order to add default comments for newly added parameters, but that's not
+ * necessary to just save and load new fields.
+ * 
  */
 public class ConfigScribe {
     /** The name of the config file that will be human-readable and have options that can be set within the application. */
@@ -67,7 +74,11 @@ public class ConfigScribe {
                         config_h_lines.add("# Any file with average % area greater than this will get a flag of x");
                     } else if (fields_h[i].getName() == "area_threshold_upper") {
                         config_h_lines.add("# Any file with average % area greater than this will get a flag of xx");
-                    }//end adding customized comments for new lines
+                    } else if (fields_h[i].getName() == "unsharp_sigma") {
+                        config_h_lines.add("# Sigma radius to use with unsharp mask to try and replicate epson setting.");
+                    } else if (fields_h[i].getName() == "unsharp_weight") {
+                        config_h_lines.add("# Mask weight to use with unsharp mask to try and replicate epson setting.");
+                    }
                     // add a new line for fields[i]
                     config_h_lines.add(f_line);
                     // add extra line for spacing

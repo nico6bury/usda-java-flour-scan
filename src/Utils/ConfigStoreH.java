@@ -7,6 +7,8 @@ public class ConfigStoreH {
     public int proc_threshold = 160;
     public double area_threshold_lower = 0.05;
     public double area_threshold_upper = 0.10;
+    public double unsharp_sigma = 1.5;
+    public double unsharp_weight = 0.5;
     public ConfigStoreH() {}
     public ConfigStoreH(int proc_threshold, double area_threshold_lower, double area_threshold_upper) {
         this.proc_threshold = proc_threshold;

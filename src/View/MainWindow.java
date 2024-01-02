@@ -61,6 +61,7 @@ public class MainWindow extends javax.swing.JFrame {
     // dialog boxes we can re-use
     private AreaFlagDialog areaFlagDialog = new AreaFlagDialog(this, true);
     private ThresholdDialog thresholdDialog = new ThresholdDialog(this, true);
+    private UnsharpDialog unsharpDialog = new UnsharpDialog(this, true);
     // progress bar for imagej processing
     ProgressMonitor progressMonitor;
     // task for background work
@@ -1136,6 +1137,14 @@ public class MainWindow extends javax.swing.JFrame {
         this.config_scribe.write_config(this.config_store_h, this.config_store_c);
     }//GEN-LAST:event_uxSetThresholdMenuBtnActionPerformed
 
+    
+    private void uxSetUnsharpMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetUnsharpMenuBtnActionPerformed
+        unsharpDialog.setVisible(true);
+        this.config_store_h.unsharp_sigma = unsharpDialog.unsharp_sigma;
+        this.config_store_h.unsharp_weight = unsharpDialog.unsharp_weight;
+        this.config_scribe.write_config(this.config_store_h, this.config_store_c);
+    }//GEN-LAST:event_uxSetUnsharpMenuBtnActionPerformed
+
     private void uxClearOutputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxClearOutputBtnActionPerformed
         DefaultTableModel this_table_model = (DefaultTableModel)uxOutputTable.getModel();
         this_table_model.setRowCount(0);
@@ -1155,10 +1164,6 @@ public class MainWindow extends javax.swing.JFrame {
             showGenericExceptionMessage(e);
         }//end catching any file-related exceptions
     }//GEN-LAST:event_uxOpenOutputFileActionPerformed
-
-    private void uxSetUnsharpMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetUnsharpMenuBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_uxSetUnsharpMenuBtnActionPerformed
 
     /**
      * THIS is the MAIN METHOD that the program should start from.
