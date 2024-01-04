@@ -112,13 +112,15 @@ public class Scan {
 
     /**
      * Tries to run the scanner of the saved twain source with proper settings.
+     * @param filename An optional filename to use instead of a timestamp
+     * @param use_filename Whether to use filename parameter (true) or ignore it and use timestamp (false)
      * @return Returns an error if one was thrown, otherwise is Ok.
      */
-    public Result<String> runScanner() {
+    public Result<String> runScanner(String filename, boolean use_filename) {
         // make an attempt to run the scanner
         try {
             // determine file path where image will be outputted
-            Result<File> outF_result = getBaseScanDir();
+            Result<File> outF_result = getBaseScanDir(filename, use_filename);
             if (outF_result.isOk()) {
                 File outF = outF_result.getValue();
                 System.out.println(outF.getAbsolutePath());
@@ -140,9 +142,11 @@ public class Scan {
      * Gets the file location at which we should save the next scanned file.  
      * The filename and directory is based on timestamping, and things are placed into
      * the directory at Constants.SCANNED_IMAGES_FOLDER_NAME.
+     * @param filename An optional filename to use instead of a timestamp
+     * @param use_filename Whether to use filename parameter (true) or ignore it and use timestamp (false)
      * @return Returns a File at which to save a file, or an error if an exception happened.
      */
-    public static Result<File> getBaseScanDir() {
+    public static Result<File> getBaseScanDir(String filename, boolean use_filename) {
         String jar_location;
         try {
             jar_location = new File(IJProcess.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toString();
@@ -167,7 +171,9 @@ public class Scan {
             }//end if new directory needs to be created
             String newExtension = ".tif";
             String current_time_stamp = currentDateTime.format(month) + "-" + currentDateTime.format(day) + "_" + currentDateTime.format(hour) + ";" + currentDateTime.format(min);
-            String newFileName = current_time_stamp + newExtension;
+            String newFileName;
+            if (use_filename) {newFileName = filename + newExtension;}
+            else {newFileName = current_time_stamp + newExtension;}
             File outputFile = new File(newDirectory.getAbsolutePath() + File.separator + newFileName);
 
             return new Result<File>(outputFile);

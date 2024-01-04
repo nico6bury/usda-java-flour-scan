@@ -202,11 +202,11 @@ public class MainWindow extends javax.swing.JFrame {
         uxEmptyQueueBtn = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         uxTitleBlockTxt = new javax.swing.JTextArea();
+        uxOverwriteName = new javax.swing.JTextField();
+        uxShouldOverwriteName = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
-        uxSearchTxt = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         uxQueueList = new javax.swing.JList<>();
-        uxSearchBtn = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jSplitPane3 = new javax.swing.JSplitPane();
         jPanel5 = new javax.swing.JPanel();
@@ -260,7 +260,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane2.setDividerLocation(325);
+        jSplitPane2.setDividerLocation(350);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -331,52 +331,72 @@ public class MainWindow extends javax.swing.JFrame {
         uxTitleBlockTxt.setRows(5);
         jScrollPane6.setViewportView(uxTitleBlockTxt);
 
+        uxOverwriteName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOverwriteName.setEnabled(false);
+
+        uxShouldOverwriteName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxShouldOverwriteName.setText("Overwrite Scanned Image Name");
+        uxShouldOverwriteName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uxShouldOverwriteNameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
+            .addComponent(jScrollPane6)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(uxConnectToScannerBtn)
+                        .addComponent(uxShouldOverwriteName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxScanBigBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxScanQueueBtn))
+                        .addComponent(uxOverwriteName))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(uxAddFilesBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxProcessAllBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxEmptyQueueBtn)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(uxConnectToScannerBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxScanBigBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxScanQueueBtn))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(uxAddFilesBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxProcessAllBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxEmptyQueueBtn)))
+                        .addGap(0, 113, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxScanQueueBtn)
+                    .addComponent(uxConnectToScannerBtn)
                     .addComponent(uxScanBigBtn)
-                    .addComponent(uxConnectToScannerBtn))
+                    .addComponent(uxScanQueueBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxAddFilesBtn)
                     .addComponent(uxProcessAllBtn)
                     .addComponent(uxEmptyQueueBtn))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uxOverwriteName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uxShouldOverwriteName))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jSplitPane2.setTopComponent(jPanel1);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        uxSearchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         uxQueueList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxQueueList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -387,38 +407,20 @@ public class MainWindow extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(uxQueueList);
 
-        uxSearchBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxSearchBtn.setText("Search");
-        uxSearchBtn.setToolTipText("Filters the display of images in the processing queue.");
-        uxSearchBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                uxSearchBtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(uxSearchTxt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxSearchBtn)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxSearchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxSearchBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -593,7 +595,7 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -810,7 +812,7 @@ public class MainWindow extends javax.swing.JFrame {
             scan = null;
         }//end if we encountered an error while setting scan settings
         // try to scan something with the scanner
-        Result<String> scanResult = scan.runScanner();
+        Result<String> scanResult = scan.runScanner(uxOverwriteName.getText(), uxShouldOverwriteName.isSelected());
         if (scanResult.isOk()) {
             String result = scanResult.getValue();
             Result<String> unsharpResult = IJProcess.doUnsharpCorrection(result, config_store_h.unsharp_sigma, config_store_h.unsharp_weight);
@@ -1115,28 +1117,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxEmptyQueueBtnActionPerformed
 
     /**
-     * Handles filtering of the files displayed in the image queue, determined by text in uxSearchTxt.
-     * It changes the model of uxQueueList, so the imageQueue list isn't changed.
-     * @param evt
-     */
-    private void uxSearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSearchBtnActionPerformed
-        // reset the list before we mess with things
-        UpdateQueueList();
-        String searchString = uxSearchTxt.getText();
-        List<String> goodSoFar = new ArrayList<String>();
-        for (int i = 0; i < imageQueue.size(); i++) {
-            String thisImageName = imageQueue.get(i).getName();
-            if (thisImageName.contains(searchString)) {
-                goodSoFar.add(thisImageName);
-            }//end if we found a match
-        }//end finding all matches for search string
-        uxQueueList.removeAll();
-        // add everything into an array
-        String[] a = goodSoFar.toArray(new String[goodSoFar.size()]);
-        uxQueueList.setListData(a);
-    }//GEN-LAST:event_uxSearchBtnActionPerformed
-
-    /**
      * Shows the dialog for changing area flag thresholds. 
      */
     private void uxSetAreaFlagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxSetAreaFlagMenuBtnActionPerformed
@@ -1199,6 +1179,11 @@ public class MainWindow extends javax.swing.JFrame {
         }//end catching any file-related exceptions
     }//GEN-LAST:event_uxOpenOutputFileActionPerformed
 
+    private void uxShouldOverwriteNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxShouldOverwriteNameActionPerformed
+        if (uxShouldOverwriteName.isSelected()) {uxOverwriteName.setEnabled(true);}
+        else {uxOverwriteName.setEnabled(false);}
+    }//GEN-LAST:event_uxShouldOverwriteNameActionPerformed
+
     /**
      * THIS is the MAIN METHOD that the program should start from.
      * @param args the command line arguments
@@ -1247,6 +1232,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton uxOpenFileBtn;
     private javax.swing.JButton uxOpenOutputFile;
     private javax.swing.JTable uxOutputTable;
+    private javax.swing.JTextField uxOverwriteName;
     private javax.swing.JButton uxPrevImageBtn;
     private javax.swing.JButton uxProcessAllBtn;
     private javax.swing.JList<String> uxQueueList;
@@ -1256,11 +1242,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton uxScanBigBtn;
     private javax.swing.JMenuItem uxScanBtn;
     private javax.swing.JButton uxScanQueueBtn;
-    private javax.swing.JButton uxSearchBtn;
-    private javax.swing.JTextField uxSearchTxt;
     private javax.swing.JMenuItem uxSetAreaFlagMenuBtn;
     private javax.swing.JMenuItem uxSetThresholdMenuBtn;
     private javax.swing.JMenuItem uxSetUnsharpMenuBtn;
+    private javax.swing.JCheckBox uxShouldOverwriteName;
     private javax.swing.JTextArea uxStatusTxt;
     private javax.swing.JTextArea uxTitleBlockTxt;
     // End of variables declaration//GEN-END:variables
