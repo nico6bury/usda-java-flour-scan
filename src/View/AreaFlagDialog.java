@@ -64,10 +64,10 @@ public class AreaFlagDialog extends javax.swing.JDialog {
         jLabel3.setText("If %A >");
 
         uxFirstFlagThSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxFirstFlagThSpnr.setModel(new javax.swing.SpinnerNumberModel(0.05d, 0.0d, 100.0d, 0.01d));
+        uxFirstFlagThSpnr.setModel(new javax.swing.SpinnerNumberModel(0.025d, 0.0d, 100.0d, 0.001d));
 
         uxSecondFlagThSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxSecondFlagThSpnr.setModel(new javax.swing.SpinnerNumberModel(0.1d, 0.0d, 100.0d, 0.01d));
+        uxSecondFlagThSpnr.setModel(new javax.swing.SpinnerNumberModel(0.05d, 0.0d, 100.0d, 0.001d));
 
         uxCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxCancelBtn.setText("Cancel");
