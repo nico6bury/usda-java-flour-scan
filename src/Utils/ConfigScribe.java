@@ -78,6 +78,14 @@ public class ConfigScribe {
                         config_h_lines.add("# Sigma radius to use with unsharp mask to try and replicate epson setting.");
                     } else if (fields_h[i].getName() == "unsharp_weight") {
                         config_h_lines.add("# Mask weight to use with unsharp mask to try and replicate epson setting.");
+                    } else if (fields_h[i].getName() == "scan_x1") {
+                        config_h_lines.add("# x coordinate in inches of upper left corner of scan area");
+                    } else if (fields_h[i].getName() == "scan_y1") {
+                        config_h_lines.add("# y coordinate in inches of upper left corner of scan area");
+                    } else if (fields_h[i].getName() == "scan_x2") {
+                        config_h_lines.add("# x coordinate in inches of lower right corner of scan area");
+                    } else if (fields_h[i].getName() == "scan_y2") {
+                        config_h_lines.add("# y coordinate in inches of lower right corner of scan area");
                     }
                     // add a new line for fields[i]
                     config_h_lines.add(f_line);
