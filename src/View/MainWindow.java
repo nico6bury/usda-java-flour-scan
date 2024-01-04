@@ -801,8 +801,15 @@ public class MainWindow extends javax.swing.JFrame {
         Result<String> scanResult = scan.runScanner();
         if (scanResult.isOk()) {
             String result = scanResult.getValue();
-            lastScannedFile = new File(result);
-            return new Result<File>(lastScannedFile);
+            // TODO: Process resulting file with unsharp mask
+            Result<String> unsharpResult = IJProcess.doUnsharpCorrection(result, config_store_h.unsharp_sigma, config_store_h.unsharp_weight);
+            if (unsharpResult.isOk()) {
+                lastScannedFile = new File(unsharpResult.getValue());
+                return new Result<File>(lastScannedFile);
+            }//end if we have an ok result
+            else {
+                return new Result<File>(unsharpResult.getError());
+            }//end else we have an error to show
         }//end else if scan result is ok
         else {
             return new Result<File>(scanResult.getError());

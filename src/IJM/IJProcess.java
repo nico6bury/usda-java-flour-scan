@@ -173,6 +173,31 @@ public class IJProcess {
     }//end makeOutputFile(inputList, icl)
 
     /**
+     * This method performs the unsharp mask filter for files scanned through twain instead of the EPSON Scan Utility.  
+     * By default, this method will save the new image next to the original, with "-unsharp_sigma-[sigma]_weight-[weight]" appended to the filename.
+     * @param filepath The filepath of the image to process
+     * @param sigma The sigma (radius) value to use for the unsharp filter
+     * @param weight The mask weight to use for the unsharp filter. It must be between 0.1 and 0.9
+     * @return Returns either the filepath for the resulting file, or some error.
+     */
+    public static Result<String> doUnsharpCorrection(String filepath, double sigma, double weight) {
+        // open img and run the unsharp mask
+        ImagePlus img = IJ.openImage(filepath);
+        IJ.run(img, "Unsharp Mask...", "radius=" + sigma + " mask=" + weight);
+        // figure out path to save img to, then save it there
+        String baseDir = filepath.substring(0, filepath.lastIndexOf(File.separator) + 1);
+        String baseName = filepath.substring(filepath.lastIndexOf(File.separator) + 1, filepath.lastIndexOf("."));
+        String baseExt = filepath.substring(filepath.lastIndexOf("."));
+        
+        String newName = baseName + String.format("_unsharp_sigma-[%2.1f]_weight-[%2.1f]", sigma, weight);
+        String newPath = baseDir + newName + baseExt;
+
+        IJ.save(img, newPath);
+        // return filename as string, probably
+        return new Result<String>(newPath);
+    }//end doUnsharpCorrection(filepath, sigma, weight)
+
+    /**
      * Runs the code to process a list of images. Actually just passes everything to IJProcess.MainMacro()
      * @param files_to_process The list of image Files to process.
      * @return Returns a result that will contain the full string written to an output file, or an error if something prevented completion.
