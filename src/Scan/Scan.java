@@ -4,10 +4,15 @@ import SK.gnome.twain.TwainConstants;
 import SK.gnome.twain.TwainException;
 import SK.gnome.twain.TwainManager;
 import SK.gnome.twain.TwainSource;
+import Utils.Constants;
 import Utils.Result;
 import Utils.Result.ResultType;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import IJM.IJProcess;
 
 /**
  * This class is meant to be used for scanning images with an EPSON scanner for image processing.
@@ -116,17 +121,55 @@ public class Scan {
         // make an attempt to run the scanner
         try {
             // determine file path where image will be outputted
-            File outF = new File("test.tif");
-            System.out.println(outF.getAbsolutePath());
-            // scan and save image to filepath
-            scanSource.acquireImage(false, outF.getAbsolutePath(), TwainConstants.TWFF_TIFF);
-            // ImageIO.write(bimg, "bmp", outF);
-            return new Result<>(outF.getAbsolutePath());
+            Result<File> outF_result = getBaseScanDir();
+            if (outF_result.isOk()) {
+                File outF = outF_result.getValue();
+                System.out.println(outF.getAbsolutePath());
+                // scan and save image to filepath
+                scanSource.acquireImage(false, outF.getAbsolutePath(), TwainConstants.TWFF_TIFF);
+                // ImageIO.write(bimg, "bmp", outF);
+                return new Result<>(outF.getAbsolutePath());
+            }//end if we successfully got a filename
+            else {
+                return new Result<>(outF_result.getError());
+            }//end else we got an error
         }//end trying to run the scanner
         catch (Exception e) {
             return new Result<>(e);
         }//end catching any exceptions
     }//end runScanner()
+
+    public static Result<File> getBaseScanDir() {
+        String jar_location;
+        try {
+            jar_location = new File(IJProcess.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toString();
+            String output_folder_storage = jar_location + File.separator + Constants.SCANNED_IMAGES_FOLDER_NAME;
+            File output_folder_storage_file = new File(output_folder_storage);
+            if (!output_folder_storage_file.exists()) {
+                output_folder_storage_file.mkdir();
+            }//end if we need to make our output folder
+            
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
+            DateTimeFormatter month = DateTimeFormatter.ofPattern("MM");
+            DateTimeFormatter day = DateTimeFormatter.ofPattern("d");
+            DateTimeFormatter hour = DateTimeFormatter.ofPattern("H");
+            DateTimeFormatter min = DateTimeFormatter.ofPattern("m");
+            // DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            // DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern("MM-d_H:m");
+            File newDirectory = new File(output_folder_storage_file.getAbsolutePath() + File.separator + "flour-scan-" + currentDateTime.format(year) + "-" + currentDateTime.format(month));
+            // create the directory if it doesn't exist
+            if (!newDirectory.exists()) {
+                newDirectory.mkdir();
+            }//end if new directory needs to be created
+            String newExtension = ".tif";
+            String current_time_stamp = currentDateTime.format(month) + "-" + currentDateTime.format(day) + "_" + currentDateTime.format(hour) + ";" + currentDateTime.format(min);
+            String newFileName = current_time_stamp + newExtension;
+            File outputFile = new File(newDirectory.getAbsolutePath() + File.separator + newFileName);
+
+            return new Result<File>(outputFile);
+        } catch (Exception e) {return new Result<File>(e);}
+    }//end getBaseScanDir()
 
     /**
      * Closes the twain manager. This operation might fail, for some reason. If it does, an error will be returned with the result type.
