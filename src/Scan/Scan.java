@@ -62,7 +62,6 @@ public class Scan {
     public Result<Result.ResultType> setScanSettings() {
         // make an attempt to set settings of twain source
         try {
-            // TODO: Set the settings for the scanner
             // it's unknown what this does (found in Bill's config)
             scanSource.setVisible(false);
             // controls whether scanning progress bar shows
@@ -70,7 +69,7 @@ public class Scan {
             
             // does nothing ???
             scanSource.setColorMode();
-            int[] supported_filter = scanSource.getSupportedImageFilter();
+            // int[] supported_filter = scanSource.getSupportedImageFilter();
             // double[] supported_res = scanSource.getSupportedXResolution();
             // double max_supported = 0;
             // for (int i = 0; i < supported_res.length; i++) {
@@ -82,8 +81,6 @@ public class Scan {
             double x_res = scanSource.getXResolution();
             double y_res = scanSource.getYResolution();
             System.out.println("x_res: " + x_res + "    y_res: " + y_res + "\n");
-            // scanSource.setXResolution(2400);
-            // scanSource.setYResolution(1200);
             // scanSource.setUnits(TwainConstants.TWUN_PIXELS);
             // correct pixel coordinates, for testing
             // scanSource.setFrame(1260, 10751, 3667, 11981);
@@ -92,8 +89,6 @@ public class Scan {
             // shows more of circle, for testing
             // scanSource.setFrame(.5, 8, 3.5, 11);
 
-
-            // TODO: Figure out what Bill's config is
             // statement would be if config.getLightSource().equals(Config.lightSource)
             boolean configIndicator = false;
             if (configIndicator) {
@@ -139,6 +134,12 @@ public class Scan {
         }//end catching any exceptions
     }//end runScanner()
 
+    /**
+     * Gets the file location at which we should save the next scanned file.  
+     * The filename and directory is based on timestamping, and things are placed into
+     * the directory at Constants.SCANNED_IMAGES_FOLDER_NAME.
+     * @return Returns a File at which to save a file, or an error if an exception happened.
+     */
     public static Result<File> getBaseScanDir() {
         String jar_location;
         try {
@@ -177,7 +178,6 @@ public class Scan {
      */
     public Result<ResultType> closeScanner() {
         try {
-            // TODO: Not sure what this does, but was present in Bill's version
             TwainManager.close();
         } catch (TwainException e) {
             return new Result<>(e);
