@@ -219,8 +219,10 @@ public class IJProcess {
         // int baseThreshold = 160;
         List<SumResult> runningSum = new ArrayList<SumResult>();
         // maximum supported resolution of twain, less than max of actual epson capabilities
-        int splitWidth = 2368;
-        int splitHeight = 1184;
+        // int splitWidth = 2368;
+        // int splitHeight = 1184;
+        // list of images that have already been split
+        List<File> split_files = new ArrayList<File>();
         // String baseMacroDir = base_macro_dir.getAbsolutePath() + File.separator;
         // List<ImagePlus> imagesProcessed = new ArrayList<ImagePlus>();
         for (int i = 0; i < files_to_process.size(); i++) {
@@ -229,49 +231,52 @@ public class IJProcess {
 
             // actually start processing
             ImagePlus this_image = IJ.openImage(file.getAbsolutePath());
-            // fiure out the dimensions of this image
-            int imgWidth = this_image.getWidth();
-            int imgHeight = this_image.getHeight();
-            if (imgWidth >= splitWidth && imgHeight >= splitHeight) {
-                // split the current image in two and process both halves
-                List<ImagePlus> imagesToSplit = new ArrayList<>();
-                imagesToSplit.add(this_image);
-                List<ImagePlus> splitImages = PicSplitter(imagesToSplit);
 
-                // left image
-                // analyze particles info
-                SumResult leftResult = ijmProcessFile(splitImages.get(0), file);
-                leftResult.leftOrRight = LeftOrRight.Left;
-                leftResult.slice = sliceBase + "-L";
-                // Lab info
-                double[] leftL = LabProcesser(splitImages.get(0));
-                leftResult.l_mean = leftL[0];
-                leftResult.l_stdv = leftL[1];
-                runningSum.add(leftResult);
-                // imagesProcessed.add(splitImages.get(0));
+            // split the current image in two and process both halves
+            List<ImagePlus> imagesToSplit = new ArrayList<>();
+            imagesToSplit.add(this_image);
+            List<ImagePlus> splitImages = PicSplitter(imagesToSplit);
 
-                // right image
-                // analyze particles info
-                SumResult rightResult = ijmProcessFile(splitImages.get(1), file);
-                rightResult.leftOrRight = LeftOrRight.Right;
-                rightResult.slice = sliceBase + "-R";
-                // Lab info
-                double[] rightL = LabProcesser(splitImages.get(1));
-                rightResult.l_mean = rightL[0];
-                rightResult.l_stdv = rightL[1];
-                runningSum.add(rightResult);
-                // imagesProcessed.add(splitImages.get(1));
-            }//end if we need to split the file first
-            else {
-                // process the current image with analyze particles and Lab
-                SumResult this_result = ijmProcessFile(this_image, file);
-                this_result.slice = sliceBase;
-                double[] l_info = LabProcesser(this_image);
-                this_result.l_mean = l_info[0];
-                this_result.l_stdv = l_info[1];
-                runningSum.add(this_result);
-            }//end else we can just process the image like normal
-        }//end looping over each file we want to process
+            // left image
+            // analyze particles info
+            SumResult leftResult = ijmProcessFile(splitImages.get(0), file);
+            leftResult.leftOrRight = LeftOrRight.Left;
+            leftResult.slice = sliceBase + "-L";
+            // Lab info
+            double[] leftL = LabProcesser(splitImages.get(0));
+            leftResult.l_mean = leftL[0];
+            leftResult.l_stdv = leftL[1];
+            runningSum.add(leftResult);
+            // imagesProcessed.add(splitImages.get(0));
+
+            // right image
+            // analyze particles info
+            SumResult rightResult = ijmProcessFile(splitImages.get(1), file);
+            rightResult.leftOrRight = LeftOrRight.Right;
+            rightResult.slice = sliceBase + "-R";
+            // Lab info
+            double[] rightL = LabProcesser(splitImages.get(1));
+            rightResult.l_mean = rightL[0];
+            rightResult.l_stdv = rightL[1];
+            runningSum.add(rightResult);
+            // imagesProcessed.add(splitImages.get(1));
+        }//end looping over each file we want to split
+
+        for (int i = 0; i < split_files.size(); i++) {
+            File file = files_to_process.get(i);
+            String sliceBase = file.getName().substring(0, file.getName().length() - 4);
+
+            // actually start processing
+            ImagePlus this_image = IJ.openImage(file.getAbsolutePath());
+            
+            // process the current image with analyze particles and Lab
+            SumResult this_result = ijmProcessFile(this_image, file);
+            this_result.slice = sliceBase;
+            double[] l_info = LabProcesser(this_image);
+            this_result.l_mean = l_info[0];
+            this_result.l_stdv = l_info[1];
+            runningSum.add(this_result);
+        }//end loping over each file we want to process
 
         // close all the images, or at least the stack
         IJ.run("Close All");
