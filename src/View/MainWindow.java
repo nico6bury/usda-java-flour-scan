@@ -750,6 +750,7 @@ public class MainWindow extends javax.swing.JFrame {
     };
 
     private void uxConnectScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectScannerBtnActionPerformed
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // check for scanner already initialized
         if (scan != null) {
             JOptionPane.showMessageDialog(this, "A scanner is already connected. Please disconnect the current scanner before connecting a new one.", "Scanner already connected", JOptionPane.ERROR_MESSAGE);
@@ -763,13 +764,7 @@ public class MainWindow extends javax.swing.JFrame {
             // reset scanner to null
             scan = null;
         }//end if we encountered an error while detecting the connected scanner
-        // // try to set scanner settings
-        // Result<ResultType> setScanSettingResult = scan.setScanSettings();
-        // if (setScanSettingResult.isErr()) {
-        //     showGenericExceptionMessage(setScanSettingResult.getError());
-        //     // reset scan to null
-        //     scan = null;
-        // }//end if we encountered an error while setting scan settings
+        setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
     private void uxResetScannerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxResetScannerActionPerformed
@@ -822,11 +817,14 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxConnectToScannerBtnActionPerformed
 
     private void uxScanBigBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBigBtnActionPerformed
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Result<File> scanResult = PerformScan();
         if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
+        setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_uxScanBigBtnActionPerformed
 
     private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Result<File> scanResult = PerformScan();
         if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
         else if (scanResult.isOk()) {
@@ -834,6 +832,7 @@ public class MainWindow extends javax.swing.JFrame {
             allImages.add(scanResult.getValue());
             UpdateQueueList();
         }//end else if we can add something to the queue
+        setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_uxScanQueueBtnActionPerformed
 
     /**
