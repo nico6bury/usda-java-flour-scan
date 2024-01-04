@@ -188,7 +188,7 @@ public class ScanAreaDialog extends javax.swing.JDialog {
         this.Y1 = (double)this.uxY1Spnr.getValue();
         this.X2 = (double)this.uxX2Spnr.getValue();
         this.Y2 = (double)this.uxY2Spnr.getValue();
-        this.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_uxConfirmBtnActionPerformed
 
     /**
