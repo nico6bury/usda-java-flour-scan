@@ -11,11 +11,11 @@ public class ConfigStoreH {
     /**
      * lower threshold for classifying avg % area of image
      */
-    public double area_threshold_lower = 0.05;
+    public double area_threshold_lower = 0.025;
     /**
      * upper threshold for classifying avg % area of image
      */
-    public double area_threshold_upper = 0.10;
+    public double area_threshold_upper = 0.05;
     /**
      * sigma (radius) to use with unsharp mask filter
      */

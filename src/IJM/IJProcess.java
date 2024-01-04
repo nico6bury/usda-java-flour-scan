@@ -156,7 +156,7 @@ public class IJProcess {
                 String flag = "";
                 if (avg_percent_area > lower_flag_thresh) {flag = "x";}
                 if (avg_percent_area > upper_flag_thresh) {flag = "xx";}
-                data_output.append(String.format("%s,%d,%s,%d,%d,%3.1f,%3.1f,%3.1f,%3.2f,%3.2f,%3.2f,%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, rght.count, left.l_mean, rght.l_mean, avg_l, left.percent_area, rght.percent_area, avg_percent_area, flag));
+                data_output.append(String.format("%s,%d,%s,%d,%d,%3.1f,%3.1f,%3.1f,%4.3f,%4.3f,%4.3f,%s\n", left.file.getName(), left.threshold, curDateTime.format(timestamp), left.count, rght.count, left.l_mean, rght.l_mean, avg_l, left.percent_area, rght.percent_area, avg_percent_area, flag));
             }//end if we have the expected group size
             else {
                 // else we need to deal with this somehow

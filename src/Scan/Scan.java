@@ -4,6 +4,7 @@ import SK.gnome.twain.TwainConstants;
 import SK.gnome.twain.TwainException;
 import SK.gnome.twain.TwainManager;
 import SK.gnome.twain.TwainSource;
+import Utils.ConfigStoreH;
 import Utils.Constants;
 import Utils.Result;
 import Utils.Result.ResultType;
@@ -59,7 +60,7 @@ public class Scan {
      * Tries to set the scan settings of the saved twain source.
      * @return Returns an error if one was thrown, otherwise is Ok.
      */
-    public Result<Result.ResultType> setScanSettings() {
+    public Result<Result.ResultType> setScanSettings(ConfigStoreH config) {
         // make an attempt to set settings of twain source
         try {
             // it's unknown what this does (found in Bill's config)
@@ -85,7 +86,8 @@ public class Scan {
             // correct pixel coordinates, for testing
             // scanSource.setFrame(1260, 10751, 3667, 11981);
             // correct inch cooridates, seems to give correct area
-            scanSource.setFrame(1.05, 8.98, 3.05, 9.98);
+            // defaults should be 1.05, 8.98, 3.05, 9.98
+            scanSource.setFrame(config.scan_x1, config.scan_y1, config.scan_x2, config.scan_y2);
             // shows more of circle, for testing
             // scanSource.setFrame(.5, 8, 3.5, 11);
 
