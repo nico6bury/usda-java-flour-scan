@@ -178,9 +178,10 @@ public class IJProcess {
      * @param filepath The filepath of the image to process
      * @param sigma The sigma (radius) value to use for the unsharp filter
      * @param weight The mask weight to use for the unsharp filter. It must be between 0.1 and 0.9
+     * @param rename_file Whether or not we should rename the unsharp masked file.
      * @return Returns either the filepath for the resulting file, or some error.
      */
-    public static Result<String> doUnsharpCorrection(String filepath, double sigma, double weight) {
+    public static Result<String> doUnsharpCorrection(String filepath, double sigma, double weight, boolean rename_file) {
         // open img and run the unsharp mask
         ImagePlus img = IJ.openImage(filepath);
         IJ.run(img, "Unsharp Mask...", "radius=" + sigma + " mask=" + weight);
@@ -189,7 +190,13 @@ public class IJProcess {
         String baseName = filepath.substring(filepath.lastIndexOf(File.separator) + 1, filepath.lastIndexOf("."));
         String baseExt = filepath.substring(filepath.lastIndexOf("."));
         
-        String newName = baseName + String.format("_unsharp_sigma-[%2.1f]_weight-[%2.1f]", sigma, weight);
+        String newName;
+        if (rename_file) {
+            newName = baseName + String.format("_unsharp_sigma-[%2.1f]_weight-[%2.1f]", sigma, weight);
+        } else {
+            newName = baseName;
+        }//end else we don't rename the file
+        
         String newPath = baseDir + newName + baseExt;
 
         IJ.save(img, newPath);

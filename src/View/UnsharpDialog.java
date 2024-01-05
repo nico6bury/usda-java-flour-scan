@@ -14,6 +14,8 @@ public class UnsharpDialog extends javax.swing.JDialog {
 
     public double unsharp_sigma = 1.5;
     public double unsharp_weight = 0.5;
+    public boolean unsharp_skip = false;
+    public boolean unsharp_rename = true;
 
     /**
      * Creates new form UnsharpDialog
@@ -29,7 +31,9 @@ public class UnsharpDialog extends javax.swing.JDialog {
     public void updateInterface() {
         this.uxUnsharpSigmaSpnr.setValue(unsharp_sigma);
         this.uxUnsharpWeightSpnr.setValue(unsharp_weight);
-    }
+        this.uxShouldSkipUnsharp.setSelected(unsharp_skip);
+        this.uxShouldRenameUnsharpFile.setSelected(unsharp_rename);
+    }//end updateInterface
 
     @Override
     public void setVisible(boolean visibility) {
@@ -54,6 +58,8 @@ public class UnsharpDialog extends javax.swing.JDialog {
         uxParametersWhatBtn = new javax.swing.JButton();
         uxCancelBtn = new javax.swing.JButton();
         uxConfirmBtn = new javax.swing.JButton();
+        uxShouldSkipUnsharp = new javax.swing.JCheckBox();
+        uxShouldRenameUnsharpFile = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Unsharp Mask Configuration");
@@ -106,6 +112,15 @@ public class UnsharpDialog extends javax.swing.JDialog {
             }
         });
 
+        uxShouldSkipUnsharp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxShouldSkipUnsharp.setText("Skip Unsharp Mask");
+        uxShouldSkipUnsharp.setToolTipText("If enabled, then the unsharp mask will not be performed for scanned files.");
+
+        uxShouldRenameUnsharpFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxShouldRenameUnsharpFile.setSelected(true);
+        uxShouldRenameUnsharpFile.setText("Rename File for Unsharp Mask");
+        uxShouldRenameUnsharpFile.setToolTipText("If off, the the unsharp masked image will overwrite the original.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,24 +130,28 @@ public class UnsharpDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(uxUnsharpSigmaSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addComponent(uxUnsharpSigmaSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(uxShouldSkipUnsharp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(uxUnsharpWeightSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(uxParametersWhyBtn)
-                                    .addComponent(uxParametersWhatBtn))
-                                .addGap(18, 18, 18)
-                                .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addComponent(uxShouldRenameUnsharpFile)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(uxParametersWhatBtn)
+                            .addComponent(uxParametersWhyBtn))
+                        .addGap(18, 18, 18)
+                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -146,14 +165,19 @@ public class UnsharpDialog extends javax.swing.JDialog {
                     .addComponent(uxUnsharpSigmaSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(uxUnsharpWeightSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uxShouldSkipUnsharp)
+                    .addComponent(uxShouldRenameUnsharpFile))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(uxParametersWhatBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxParametersWhyBtn))
-                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -163,6 +187,8 @@ public class UnsharpDialog extends javax.swing.JDialog {
     private void uxConfirmBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConfirmBtnActionPerformed
         this.unsharp_sigma = (double)this.uxUnsharpSigmaSpnr.getValue();
         this.unsharp_weight = (double)this.uxUnsharpWeightSpnr.getValue();
+        this.unsharp_skip = uxShouldSkipUnsharp.isSelected();
+        this.unsharp_rename = uxShouldRenameUnsharpFile.isSelected();
         this.setVisible(false);
     }//GEN-LAST:event_uxConfirmBtnActionPerformed
 
@@ -189,6 +215,8 @@ public class UnsharpDialog extends javax.swing.JDialog {
     private javax.swing.JButton uxConfirmBtn;
     private javax.swing.JButton uxParametersWhatBtn;
     private javax.swing.JButton uxParametersWhyBtn;
+    private javax.swing.JCheckBox uxShouldRenameUnsharpFile;
+    private javax.swing.JCheckBox uxShouldSkipUnsharp;
     private javax.swing.JSpinner uxUnsharpSigmaSpnr;
     private javax.swing.JSpinner uxUnsharpWeightSpnr;
     // End of variables declaration//GEN-END:variables

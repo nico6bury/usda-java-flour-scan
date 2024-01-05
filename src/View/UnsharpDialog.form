@@ -29,28 +29,34 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="uxUnsharpSigmaSpnr" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="uxShouldSkipUnsharp" alignment="1" min="-2" pref="140" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="uxUnsharpWeightSpnr" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="uxParametersWhyBtn" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="uxParametersWhatBtn" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="uxCancelBtn" min="-2" pref="106" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="uxConfirmBtn" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="uxShouldRenameUnsharpFile" min="-2" max="-2" attributes="0"/>
                       </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="uxParametersWhatBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="uxParametersWhyBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="uxCancelBtn" min="-2" pref="106" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="uxConfirmBtn" min="-2" pref="114" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -69,15 +75,22 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="uxUnsharpWeightSpnr" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="uxShouldSkipUnsharp" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="uxShouldRenameUnsharpFile" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="uxParametersWhatBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="uxParametersWhyBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="uxCancelBtn" pref="69" max="32767" attributes="0"/>
-                  <Component id="uxConfirmBtn" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="uxCancelBtn" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
+                      <Component id="uxConfirmBtn" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -173,6 +186,25 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uxConfirmBtnActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="uxShouldSkipUnsharp">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Skip Unsharp Mask"/>
+        <Property name="toolTipText" type="java.lang.String" value="If enabled, then the unsharp mask will not be performed for scanned files."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="uxShouldRenameUnsharpFile">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Rename File for Unsharp Mask"/>
+        <Property name="toolTipText" type="java.lang.String" value="If off, the the unsharp masked image will overwrite the original."/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

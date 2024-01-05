@@ -25,6 +25,14 @@ public class ConfigStoreH {
      */
     public double unsharp_weight = 0.5;
     /**
+     * If this is true, then the unsharp mask will be skipped
+     */
+    public boolean unsharp_skip = false;
+    /**
+     * If this is false, then the unsharp masked image will overwrite the original. If true, a new file will be generated.
+     */
+    public boolean unsharp_rename = true;
+    /**
      * scan area x coordinate of upper left corner of scan area in inches
      */
     public double scan_x1 = 1.05;

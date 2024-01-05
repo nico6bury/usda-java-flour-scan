@@ -18,7 +18,8 @@ import javafx.util.Pair;
  * In order to add new entries to the config file, all you have to do is add fields to ConfigStoreH.java or ConfigStoreC.java.
  * This class uses reflection to read the name, type, and value from those classes, so that's really all that's necessary. 
  * If desired, code could be added to write_config() in order to add default comments for newly added parameters, but that's not
- * necessary to just save and load new fields.
+ * necessary to just save and load new fields.  
+ * Newly added variables to ConfigStore might need added code for reading them in and assigning other variables off of them.
  * 
  */
 public class ConfigScribe {
@@ -45,11 +46,32 @@ public class ConfigScribe {
             File config_h_filepath = new File(jar_location + File.separator + h_config_name);
             File config_c_filepath = new File(jar_location + File.separator + c_config_name);
             // make sure file exists
-            if (!config_h_filepath.exists()) { config_h_filepath.createNewFile(); }
+            boolean add_header_to_config = false;
+            if (!config_h_filepath.exists()) { config_h_filepath.createNewFile(); add_header_to_config = true; }
             if (!config_c_filepath.exists()) { config_c_filepath.createNewFile(); }
             // get all the lines from the config file
             List<String> config_h_lines = Files.readAllLines(config_h_filepath.toPath());
             List<String> config_c_lines = Files.readAllLines(config_c_filepath.toPath());
+            // if the human-readable config doesn't have a header, then we should add it
+            if (add_header_to_config) {
+                config_h_lines.add("# This is the human-readable config file for the USDA Flour Scan Program");
+                config_h_lines.add("# This flour scan program was created by the efforts of Nicholas Sixbury,");
+                config_h_lines.add("# Daniel Brabec, and Bill Rust, as part of work for the USDA. The source");
+                config_h_lines.add("# code is available at https://github.com/nico6bury/usda-java-flour-scan/");
+                config_h_lines.add("# ");
+                config_h_lines.add("# In this file, lines not parsed as variable serialization are automatically ignored.");
+                config_h_lines.add("# Because of this, any line starting with \'#\' will automatically be interpretted as");
+                config_h_lines.add("# a comment. Any comments will be untouched in the config file, so feel free to add");
+                config_h_lines.add("# your own comments.");
+                config_h_lines.add("# ");
+                config_h_lines.add("# If this config file is ever deleted, then it should be re-generated on program");
+                config_h_lines.add("# startup. All parameters will be set to default, and all default comments will be");
+                config_h_lines.add("# added to the new config file, including this header comment.");
+                config_h_lines.add("# ");
+                config_h_lines.add("# Just about every parameter in this config file can also be set through a menu in");
+                config_h_lines.add("# the program, so don't feel as though you have to use this config file to change");
+                config_h_lines.add("# settings.");
+            }//end if we need to add a header to the config file
             // get list of fields to use for looking stuff up in match map
             Field[] fields_h = ConfigStoreH.class.getFields();
             Field[] fields_c = ConfigStoreC.class.getFields();
@@ -86,6 +108,10 @@ public class ConfigScribe {
                         config_h_lines.add("# x coordinate in inches of lower right corner of scan area");
                     } else if (fields_h[i].getName() == "scan_y2") {
                         config_h_lines.add("# y coordinate in inches of lower right corner of scan area");
+                    } else if (fields_h[i].getName() == "unsharp_skip") {
+                        config_h_lines.add("# if true, then the unsharp mask will be skipped");
+                    } else if (fields_h[i].getName() == "unsharp_rename") {
+                        config_h_lines.add("# if true, the unsharp masked image will be renamed as a new file. Otherwise, it will overwrite the original.");
                     }
                     // add a new line for fields[i]
                     config_h_lines.add(f_line);
@@ -165,9 +191,14 @@ public class ConfigScribe {
                             double val = Double.parseDouble(split_line[1]);
                             fields_h[i].setDouble(configStoreH, val);
                         }//end if it's a double
+                        if (fields_h[i].getType() == boolean.class) {
+                            boolean val = Boolean.parseBoolean(split_line[1]);
+                            fields_h[i].setBoolean(configStoreH, val);
+                        }//end if it's a boolean
                     }//end if split line has expected length
                     else {
                         // TODO: handle some sort of exceptional case
+                        System.err.println("Some sort of exceptional case has happened when reading the config. I'm not really sure what to do now.");
                     }//end else we need to try another method of parsing
                 }//end if we found a line for this value
             }//end looping over fields, matching and writing
@@ -184,6 +215,7 @@ public class ConfigScribe {
                     }//end if split line has expected length
                     else {
                         // TODO: handle some sort of exceptional case
+                        System.err.println("Some sort of exceptional case has happened when reading the config. I'm not really sure what to do now.");
                     }//end else we need to try another method of parsing
                 }//end if we found a line for this value
             }//end looping over fields, matching and writing

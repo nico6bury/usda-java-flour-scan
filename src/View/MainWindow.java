@@ -158,6 +158,8 @@ public class MainWindow extends javax.swing.JFrame {
             this.areaFlagDialog.secondFlag = this.config_store_h.area_threshold_upper;
             this.unsharpDialog.unsharp_sigma = this.config_store_h.unsharp_sigma;
             this.unsharpDialog.unsharp_weight = this.config_store_h.unsharp_weight;
+            this.unsharpDialog.unsharp_skip = this.config_store_h.unsharp_skip;
+            this.unsharpDialog.unsharp_rename = this.config_store_h.unsharp_rename;
             this.scanAreaDialog.X1 = this.config_store_h.scan_x1;
             this.scanAreaDialog.Y1 = this.config_store_h.scan_y1;
             this.scanAreaDialog.X2 = this.config_store_h.scan_x2;
@@ -815,14 +817,20 @@ public class MainWindow extends javax.swing.JFrame {
         Result<String> scanResult = scan.runScanner(uxOverwriteName.getText(), uxShouldOverwriteName.isSelected());
         if (scanResult.isOk()) {
             String result = scanResult.getValue();
-            Result<String> unsharpResult = IJProcess.doUnsharpCorrection(result, config_store_h.unsharp_sigma, config_store_h.unsharp_weight);
-            if (unsharpResult.isOk()) {
-                lastScannedFile = new File(unsharpResult.getValue());
+            if (config_store_h.unsharp_skip == true) {
+                lastScannedFile = new File(result);
                 return new Result<File>(lastScannedFile);
-            }//end if we have an ok result
+            }//end if we should just skip the unsharp process
             else {
-                return new Result<File>(unsharpResult.getError());
-            }//end else we have an error to show
+                Result<String> unsharpResult = IJProcess.doUnsharpCorrection(result, config_store_h.unsharp_sigma, config_store_h.unsharp_weight, config_store_h.unsharp_rename);
+                if (unsharpResult.isOk()) {
+                    lastScannedFile = new File(unsharpResult.getValue());
+                    return new Result<File>(lastScannedFile);
+                }//end if we have an ok result
+                else {
+                    return new Result<File>(unsharpResult.getError());
+                }//end else we have an error to show
+            }//end else we should do the unsharp correction
         }//end else if scan result is ok
         else {
             return new Result<File>(scanResult.getError());
@@ -1057,13 +1065,13 @@ public class MainWindow extends javax.swing.JFrame {
         int imgWidth = buf_img.getWidth();
         int imgHeight = buf_img.getHeight();
         if (imgWidth > uxImageLabel.getWidth()) {
-            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.95);
+            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.9);
             int newImgHeight = newImgWidth * imgHeight / imgWidth;
             imgWidth = newImgWidth;
             imgHeight = newImgHeight;
         }//end if we need to scale down because of width
         if (imgHeight > uxImageLabel.getHeight()) {
-            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.95);
+            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.9);
             int newImgWidth = imgWidth * newImgHeight / imgHeight;
             imgHeight = newImgHeight;
             imgWidth = newImgWidth;
@@ -1142,6 +1150,8 @@ public class MainWindow extends javax.swing.JFrame {
         unsharpDialog.setVisible(true);
         this.config_store_h.unsharp_sigma = unsharpDialog.unsharp_sigma;
         this.config_store_h.unsharp_weight = unsharpDialog.unsharp_weight;
+        this.config_store_h.unsharp_skip = unsharpDialog.unsharp_skip;
+        this.config_store_h.unsharp_rename = unsharpDialog.unsharp_rename;
         this.config_scribe.write_config(this.config_store_h, this.config_store_c);
     }//GEN-LAST:event_uxSetUnsharpMenuBtnActionPerformed
 
@@ -1154,6 +1164,7 @@ public class MainWindow extends javax.swing.JFrame {
         this.config_store_h.scan_y1 = scanAreaDialog.Y1;
         this.config_store_h.scan_x2 = scanAreaDialog.X2;
         this.config_store_h.scan_y2 = scanAreaDialog.Y2;
+        this.config_scribe.write_config(config_store_h, config_store_c);
     }//GEN-LAST:event_uxScanAreaMenuBtnActionPerformed
 
     /**
