@@ -70,10 +70,11 @@ public class IJProcess {
 
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter year = DateTimeFormatter.ofPattern("yyyy");
-            DateTimeFormatter month = DateTimeFormatter.ofPattern("MM");
-            DateTimeFormatter day = DateTimeFormatter.ofPattern("d");
-            DateTimeFormatter hour = DateTimeFormatter.ofPattern("H");
-            DateTimeFormatter min = DateTimeFormatter.ofPattern("m");
+            DateTimeFormatter month = DateTimeFormatter.ofPattern("MMM");
+            DateTimeFormatter day = DateTimeFormatter.ofPattern("dd");
+            DateTimeFormatter hour = DateTimeFormatter.ofPattern("kk");
+            DateTimeFormatter min = DateTimeFormatter.ofPattern("mm");
+            DateTimeFormatter sec = DateTimeFormatter.ofPattern("ss");
             // DateTimeFormatter dir_formatter = DateTimeFormatter.ofPattern("yyyy-MM");
             // DateTimeFormatter file_formatter = DateTimeFormatter.ofPattern("MM-d_H:m");
             File newDirectory = new File(output_folder_storage_file.getAbsolutePath() + File.separator + "flour-scan-" + currentDateTime.format(year) + "-" + currentDateTime.format(month));
@@ -82,7 +83,7 @@ public class IJProcess {
                 newDirectory.mkdir();
             }//end if new directory needs to be created
             String newExtension = ".OUT.csv";
-            String current_time_stamp = currentDateTime.format(month) + "-" + currentDateTime.format(day) + "_" + currentDateTime.format(hour) + ";" + currentDateTime.format(min);
+            String current_time_stamp = currentDateTime.format(month) + "-" + currentDateTime.format(day) + "_" + currentDateTime.format(hour) + ";" + currentDateTime.format(min) + ";" + currentDateTime.format(sec);
             String newFileName = current_time_stamp + newExtension;
             File outputFile = new File(newDirectory.getAbsolutePath() + File.separator + newFileName);
 
