@@ -31,7 +31,7 @@ public class ConfigStoreH {
     /**
      * If this is false, then the unsharp masked image will overwrite the original. If true, a new file will be generated.
      */
-    public boolean unsharp_rename = true;
+    public boolean unsharp_rename = false;
     /**
      * scan area x coordinate of upper left corner of scan area in inches
      */
