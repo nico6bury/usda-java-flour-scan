@@ -285,6 +285,8 @@ public class MainWindow extends javax.swing.JFrame {
         uxScanBigBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         uxScanBigBtn.setText("Scan");
         uxScanBigBtn.setToolTipText("Scans and saves an image without adding it to the queue.");
+        uxScanBigBtn.setEnabled(false);
+        uxScanBigBtn.setVisible(false);
         uxScanBigBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxScanBigBtnActionPerformed(evt);
@@ -334,10 +336,9 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane6.setViewportView(uxTitleBlockTxt);
 
         uxOverwriteName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxOverwriteName.setEnabled(false);
 
         uxShouldOverwriteName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        uxShouldOverwriteName.setText("Overwrite Scanned Image Name");
+        uxShouldOverwriteName.setText("Auto-Generate Image Name");
         uxShouldOverwriteName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxShouldOverwriteNameActionPerformed(evt);
@@ -353,9 +354,9 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(uxShouldOverwriteName)
+                        .addComponent(uxOverwriteName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxOverwriteName))
+                        .addComponent(uxShouldOverwriteName))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -422,7 +423,7 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -510,7 +511,6 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(uxOpenFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(uxOpenOutputFile, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -519,7 +519,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(uxPrevImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxNextImageBtn))
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane3)
+                    .addComponent(uxOpenFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                 .addContainerGap())
@@ -743,7 +744,8 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uxScanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBtnActionPerformed
-        PerformScan();
+        // PerformScan();
+        uxScanQueueBtnActionPerformed(evt);
     }//GEN-LAST:event_uxScanBtnActionPerformed
 
     private void uxIjBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxIjBtnActionPerformed
@@ -814,7 +816,7 @@ public class MainWindow extends javax.swing.JFrame {
             scan = null;
         }//end if we encountered an error while setting scan settings
         // try to scan something with the scanner
-        Result<String> scanResult = scan.runScanner(uxOverwriteName.getText(), uxShouldOverwriteName.isSelected());
+        Result<String> scanResult = scan.runScanner(uxOverwriteName.getText(), !uxShouldOverwriteName.isSelected());
         if (scanResult.isOk()) {
             String result = scanResult.getValue();
             if (config_store_h.unsharp_skip == true) {
@@ -850,6 +852,14 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxScanBigBtnActionPerformed
 
     private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
+        // ensure there is a valid filename to use
+        if (!uxShouldOverwriteName.isSelected()) {
+            if (uxOverwriteName.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Please select a name for the scanned image.", "Image name left blank", JOptionPane.ERROR_MESSAGE);
+                return;
+            }//end if overwrite name is empty
+        }//end if we aren't overwriting the name
+        
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Result<File> scanResult = PerformScan();
         if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
@@ -857,7 +867,15 @@ public class MainWindow extends javax.swing.JFrame {
             imageQueue.add(scanResult.getValue());
             allImages.add(scanResult.getValue());
             UpdateQueueList();
+            // hopefully ensure that scanned image shows up immediately for user
+            uxQueueList.setSelectedValue(scanResult.getValue(), true);
         }//end else if we can add something to the queue
+
+        // ensure scan name is reset if we used it
+        if (!uxShouldOverwriteName.isSelected()) {
+            uxOverwriteName.setText("");
+        }//end if we used the overwrite name
+        
         setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_uxScanQueueBtnActionPerformed
 
@@ -866,9 +884,14 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
+        int prev_list_count = uxQueueList.getModel().getSize();
         // adding selected files to queue should be handled by selectFIlesListener
         selectFilesChooser.showOpenDialog(this);
         UpdateQueueList();
+        // make sure that new images in queue list show up to the right
+        if (prev_list_count != uxQueueList.getModel().getSize()) {
+            uxQueueList.setSelectedValue(uxQueueList.getModel().getElementAt(prev_list_count), true);
+        }
     }//GEN-LAST:event_uxAddFilesBtnActionPerformed
 
     /**
@@ -923,6 +946,7 @@ public class MainWindow extends javax.swing.JFrame {
                     outputData.getError().printStackTrace();
                     showGenericExceptionMessage(outputData.getError());
                 }//end if we couldn't get output data
+                int prev_row_count = uxOutputTable.getRowCount();
                 // group together SumResults which came from the same file path
                 List<List<SumResult>> groupedResults = SumResult.groupResultsByFile(ijProcess.lastProcResult);
                 // process sumResults into string columns
@@ -930,6 +954,10 @@ public class MainWindow extends javax.swing.JFrame {
                 // clear queue now that it's been processed
                 imageQueue.clear();
                 UpdateQueueList();
+                // see about updating selections
+                if (prev_row_count < uxOutputTable.getRowCount()) {
+                    uxOutputTable.changeSelection(prev_row_count, 0, false, false);
+                }//end if we have a new row to select
                 // make sure cursor is updated
                 setCursor(Cursor.getDefaultCursor());
 			} catch (Exception e) {
@@ -1065,13 +1093,13 @@ public class MainWindow extends javax.swing.JFrame {
         int imgWidth = buf_img.getWidth();
         int imgHeight = buf_img.getHeight();
         if (imgWidth > uxImageLabel.getWidth()) {
-            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.9);
+            int newImgWidth = (int)((double)uxImageLabel.getWidth() * 0.85);
             int newImgHeight = newImgWidth * imgHeight / imgWidth;
             imgWidth = newImgWidth;
             imgHeight = newImgHeight;
         }//end if we need to scale down because of width
         if (imgHeight > uxImageLabel.getHeight()) {
-            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.9);
+            int newImgHeight = (int)((double)uxImageLabel.getHeight() * 0.85);
             int newImgWidth = imgWidth * newImgHeight / imgHeight;
             imgHeight = newImgHeight;
             imgWidth = newImgWidth;
@@ -1191,8 +1219,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_uxOpenOutputFileActionPerformed
 
     private void uxShouldOverwriteNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxShouldOverwriteNameActionPerformed
-        if (uxShouldOverwriteName.isSelected()) {uxOverwriteName.setEnabled(true);}
-        else {uxOverwriteName.setEnabled(false);}
+        if (uxShouldOverwriteName.isSelected()) {uxOverwriteName.setEnabled(false);}
+        else {uxOverwriteName.setEnabled(true);}
     }//GEN-LAST:event_uxShouldOverwriteNameActionPerformed
 
     /**
