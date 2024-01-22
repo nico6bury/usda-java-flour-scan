@@ -4,6 +4,8 @@
  */
 package View;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 /**
  *
  * @author Nicholas.Sixbury
@@ -15,6 +17,7 @@ public class ScanAreaDialog extends javax.swing.JDialog {
      */
     public ScanAreaDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        FlatLightLaf.setup();
         initComponents();
     }
 
@@ -47,41 +50,41 @@ public class ScanAreaDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Set Scan Area");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Coordinates of upper left corner of scan area in inches");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()+2f));
         jLabel2.setText("Coordinates of lower right corner of scan area in inches");
 
-        uxX1Spnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxX1Spnr.setFont(uxX1Spnr.getFont().deriveFont(uxX1Spnr.getFont().getSize()+2f));
         uxX1Spnr.setModel(new javax.swing.SpinnerNumberModel(1.05d, 0.01d, 100.0d, 0.01d));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize()+2f));
         jLabel3.setLabelFor(uxX1Spnr);
         jLabel3.setText("X:");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setFont(jLabel4.getFont().deriveFont(jLabel4.getFont().getSize()+2f));
         jLabel4.setLabelFor(uxY1Spnr);
         jLabel4.setText("Y:");
 
-        uxY1Spnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxY1Spnr.setFont(uxY1Spnr.getFont().deriveFont(uxY1Spnr.getFont().getSize()+2f));
         uxY1Spnr.setModel(new javax.swing.SpinnerNumberModel(8.98d, 0.01d, 100.0d, 0.01d));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setFont(jLabel5.getFont().deriveFont(jLabel5.getFont().getSize()+2f));
         jLabel5.setLabelFor(uxX2Spnr);
         jLabel5.setText("X:");
 
-        uxX2Spnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxX2Spnr.setFont(uxX2Spnr.getFont().deriveFont(uxX2Spnr.getFont().getSize()+2f));
         uxX2Spnr.setModel(new javax.swing.SpinnerNumberModel(3.05d, 0.01d, 100.0d, 0.01d));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setFont(jLabel6.getFont().deriveFont(jLabel6.getFont().getSize()+2f));
         jLabel6.setLabelFor(uxY2Spnr);
         jLabel6.setText("Y:");
 
-        uxY2Spnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxY2Spnr.setFont(uxY2Spnr.getFont().deriveFont(uxY2Spnr.getFont().getSize()+2f));
         uxY2Spnr.setModel(new javax.swing.SpinnerNumberModel(10.98d, 0.01d, 100.0d, 0.01d));
 
-        uxCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxCancelBtn.setFont(uxCancelBtn.getFont().deriveFont(uxCancelBtn.getFont().getSize()+2f));
         uxCancelBtn.setText("Cancel");
         uxCancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,7 +92,7 @@ public class ScanAreaDialog extends javax.swing.JDialog {
             }
         });
 
-        uxConfirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConfirmBtn.setFont(uxConfirmBtn.getFont().deriveFont(uxConfirmBtn.getFont().getSize()+2f));
         uxConfirmBtn.setText("Confirm");
         uxConfirmBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,36 +105,34 @@ public class ScanAreaDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxX1Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxY1Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxX2Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel6)
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uxY2Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(uxX1Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxY1Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uxX2Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uxY2Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(uxCancelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,9 +155,9 @@ public class ScanAreaDialog extends javax.swing.JDialog {
                     .addComponent(uxY2Spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();

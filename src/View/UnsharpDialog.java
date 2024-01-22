@@ -6,6 +6,8 @@ package View;
 
 import javax.swing.JOptionPane;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 /**
  *
  * @author Nicholas.Sixbury
@@ -22,6 +24,7 @@ public class UnsharpDialog extends javax.swing.JDialog {
      */
     public UnsharpDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        FlatLightLaf.setup();
         initComponents();
     }
 
@@ -64,10 +67,10 @@ public class UnsharpDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Unsharp Mask Configuration");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()+2f));
         jLabel2.setText("Please configure settings for unsharp mask applied to scanned image.");
 
-        uxParametersWhyBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxParametersWhyBtn.setFont(uxParametersWhyBtn.getFont().deriveFont(uxParametersWhyBtn.getFont().getSize()+2f));
         uxParametersWhyBtn.setText("Why is this needed?");
         uxParametersWhyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,20 +78,20 @@ public class UnsharpDialog extends javax.swing.JDialog {
             }
         });
 
-        uxUnsharpSigmaSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxUnsharpSigmaSpnr.setFont(uxUnsharpSigmaSpnr.getFont().deriveFont(uxUnsharpSigmaSpnr.getFont().getSize()+2f));
         uxUnsharpSigmaSpnr.setModel(new javax.swing.SpinnerNumberModel(1.5d, 0.5d, 3.0d, 0.1d));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Unsharp Mask Sigma");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize()+2f));
         jLabel3.setText("Unsharp Mask Weight");
 
-        uxUnsharpWeightSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxUnsharpWeightSpnr.setFont(uxUnsharpWeightSpnr.getFont().deriveFont(uxUnsharpWeightSpnr.getFont().getSize()+2f));
         uxUnsharpWeightSpnr.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.1d, 0.9d, 0.1d));
         uxUnsharpWeightSpnr.setToolTipText("");
 
-        uxParametersWhatBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxParametersWhatBtn.setFont(uxParametersWhatBtn.getFont().deriveFont(uxParametersWhatBtn.getFont().getSize()+2f));
         uxParametersWhatBtn.setText("What do parameters mean?");
         uxParametersWhatBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,7 +99,7 @@ public class UnsharpDialog extends javax.swing.JDialog {
             }
         });
 
-        uxCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxCancelBtn.setFont(uxCancelBtn.getFont().deriveFont(uxCancelBtn.getFont().getSize()+2f));
         uxCancelBtn.setText("Cancel");
         uxCancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,7 +107,7 @@ public class UnsharpDialog extends javax.swing.JDialog {
             }
         });
 
-        uxConfirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConfirmBtn.setFont(uxConfirmBtn.getFont().deriveFont(uxConfirmBtn.getFont().getSize()+2f));
         uxConfirmBtn.setText("Confirm");
         uxConfirmBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,11 +115,11 @@ public class UnsharpDialog extends javax.swing.JDialog {
             }
         });
 
-        uxShouldSkipUnsharp.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxShouldSkipUnsharp.setFont(uxShouldSkipUnsharp.getFont().deriveFont(uxShouldSkipUnsharp.getFont().getSize()+2f));
         uxShouldSkipUnsharp.setText("Skip Unsharp Mask");
         uxShouldSkipUnsharp.setToolTipText("If enabled, then the unsharp mask will not be performed for scanned files.");
 
-        uxShouldRenameUnsharpFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxShouldRenameUnsharpFile.setFont(uxShouldRenameUnsharpFile.getFont().deriveFont(uxShouldRenameUnsharpFile.getFont().getSize()+2f));
         uxShouldRenameUnsharpFile.setSelected(true);
         uxShouldRenameUnsharpFile.setText("Rename File for Unsharp Mask");
         uxShouldRenameUnsharpFile.setToolTipText("If off, the the unsharp masked image will overwrite the original.");
@@ -128,31 +131,33 @@ public class UnsharpDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(uxParametersWhatBtn)
+                            .addComponent(uxParametersWhyBtn))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(uxUnsharpSigmaSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(uxShouldSkipUnsharp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(uxShouldSkipUnsharp, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(uxUnsharpWeightSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(uxShouldRenameUnsharpFile)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uxParametersWhatBtn)
-                            .addComponent(uxParametersWhyBtn))
-                        .addGap(18, 18, 18)
-                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(uxShouldRenameUnsharpFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(11, 11, 11)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

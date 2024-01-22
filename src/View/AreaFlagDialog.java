@@ -4,6 +4,8 @@
  */
 package View;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 /**
  *
  * @author Nicholas.Sixbury
@@ -18,6 +20,7 @@ public class AreaFlagDialog extends javax.swing.JDialog {
      */
     public AreaFlagDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        FlatLightLaf.setup();
         initComponents();
     }//end constructor
 
@@ -52,24 +55,25 @@ public class AreaFlagDialog extends javax.swing.JDialog {
         uxConfirmBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Set Area Flag Value");
         setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Set Threshold for Avg %Area Flag");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()+2f));
         jLabel2.setText("If %A >");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize()+2f));
         jLabel3.setText("If %A >");
 
-        uxFirstFlagThSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxFirstFlagThSpnr.setFont(uxFirstFlagThSpnr.getFont().deriveFont(uxFirstFlagThSpnr.getFont().getSize()+2f));
         uxFirstFlagThSpnr.setModel(new javax.swing.SpinnerNumberModel(0.025d, 0.0d, 100.0d, 0.001d));
 
-        uxSecondFlagThSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSecondFlagThSpnr.setFont(uxSecondFlagThSpnr.getFont().deriveFont(uxSecondFlagThSpnr.getFont().getSize()+2f));
         uxSecondFlagThSpnr.setModel(new javax.swing.SpinnerNumberModel(0.05d, 0.0d, 100.0d, 0.001d));
 
-        uxCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxCancelBtn.setFont(uxCancelBtn.getFont().deriveFont(uxCancelBtn.getFont().getSize()+2f));
         uxCancelBtn.setText("Cancel");
         uxCancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,7 +81,7 @@ public class AreaFlagDialog extends javax.swing.JDialog {
             }
         });
 
-        uxConfirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConfirmBtn.setFont(uxConfirmBtn.getFont().deriveFont(uxConfirmBtn.getFont().getSize()+2f));
         uxConfirmBtn.setText("Confirm");
         uxConfirmBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,20 +96,23 @@ public class AreaFlagDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxFirstFlagThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxSecondFlagThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxFirstFlagThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uxSecondFlagThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,10 +127,10 @@ public class AreaFlagDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(uxSecondFlagThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

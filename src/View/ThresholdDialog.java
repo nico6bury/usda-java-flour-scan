@@ -6,6 +6,8 @@ package View;
 
 import javax.swing.JOptionPane;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 /**
  *
  * @author Nicholas.Sixbury
@@ -19,6 +21,7 @@ public class ThresholdDialog extends javax.swing.JDialog {
      */
     public ThresholdDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        FlatLightLaf.setup();
         initComponents();
     }//end constructor
 
@@ -70,28 +73,29 @@ public class ThresholdDialog extends javax.swing.JDialog {
         uxCancelBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Set Processing Threshold");
         setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+2f));
         jLabel1.setText("Set Threshold For Image Processing (default: 160)");
 
         uxSetThBtnGrp.add(uxTh160Btn);
-        uxTh160Btn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxTh160Btn.setFont(uxTh160Btn.getFont().deriveFont(uxTh160Btn.getFont().getSize()+2f));
         uxTh160Btn.setSelected(true);
         uxTh160Btn.setText("TH 160");
 
         uxSetThBtnGrp.add(uxThOtherBtn);
-        uxThOtherBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxThOtherBtn.setFont(uxThOtherBtn.getFont().deriveFont(uxThOtherBtn.getFont().getSize()+2f));
         uxThOtherBtn.setText("TH Other");
 
         uxSetThBtnGrp.add(uxTh180Btn);
-        uxTh180Btn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxTh180Btn.setFont(uxTh180Btn.getFont().deriveFont(uxTh180Btn.getFont().getSize()+2f));
         uxTh180Btn.setText("TH 180");
 
-        uxOtherThSpnr.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOtherThSpnr.setFont(uxOtherThSpnr.getFont().deriveFont(uxOtherThSpnr.getFont().getSize()+2f));
         uxOtherThSpnr.setModel(new javax.swing.SpinnerNumberModel(160, 0, 255, 1));
 
-        uxConfirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConfirmBtn.setFont(uxConfirmBtn.getFont().deriveFont(uxConfirmBtn.getFont().getSize()+2f));
         uxConfirmBtn.setText("Confirm");
         uxConfirmBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,7 +103,7 @@ public class ThresholdDialog extends javax.swing.JDialog {
             }
         });
 
-        uxCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxCancelBtn.setFont(uxCancelBtn.getFont().deriveFont(uxCancelBtn.getFont().getSize()+2f));
         uxCancelBtn.setText("Cancel");
         uxCancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,18 +118,21 @@ public class ThresholdDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(uxTh160Btn)
-                    .addComponent(uxTh180Btn)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(uxThOtherBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(uxOtherThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(uxTh160Btn)
+                            .addComponent(uxTh180Btn)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(uxThOtherBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(uxOtherThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,11 +147,11 @@ public class ThresholdDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxThOtherBtn)
                     .addComponent(uxOtherThSpnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(uxConfirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                    .addComponent(uxCancelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
