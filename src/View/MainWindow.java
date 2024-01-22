@@ -798,6 +798,7 @@ public class MainWindow extends javax.swing.JFrame {
             // reset scanner to null
             scan = null;
         }//end if we encountered an error while detecting the connected scanner
+        else {uxStatusTxt.append("Connected to scanner.\n");}
         setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_uxConnectScannerBtnActionPerformed
 
@@ -914,7 +915,7 @@ public class MainWindow extends javax.swing.JFrame {
             if (imageMatch == null) {JOptionPane.showMessageDialog(this, "Could not find file that matches selected image, or no image selected.");}
             Runtime.getRuntime().exec("explorer.exe /select," + imageMatch.getAbsolutePath());
         }//end trying to open file explorer
-        catch(Exception e) {System.out.println("Couldn't open file explorer");}
+        catch(Exception e) {System.out.println("Couldn't open file explorer"); uxStatusTxt.append("Couldn't open file explorer\n");}
     }//GEN-LAST:event_uxOpenFileBtnActionPerformed
 
     /**

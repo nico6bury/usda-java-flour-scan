@@ -120,7 +120,6 @@ public class UnsharpDialog extends javax.swing.JDialog {
         uxShouldSkipUnsharp.setToolTipText("If enabled, then the unsharp mask will not be performed for scanned files.");
 
         uxShouldRenameUnsharpFile.setFont(uxShouldRenameUnsharpFile.getFont().deriveFont(uxShouldRenameUnsharpFile.getFont().getSize()+2f));
-        uxShouldRenameUnsharpFile.setSelected(true);
         uxShouldRenameUnsharpFile.setText("Rename File for Unsharp Mask");
         uxShouldRenameUnsharpFile.setToolTipText("If off, the the unsharp masked image will overwrite the original.");
 
