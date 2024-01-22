@@ -258,23 +258,23 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("USDA-ARS-FlourScan-Java");
 
         jSplitPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane1.setDividerLocation(550);
+        jSplitPane1.setDividerLocation(675);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane2.setDividerLocation(350);
+        jSplitPane2.setDividerLocation(450);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         uxStatusTxt.setEditable(false);
         uxStatusTxt.setColumns(20);
-        uxStatusTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxStatusTxt.setFont(uxStatusTxt.getFont());
         uxStatusTxt.setRows(5);
         jScrollPane1.setViewportView(uxStatusTxt);
 
-        uxConnectToScannerBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConnectToScannerBtn.setFont(uxConnectToScannerBtn.getFont().deriveFont(uxConnectToScannerBtn.getFont().getSize()+2f));
         uxConnectToScannerBtn.setText("Connect to Scanner");
         uxConnectToScannerBtn.setToolTipText("Attempts to make a connection to the scanner, if one is connected.");
         uxConnectToScannerBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -283,7 +283,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxScanBigBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScanBigBtn.setFont(uxScanBigBtn.getFont().deriveFont(uxScanBigBtn.getFont().getSize()+2f));
         uxScanBigBtn.setText("Scan");
         uxScanBigBtn.setToolTipText("Scans and saves an image without adding it to the queue.");
         uxScanBigBtn.setEnabled(false);
@@ -294,7 +294,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxScanQueueBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScanQueueBtn.setFont(uxScanQueueBtn.getFont().deriveFont(uxScanQueueBtn.getFont().getSize()+2f));
         uxScanQueueBtn.setText("Scan + Add to Queue");
         uxScanQueueBtn.setToolTipText("Scans and saves an image, then adds it to the processing queue.");
         uxScanQueueBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -303,7 +303,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxAddFilesBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxAddFilesBtn.setFont(uxAddFilesBtn.getFont().deriveFont(uxAddFilesBtn.getFont().getSize()+2f));
         uxAddFilesBtn.setText("Add Files to Queue");
         uxAddFilesBtn.setToolTipText("Select image files to add to the queue for processing.");
         uxAddFilesBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -312,7 +312,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxProcessAllBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxProcessAllBtn.setFont(uxProcessAllBtn.getFont().deriveFont(uxProcessAllBtn.getFont().getSize()+2f));
         uxProcessAllBtn.setText("Process Queue");
         uxProcessAllBtn.setToolTipText("Processes all images in the queue, displaying results in the output table.");
         uxProcessAllBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -321,7 +321,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxEmptyQueueBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxEmptyQueueBtn.setFont(uxEmptyQueueBtn.getFont().deriveFont(uxEmptyQueueBtn.getFont().getSize()+2f));
         uxEmptyQueueBtn.setText("Empty Queue");
         uxEmptyQueueBtn.setToolTipText("Clears all files from the processing queue.");
         uxEmptyQueueBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -332,13 +332,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxTitleBlockTxt.setEditable(false);
         uxTitleBlockTxt.setColumns(20);
-        uxTitleBlockTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxTitleBlockTxt.setFont(uxTitleBlockTxt.getFont());
         uxTitleBlockTxt.setRows(5);
         jScrollPane6.setViewportView(uxTitleBlockTxt);
 
-        uxOverwriteName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOverwriteName.setFont(uxOverwriteName.getFont().deriveFont(uxOverwriteName.getFont().getSize()+2f));
 
-        uxShouldOverwriteName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxShouldOverwriteName.setFont(uxShouldOverwriteName.getFont());
         uxShouldOverwriteName.setText("Auto-Generate Image Name");
         uxShouldOverwriteName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -346,7 +346,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()+1f));
         jLabel1.setText("Scanned Image Name");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -377,7 +377,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addComponent(uxProcessAllBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(uxEmptyQueueBtn)))
-                        .addGap(0, 196, Short.MAX_VALUE)))
+                        .addGap(0, 263, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -401,14 +401,14 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(uxOverwriteName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(uxShouldOverwriteName)
                     .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
 
         jSplitPane2.setTopComponent(jPanel1);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        uxQueueList.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxQueueList.setFont(uxQueueList.getFont().deriveFont(uxQueueList.getFont().getSize()+2f));
         uxQueueList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         uxQueueList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -423,14 +423,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -459,13 +459,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxImagePropertiesTxt.setEditable(false);
         uxImagePropertiesTxt.setColumns(1);
-        uxImagePropertiesTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxImagePropertiesTxt.setFont(uxImagePropertiesTxt.getFont().deriveFont(uxImagePropertiesTxt.getFont().getSize()+1f));
         uxImagePropertiesTxt.setRows(1);
         uxImagePropertiesTxt.setEnabled(false);
         uxImagePropertiesTxt.setPreferredSize(new java.awt.Dimension(102, 84));
         jScrollPane3.setViewportView(uxImagePropertiesTxt);
 
-        uxPrevImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxPrevImageBtn.setFont(uxPrevImageBtn.getFont().deriveFont(uxPrevImageBtn.getFont().getSize()+2f));
         uxPrevImageBtn.setText("Previous Image");
         uxPrevImageBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -473,7 +473,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxNextImageBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxNextImageBtn.setFont(uxNextImageBtn.getFont().deriveFont(uxNextImageBtn.getFont().getSize()+2f));
         uxNextImageBtn.setText("Next Image");
         uxNextImageBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -481,7 +481,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxOpenFileBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOpenFileBtn.setFont(uxOpenFileBtn.getFont().deriveFont(uxOpenFileBtn.getFont().getSize()+2f));
         uxOpenFileBtn.setText("Open in File Explorer");
         uxOpenFileBtn.setToolTipText("Opens the Selected Image in File Explorer");
         uxOpenFileBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -490,10 +490,10 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxImageLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxImageLabel.setFont(uxImageLabel.getFont().deriveFont(uxImageLabel.getFont().getSize()+2f));
         uxImageLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        uxClearOutputBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxClearOutputBtn.setFont(uxClearOutputBtn.getFont().deriveFont(uxClearOutputBtn.getFont().getSize()+2f));
         uxClearOutputBtn.setText("Clear Output");
         uxClearOutputBtn.setToolTipText("Clears data from the Output Table below");
         uxClearOutputBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -502,7 +502,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        uxOpenOutputFile.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxOpenOutputFile.setFont(uxOpenOutputFile.getFont().deriveFont(uxOpenOutputFile.getFont().getSize()+2f));
         uxOpenOutputFile.setText("Open Output Dir");
         uxOpenOutputFile.setToolTipText("Opens directory containing output files in File Explorer");
         uxOpenOutputFile.addActionListener(new java.awt.event.ActionListener() {
@@ -518,18 +518,18 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(uxOpenOutputFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(uxOpenFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(uxPrevImageBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxNextImageBtn))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(uxOpenOutputFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxClearOutputBtn))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(uxPrevImageBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxNextImageBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(uxOpenFileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -549,7 +549,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(uxOpenOutputFile)
                             .addComponent(uxClearOutputBtn))
-                        .addGap(4, 52, Short.MAX_VALUE))
+                        .addGap(0, 52, Short.MAX_VALUE))
                     .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -558,6 +558,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        uxOutputTable.setFont(uxOutputTable.getFont());
         uxOutputTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -599,14 +600,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -616,7 +617,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3)
+            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -627,9 +628,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         uxInitMenu.setText("Init");
         uxInitMenu.setFocusable(false);
-        uxInitMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxInitMenu.setFont(uxInitMenu.getFont().deriveFont(uxInitMenu.getFont().getSize()+2f));
 
-        uxConnectScannerBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxConnectScannerBtn.setFont(uxConnectScannerBtn.getFont().deriveFont(uxConnectScannerBtn.getFont().getSize()+2f));
         uxConnectScannerBtn.setText("Connect Scanner");
         uxConnectScannerBtn.setToolTipText("Attempt to establish a connection to a scanner.");
         uxConnectScannerBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -639,7 +640,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         uxInitMenu.add(uxConnectScannerBtn);
 
-        uxResetScanner.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxResetScanner.setFont(uxResetScanner.getFont().deriveFont(uxResetScanner.getFont().getSize()+2f));
         uxResetScanner.setText("Reset Scanner");
         uxResetScanner.setToolTipText("Resets the connection to the scanner by attempting to close and reopen a connection.");
         uxResetScanner.addActionListener(new java.awt.event.ActionListener() {
@@ -652,9 +653,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1.add(uxInitMenu);
 
         uxRunMenu.setText("Run");
-        uxRunMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxRunMenu.setFont(uxRunMenu.getFont().deriveFont(uxRunMenu.getFont().getSize()+2f));
 
-        uxScanBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScanBtn.setFont(uxScanBtn.getFont().deriveFont(uxScanBtn.getFont().getSize()+2f));
         uxScanBtn.setText("Scan");
         uxScanBtn.setToolTipText("Scans and saves an image without adding it to the queue.");
         uxScanBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -664,7 +665,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         uxRunMenu.add(uxScanBtn);
 
-        uxIjBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxIjBtn.setFont(uxIjBtn.getFont().deriveFont(uxIjBtn.getFont().getSize()+2f));
         uxIjBtn.setText("ImageJ Process");
         uxIjBtn.setToolTipText("Processes the images in the queue, displaying results in the output table.");
         uxIjBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -677,9 +678,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1.add(uxRunMenu);
 
         jMenu1.setText("Threshold");
-        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu1.setFont(jMenu1.getFont().deriveFont(jMenu1.getFont().getSize()+2f));
 
-        uxSetThresholdMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSetThresholdMenuBtn.setFont(uxSetThresholdMenuBtn.getFont().deriveFont(uxSetThresholdMenuBtn.getFont().getSize()+2f));
         uxSetThresholdMenuBtn.setText("Set Threshold");
         uxSetThresholdMenuBtn.setToolTipText("Allows you to set a threshold for image processing.");
         uxSetThresholdMenuBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -692,9 +693,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Area Flag");
-        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu2.setFont(jMenu2.getFont().deriveFont(jMenu2.getFont().getSize()+2f));
 
-        uxSetAreaFlagMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSetAreaFlagMenuBtn.setFont(uxSetAreaFlagMenuBtn.getFont().deriveFont(uxSetAreaFlagMenuBtn.getFont().getSize()+2f));
         uxSetAreaFlagMenuBtn.setText("Set %Area Flags");
         uxSetAreaFlagMenuBtn.setToolTipText("Allows you to set thresholds for which average %area will be flagged.");
         uxSetAreaFlagMenuBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -707,9 +708,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Scanner Correction");
-        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenu3.setFont(jMenu3.getFont().deriveFont(jMenu3.getFont().getSize()+2f));
 
-        uxSetUnsharpMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxSetUnsharpMenuBtn.setFont(uxSetUnsharpMenuBtn.getFont().deriveFont(uxSetUnsharpMenuBtn.getFont().getSize()+2f));
         uxSetUnsharpMenuBtn.setText("Unsharp Mask Settings");
         uxSetUnsharpMenuBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -718,7 +719,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         jMenu3.add(uxSetUnsharpMenuBtn);
 
-        uxScanAreaMenuBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        uxScanAreaMenuBtn.setFont(uxScanAreaMenuBtn.getFont().deriveFont(uxScanAreaMenuBtn.getFont().getSize()+2f));
         uxScanAreaMenuBtn.setText("Set Scan Area");
         uxScanAreaMenuBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
