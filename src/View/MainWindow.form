@@ -253,7 +253,7 @@
             <EmptyBorder/>
           </Border>
         </Property>
-        <Property name="dividerLocation" type="int" value="675"/>
+        <Property name="dividerLocation" type="int" value="690"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
@@ -317,35 +317,31 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
                           <Component id="jScrollPane6" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="uxOverwriteName" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="uxConnectToScannerBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <Component id="uxScanBigBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <Component id="uxScanQueueBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="uxShouldOverwriteName" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Component id="uxConnectToScannerBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="uxScanBigBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="uxScanQueueBtn" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="uxAddFilesBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="uxProcessAllBtn" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="uxEmptyQueueBtn" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="0" pref="263" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="uxAddFilesBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="uxProcessAllBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="uxEmptyQueueBtn" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <EmptySpace min="117" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="uxOverwriteName" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -361,6 +357,7 @@
                                   <Component id="uxConnectToScannerBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="uxScanBigBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="uxScanQueueBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="uxShouldOverwriteName" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -371,7 +368,6 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="uxOverwriteName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="uxShouldOverwriteName" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="173" max="32767" attributes="0"/>
@@ -526,7 +522,8 @@
                             <Font component="uxShouldOverwriteName" property="font" relativeSize="true" size="0"/>
                           </FontInfo>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Auto-Generate Image Name"/>
+                        <Property name="text" type="java.lang.String" value="Auto-Gen Image Name"/>
+                        <Property name="toolTipText" type="java.lang.String" value="If selected, then the program will automatically generate a name for scanned images."/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="uxShouldOverwriteNameActionPerformed"/>
@@ -563,7 +560,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" pref="656" max="32767" attributes="0"/>
+                              <Component id="jScrollPane2" pref="671" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -627,7 +624,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSplitPane3" pref="621" max="32767" attributes="0"/>
+                  <Component id="jSplitPane3" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -644,7 +641,7 @@
                     <EmptyBorder/>
                   </Border>
                 </Property>
-                <Property name="dividerLocation" type="int" value="325"/>
+                <Property name="dividerLocation" type="int" value="450"/>
                 <Property name="orientation" type="int" value="0"/>
               </Properties>
 
@@ -684,7 +681,7 @@
                                   <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="uxImageLabel" pref="350" max="32767" attributes="0"/>
+                              <Component id="uxImageLabel" pref="335" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -708,7 +705,7 @@
                                           <Component id="uxOpenOutputFile" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="uxClearOutputBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="0" pref="52" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="177" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="uxImageLabel" max="32767" attributes="0"/>
                               </Group>
@@ -846,7 +843,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane5" pref="605" max="32767" attributes="0"/>
+                              <Component id="jScrollPane5" pref="590" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -855,7 +852,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane5" pref="234" max="32767" attributes="0"/>
+                              <Component id="jScrollPane5" pref="109" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>

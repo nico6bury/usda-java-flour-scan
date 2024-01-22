@@ -6,6 +6,7 @@ package View;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
@@ -106,6 +107,9 @@ public class MainWindow extends javax.swing.JFrame {
         // ijProcFileChooser.addActionListener(ijProcFileListener);
         
                 initComponents();
+
+        // maximize the window
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         // build title block
         StringBuilder tb = new StringBuilder();
@@ -258,7 +262,7 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("USDA-ARS-FlourScan-Java");
 
         jSplitPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane1.setDividerLocation(675);
+        jSplitPane1.setDividerLocation(690);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -339,7 +343,8 @@ public class MainWindow extends javax.swing.JFrame {
         uxOverwriteName.setFont(uxOverwriteName.getFont().deriveFont(uxOverwriteName.getFont().getSize()+2f));
 
         uxShouldOverwriteName.setFont(uxShouldOverwriteName.getFont());
-        uxShouldOverwriteName.setText("Auto-Generate Image Name");
+        uxShouldOverwriteName.setText("Auto-Gen Image Name");
+        uxShouldOverwriteName.setToolTipText("If selected, then the program will automatically generate a name for scanned images.");
         uxShouldOverwriteName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uxShouldOverwriteNameActionPerformed(evt);
@@ -358,26 +363,24 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(uxConnectToScannerBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(uxOverwriteName)
+                        .addComponent(uxScanBigBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxScanQueueBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uxShouldOverwriteName))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(uxConnectToScannerBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxScanBigBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxScanQueueBtn))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(uxAddFilesBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxProcessAllBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(uxEmptyQueueBtn)))
-                        .addGap(0, 263, Short.MAX_VALUE)))
+                        .addComponent(uxAddFilesBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxProcessAllBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(uxEmptyQueueBtn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uxOverwriteName)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -390,7 +393,8 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxConnectToScannerBtn)
                     .addComponent(uxScanBigBtn)
-                    .addComponent(uxScanQueueBtn))
+                    .addComponent(uxScanQueueBtn)
+                    .addComponent(uxShouldOverwriteName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxAddFilesBtn)
@@ -399,7 +403,6 @@ public class MainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uxOverwriteName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(uxShouldOverwriteName)
                     .addComponent(jLabel1))
                 .addContainerGap(173, Short.MAX_VALUE))
         );
@@ -423,7 +426,7 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -452,7 +455,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jSplitPane3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jSplitPane3.setDividerLocation(325);
+        jSplitPane3.setDividerLocation(450);
         jSplitPane3.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -529,7 +532,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(uxClearOutputBtn))
                     .addComponent(jScrollPane3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -549,7 +552,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(uxOpenOutputFile)
                             .addComponent(uxClearOutputBtn))
-                        .addGap(0, 52, Short.MAX_VALUE))
+                        .addGap(0, 177, Short.MAX_VALUE))
                     .addComponent(uxImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -600,14 +603,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -617,7 +620,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
+            .addComponent(jSplitPane3)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -848,61 +851,6 @@ public class MainWindow extends javax.swing.JFrame {
         }//end if we have an error to show
     }//end method PerformScan()
 
-    private void uxConnectToScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectToScannerBtnActionPerformed
-        // just trigger the top menu code
-        uxConnectScannerBtnActionPerformed(evt);
-    }//GEN-LAST:event_uxConnectToScannerBtnActionPerformed
-
-    private void uxScanBigBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBigBtnActionPerformed
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Result<File> scanResult = PerformScan();
-        if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
-        setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_uxScanBigBtnActionPerformed
-
-    private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
-        // ensure there is a valid filename to use
-        if (!uxShouldOverwriteName.isSelected()) {
-            if (uxOverwriteName.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Please select a name for the scanned image.", "Image name left blank", JOptionPane.ERROR_MESSAGE);
-                return;
-            }//end if overwrite name is empty
-        }//end if we aren't overwriting the name
-        
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Result<File> scanResult = PerformScan();
-        if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
-        else if (scanResult.isOk()) {
-            imageQueue.add(scanResult.getValue());
-            allImages.add(scanResult.getValue());
-            UpdateQueueList();
-            // hopefully ensure that scanned image shows up immediately for user
-            uxQueueList.setSelectedValue(scanResult.getValue(), true);
-        }//end else if we can add something to the queue
-
-        // ensure scan name is reset if we used it
-        if (!uxShouldOverwriteName.isSelected()) {
-            uxOverwriteName.setText("");
-        }//end if we used the overwrite name
-        
-        setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_uxScanQueueBtnActionPerformed
-
-    /**
-     * Shows file chooser for adding files to processing queue.
-     * @param evt
-     */
-    private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
-        int prev_list_count = uxQueueList.getModel().getSize();
-        // adding selected files to queue should be handled by selectFIlesListener
-        selectFilesChooser.showOpenDialog(this);
-        UpdateQueueList();
-        // make sure that new images in queue list show up to the right
-        if (prev_list_count != uxQueueList.getModel().getSize()) {
-            uxQueueList.setSelectedValue(uxQueueList.getModel().getElementAt(prev_list_count), true);
-        }
-    }//GEN-LAST:event_uxAddFilesBtnActionPerformed
-
     /**
      * This method should be called whenever the image queue is updated, in order to show the changes in the list.
      */
@@ -914,67 +862,6 @@ public class MainWindow extends javax.swing.JFrame {
         }//end adding each image file to the array
         uxQueueList.setListData(imageArray);
     }//end UpdateQueueList()
-
-    /**
-     * This method contains the code for initiating processing of all images in the queue and updating things afterwards.
-     * @param evt
-     */
-    private void uxProcessAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxProcessAllBtnActionPerformed
-        if (imageQueue == null || imageQueue.size() == 0) {
-            JOptionPane.showMessageDialog(this, "Please select the image file generated by the scanner.", "No scanned image selected", JOptionPane.ERROR_MESSAGE);
-        }//end if last scanned file is null
-        // else if () {
-        //     JOptionPane.showMessageDialog(this, "Please select a scanned image that exists. \nFile " + lastScannedFile.getAbsolutePath() + "\n does not exist.", "Scanned image file does not exist.", JOptionPane.ERROR_MESSAGE);
-        // }//end if last scanned file doesn't exist
-        else {
-            try {
-                // tell user we're about to do processing
-                // JOptionPane.showMessageDialog(this, "Please wait. Your images will now be processed.");
-                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                ijProcess.th01 = thresholdDialog.thresholdToReturn;
-                // set up progress bar
-                progressMonitor = new ProgressMonitor(this, "Progress!", "", 0, 5);
-                progressMonitor.setProgress(3);
-                progressMonitor.setMillisToDecideToPopup(0);
-                progressMonitor.setMillisToPopup(0);
-                // actually run the imagej stuff
-
-                // roll over area flag stuff to the processing
-                IJProcess.lower_flag_thresh = areaFlagDialog.firstFlag;
-                IJProcess.upper_flag_thresh = areaFlagDialog.secondFlag;
-
-                Result<String> outputData = ijTask.doInBackground();
-                if (ijTask.isDone()) {
-                    setCursor(Cursor.getDefaultCursor());
-                }//end if the task is done
-                // SwingUtilities.invokeLater(
-                //     () -> JOptionPane.showMessageDialog(this, "Your images have finsihed processing.")
-                // );
-                // progressDialog.setVisible(false);
-                if (outputData.isErr()) {
-                    outputData.getError().printStackTrace();
-                    showGenericExceptionMessage(outputData.getError());
-                }//end if we couldn't get output data
-                int prev_row_count = uxOutputTable.getRowCount();
-                // group together SumResults which came from the same file path
-                List<List<SumResult>> groupedResults = SumResult.groupResultsByFile(ijProcess.lastProcResult);
-                // process sumResults into string columns
-                updateOutputTable(groupedResults);
-                // clear queue now that it's been processed
-                imageQueue.clear();
-                UpdateQueueList();
-                // see about updating selections
-                if (prev_row_count < uxOutputTable.getRowCount()) {
-                    uxOutputTable.changeSelection(prev_row_count, 0, false, false);
-                }//end if we have a new row to select
-                // make sure cursor is updated
-                setCursor(Cursor.getDefaultCursor());
-			} catch (Exception e) {
-				e.printStackTrace();
-                showGenericExceptionMessage(e);
-			}//end catching URISyntaxException
-        }//end else we should probably be able to process the file
-    }//GEN-LAST:event_uxProcessAllBtnActionPerformed
 
     /**
      * Figures out where currently selected image is located, finds image after it, then changes selection of displayed image.
@@ -1156,11 +1043,6 @@ public class MainWindow extends javax.swing.JFrame {
         }//end looping over each result group
     }//end updateOutputTable(groupedResults)
 
-    private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
-        imageQueue.clear();
-        UpdateQueueList();
-    }//GEN-LAST:event_uxEmptyQueueBtnActionPerformed
-
     /**
      * Shows the dialog for changing area flag thresholds. 
      */
@@ -1231,6 +1113,127 @@ public class MainWindow extends javax.swing.JFrame {
         if (uxShouldOverwriteName.isSelected()) {uxOverwriteName.setEnabled(false);}
         else {uxOverwriteName.setEnabled(true);}
     }//GEN-LAST:event_uxShouldOverwriteNameActionPerformed
+
+    private void uxEmptyQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxEmptyQueueBtnActionPerformed
+        imageQueue.clear();
+        UpdateQueueList();
+    }//GEN-LAST:event_uxEmptyQueueBtnActionPerformed
+
+    /**
+     * This method contains the code for initiating processing of all images in the queue and updating things afterwards.
+     * @param evt
+     */
+    private void uxProcessAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxProcessAllBtnActionPerformed
+        if (imageQueue == null || imageQueue.size() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select the image file generated by the scanner.", "No scanned image selected", JOptionPane.ERROR_MESSAGE);
+        }//end if last scanned file is null
+        // else if () {
+            //     JOptionPane.showMessageDialog(this, "Please select a scanned image that exists. \nFile " + lastScannedFile.getAbsolutePath() + "\n does not exist.", "Scanned image file does not exist.", JOptionPane.ERROR_MESSAGE);
+            // }//end if last scanned file doesn't exist
+        else {
+            try {
+                // tell user we're about to do processing
+                // JOptionPane.showMessageDialog(this, "Please wait. Your images will now be processed.");
+                setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                ijProcess.th01 = thresholdDialog.thresholdToReturn;
+                // set up progress bar
+                progressMonitor = new ProgressMonitor(this, "Progress!", "", 0, 5);
+                progressMonitor.setProgress(3);
+                progressMonitor.setMillisToDecideToPopup(0);
+                progressMonitor.setMillisToPopup(0);
+                // actually run the imagej stuff
+
+                // roll over area flag stuff to the processing
+                IJProcess.lower_flag_thresh = areaFlagDialog.firstFlag;
+                IJProcess.upper_flag_thresh = areaFlagDialog.secondFlag;
+
+                Result<String> outputData = ijTask.doInBackground();
+                if (ijTask.isDone()) {
+                    setCursor(Cursor.getDefaultCursor());
+                }//end if the task is done
+                // SwingUtilities.invokeLater(
+                    //     () -> JOptionPane.showMessageDialog(this, "Your images have finsihed processing.")
+                    // );
+                // progressDialog.setVisible(false);
+                if (outputData.isErr()) {
+                    outputData.getError().printStackTrace();
+                    showGenericExceptionMessage(outputData.getError());
+                }//end if we couldn't get output data
+                int prev_row_count = uxOutputTable.getRowCount();
+                // group together SumResults which came from the same file path
+                List<List<SumResult>> groupedResults = SumResult.groupResultsByFile(ijProcess.lastProcResult);
+                // process sumResults into string columns
+                updateOutputTable(groupedResults);
+                // clear queue now that it's been processed
+                imageQueue.clear();
+                UpdateQueueList();
+                // see about updating selections
+                if (prev_row_count < uxOutputTable.getRowCount()) {
+                    uxOutputTable.changeSelection(prev_row_count, 0, false, false);
+                }//end if we have a new row to select
+                // make sure cursor is updated
+                setCursor(Cursor.getDefaultCursor());
+            } catch (Exception e) {
+                e.printStackTrace();
+                showGenericExceptionMessage(e);
+            }//end catching URISyntaxException
+        }//end else we should probably be able to process the file
+    }//GEN-LAST:event_uxProcessAllBtnActionPerformed
+
+    /**
+     * Shows file chooser for adding files to processing queue.
+     * @param evt
+     */
+    private void uxAddFilesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxAddFilesBtnActionPerformed
+        int prev_list_count = uxQueueList.getModel().getSize();
+        // adding selected files to queue should be handled by selectFIlesListener
+        selectFilesChooser.showOpenDialog(this);
+        UpdateQueueList();
+        // make sure that new images in queue list show up to the right
+        if (prev_list_count != uxQueueList.getModel().getSize()) {
+            uxQueueList.setSelectedValue(uxQueueList.getModel().getElementAt(prev_list_count), true);
+        }
+    }//GEN-LAST:event_uxAddFilesBtnActionPerformed
+
+    private void uxScanQueueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanQueueBtnActionPerformed
+        // ensure there is a valid filename to use
+        if (!uxShouldOverwriteName.isSelected()) {
+            if (uxOverwriteName.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Please select a name for the scanned image.", "Image name left blank", JOptionPane.ERROR_MESSAGE);
+                return;
+            }//end if overwrite name is empty
+        }//end if we aren't overwriting the name
+
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        Result<File> scanResult = PerformScan();
+        if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
+        else if (scanResult.isOk()) {
+            imageQueue.add(scanResult.getValue());
+            allImages.add(scanResult.getValue());
+            UpdateQueueList();
+            // hopefully ensure that scanned image shows up immediately for user
+            uxQueueList.setSelectedValue(scanResult.getValue(), true);
+        }//end else if we can add something to the queue
+
+        // ensure scan name is reset if we used it
+        if (!uxShouldOverwriteName.isSelected()) {
+            uxOverwriteName.setText("");
+        }//end if we used the overwrite name
+
+        setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_uxScanQueueBtnActionPerformed
+
+    private void uxScanBigBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxScanBigBtnActionPerformed
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        Result<File> scanResult = PerformScan();
+        if (scanResult.isErr()) {showGenericExceptionMessage(scanResult.getError());}
+        setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_uxScanBigBtnActionPerformed
+
+    private void uxConnectToScannerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uxConnectToScannerBtnActionPerformed
+        // just trigger the top menu code
+        uxConnectScannerBtnActionPerformed(evt);
+    }//GEN-LAST:event_uxConnectToScannerBtnActionPerformed
 
     /**
      * THIS is the MAIN METHOD that the program should start from.
