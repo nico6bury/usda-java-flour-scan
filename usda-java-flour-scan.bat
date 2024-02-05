@@ -1,1 +1,1 @@
-"jre/bin/javaw.exe" -jar usda-java-flour-scan.jar
+"jre/bin/java.exe" -jar usda-java-flour-scan.jar
