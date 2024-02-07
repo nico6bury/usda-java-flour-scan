@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -158,12 +159,14 @@ public class ConfigScribe {
             jar_location = new File(IJProcess.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toString();
             File config_h_filepath = new File(jar_location + File.separator + h_config_name);
             File config_c_filepath = new File(jar_location + File.separator + c_config_name);
-            // make sure file exists
-            if (!config_h_filepath.exists()) { config_h_filepath.createNewFile(); }
-            if (!config_c_filepath.exists()) { config_c_filepath.createNewFile(); }
             // get all the lines from the config file
-            List<String> config_h_lines = Files.readAllLines(config_h_filepath.toPath());
-            List<String> config_c_lines = Files.readAllLines(config_c_filepath.toPath());
+            List<String> config_h_lines;
+            List<String> config_c_lines;
+            // get all lines from config files
+            if (!config_h_filepath.exists()) { config_h_lines = new ArrayList<String>(); }
+            else { config_h_lines = Files.readAllLines(config_h_filepath.toPath()); }
+            if (!config_c_filepath.exists()) { config_c_lines = new ArrayList<String>(); }
+            else { config_c_lines = Files.readAllLines(config_c_filepath.toPath()); }
             // get list of fields to use for looking stuff up in match map
             Field[] fields_h = ConfigStoreH.class.getFields();
             Field[] fields_c = ConfigStoreC.class.getFields();
